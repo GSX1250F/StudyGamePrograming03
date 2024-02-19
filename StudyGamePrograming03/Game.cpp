@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "Actor.h"
 #include "SpriteComponent.h"
-#include "Ship.h"
+//#include "Ship.h"
 #include "Asteroid.h"
 #include "Random.h"
 
@@ -157,9 +157,9 @@ void Game::GenerateOutput()
 void Game::LoadData()
 {
 	//プレイヤーの宇宙船を作成
-	mShip = new Ship(this);
-	mShip->SetPosition(Vector2(512.0f, 384.0f));
-	mShip->SetRotation(Math::PiOver2);
+	//mShip = new Ship(this);
+	//mShip->SetPosition(Vector2(512.0f, 384.0f));
+	//mShip->SetRotation(Math::PiOver2);
 
 
 	// 小惑星を生成
@@ -221,10 +221,10 @@ SDL_Texture* Game::GetTexture(const std::string& filename)
 	return tex;
 }
 
-void Game::AddAsteroid(Asteroid* ast)
-{
-	mAsteroids.emplace_back(ast);
-}
+//void Game::AddAsteroid(Asteroid* ast)
+//{
+//	mAsteroids.emplace_back(ast);
+//}
 
 void Game::RemoveAsteroid(Asteroid* ast)
 {

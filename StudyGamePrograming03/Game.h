@@ -20,7 +20,7 @@ public:
 
 	SDL_Texture* GetTexture(const std::string& fileName);
 
-	void AddAsteroid(class Asteroid* ast);
+	//void AddAsteroid(class Asteroid* ast);
 	void RemoveAsteroid(class Asteroid* ast);
 	std::vector<class Asteroid*>& GetAsteroids() { return mAsteroids; }
 
@@ -49,6 +49,6 @@ private:
 	// アクターが更新中か
 	bool mUpdatingActors;
 
-	class Ship* mShip; // 宇宙船
+	//class Ship* mShip; // 宇宙船
 	std::vector<class Asteroid*> mAsteroids; //小惑星
 };
