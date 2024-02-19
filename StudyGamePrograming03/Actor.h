@@ -33,10 +33,10 @@ public:
 	void SetPosition(const Vector2& pos) { mPosition = pos; }
 	float GetScale() const { return mScale; }
 	void SetScale(float scale) { mScale = scale; }
-	float GetRotation() const { return mRotation; }
+	float GetRotation() const { return mRotation; }		//角速度を取得
 	void SetRotation(float rotation) { mRotation = rotation; }
 
-	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }
+	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }		//単位ベクトル方向を取得
 
 	State GetState() const { return mState; }
 	void SetState(State state) { mState = state; }

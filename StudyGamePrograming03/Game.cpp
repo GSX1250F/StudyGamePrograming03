@@ -156,7 +156,7 @@ void Game::GenerateOutput()
 
 void Game::LoadData()
 {
-	 プレイヤーの宇宙船を作成
+	//プレイヤーの宇宙船を作成
 	mShip = new Ship(this);
 	mShip->SetPosition(Vector2(512.0f, 384.0f));
 	mShip->SetRotation(Math::PiOver2);
