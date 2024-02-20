@@ -1,6 +1,7 @@
 #include "Ship.h"
 #include "SpriteComponent.h"
 #include "MoveComponent.h"
+#include "InputComponent.h"
 #include "Game.h"
 #include "Random.h"
 
@@ -18,6 +19,9 @@ Ship::Ship(Game* game) : Actor(game)
 	//MoveComponent作成、前進速度の初期化
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetForwardSpeed(0.0f);
+
+	//InputComponent作成
+	InputComponent* mc = new InputComponent(this);
 }
 
 Ship::~Ship()
