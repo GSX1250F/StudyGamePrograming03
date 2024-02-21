@@ -26,7 +26,7 @@ Ship::Ship(Game* game) : Actor(game) , mLaserCooldown(0.0f)
 
 	//CircleComponentì¬
 	mCircle = new CircleComponent(this);
-	mCircle->SetRadius(28.0f);
+	mCircle->SetRadius(30.0f);
 	
 }
 
