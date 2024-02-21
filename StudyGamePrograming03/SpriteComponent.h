@@ -15,10 +15,12 @@ public:
 	int GetDrawOrder() const { return mDrawOrder; }
 	int GetTexHeight() const { return mTexHeight; }
 	int GetTexWidth() const { return mTexWidth; }
+	float GetTexRotation() const { return mTexRotation; }
 
 private:
 	SDL_Texture* mTexture;
 	int mDrawOrder;
-	int mTexWidth;
-	int mTexHeight;
+	int mTexWidth;			//スプライトの横幅
+	int mTexHeight;			//スプライトの縦幅
+	float mTexRotation;		//スプライトの回転
 };

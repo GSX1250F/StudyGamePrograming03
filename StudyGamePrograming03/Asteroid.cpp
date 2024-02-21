@@ -3,12 +3,14 @@
 #include "MoveComponent.h"
 #include "Game.h"
 #include "Random.h"
+#include "CircleComponent.h"
 
 Asteroid::Asteroid(Game* game) : Actor(game)
 {
 	//ƒ‰ƒ“ƒ_ƒ€‚ÈˆÊ’u‚ÆŒü‚«‚Å‰Šú‰»
 	Vector2 randPos;
-	while (!randPos.x > 1024.0f * 0.25f && !randPos.x < 1024.0f *0.75f && !randPos.y > 768.0f * 0.25f && !randPos.y < 768.0f * 0.75f) 
+	randPos.x = 1024.0f / 2.0f ; randPos.y = 768.0f / 2.0f;
+	while (randPos.x > 1024.0f * 0.25f && randPos.x < 1024.0f *0.75f && randPos.y > 768.0f * 0.25f && randPos.y < 768.0f * 0.75f) 
 	{
 		randPos = Random::GetVector(Vector2::Zero, Vector2(1024.0f, 768.0f));
 	}
@@ -23,6 +25,16 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetForwardSpeed(150.0f);
 
+	//CircleComponentì¬
+	mCircle = new CircleComponent(this);
+	mCircle->SetRadius(40.0f);
+
+
+	//SpriteRotationSpeedÝ’è
+	mSpriteRotatingSpeed = Random::GetFloatRange(-2.0f, 2.0f);
+
+
+
 	// Add to mAsteroids in game
 	game->AddAsteroid(this);
 }
@@ -30,4 +42,10 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 Asteroid::~Asteroid()
 {
 	GetGame()->RemoveAsteroid(this);
+}
+
+void Asteroid::UpdateActor(float deltaTime)
+{
+	//Sprite‚¾‚¯‚Ü‚í‚·
+
 }

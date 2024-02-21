@@ -20,6 +20,9 @@ public:
 
 	SDL_Texture* GetTexture(const std::string& fileName);
 
+	void SetRunning(bool isrunning) { mIsRunning = isrunning; }
+
+
 	//Game-specific	
 	void AddAsteroid(class Asteroid* ast);
 	void RemoveAsteroid(class Asteroid* ast);

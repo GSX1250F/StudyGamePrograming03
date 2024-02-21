@@ -1,24 +1,20 @@
 #pragma once
 #include "Actor.h"
 
-class Ship : public Actor
+class Laser : public Actor
 {
 public:
-	Ship(Game* game);
-	
-	void UpdateActor(float deltaTime) override;
-	void ActorInput(const uint8_t* keyState) override;
+	Laser(Game* game);
 
-	void Init();
+	void UpdateActor(float deltaTime) override;
 
 	class CircleComponent* GetCircle() { return mCircle; }
 
-
 protected:
 
-
 private:
-	float mLaserCooldown;
+	float mDeathTime;
 	class CircleComponent* mCircle;		//衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
+
 };
 

@@ -8,9 +8,9 @@ class Actor
 public:
 	enum State
 	{
-		EActive,
-		EPaused,
-		EDead
+		EActive,		//稼働中
+		EPaused,		//更新停止中
+		EDead			//削除対象
 	};
 
 	Actor(class Game* game);
@@ -25,7 +25,7 @@ public:
 
 	// ゲームから呼び出されるProcess Input(オーバーライド不可)
 	void ProcessInput(const uint8_t* keyState);
-
+	// アクター独自の入力処理(オーバーライド可能)
 	virtual void ActorInput(const uint8_t* keyState);
 
 	// Getters/setters
@@ -33,7 +33,7 @@ public:
 	void SetPosition(const Vector2& pos) { mPosition = pos; }
 	float GetScale() const { return mScale; }
 	void SetScale(float scale) { mScale = scale; }
-	float GetRotation() const { return mRotation; }		//角速度を取得
+	float GetRotation() const { return mRotation; }		//角度を取得
 	void SetRotation(float rotation) { mRotation = rotation; }
 
 	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }		//単位ベクトル方向を取得

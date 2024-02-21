@@ -43,8 +43,8 @@ void Actor::UpdateComponents(float deltaTime)
 
 void Actor::UpdateActor(float deltaTime)
 {
-
 }
+
 //新しく追加されたインプット用関数
 void Actor::ProcessInput(const uint8_t* keyState)
 {
