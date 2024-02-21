@@ -33,10 +33,14 @@ public:
 	void SetPosition(const Vector2& pos) { mPosition = pos; }
 	float GetScale() const { return mScale; }
 	void SetScale(float scale) { mScale = scale; }
-	float GetRotation() const { return mRotation; }		//角度を取得
+	float GetRotation() const { return mRotation; }
 	void SetRotation(float rotation) { mRotation = rotation; }
 
 	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }		//単位ベクトル方向を取得
+
+	float GetSpin() const { return mSpin; }
+	void SetSpin(float spin) { mSpin = spin; }
+
 
 	State GetState() const { return mState; }
 	void SetState(State state) { mState = state; }
@@ -56,6 +60,9 @@ private:
 	Vector2 mPosition;
 	float mScale;
 	float mRotation;
+
+	// 回転のみ
+	float mSpin;
 
 	std::vector<class Component*> mComponents;
 	class Game* mGame;

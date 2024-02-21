@@ -21,7 +21,7 @@ protected:
 
 
 private:
-	// 角速度（ラジアン / 秒）
+	// 前進角速度（ラジアン / 秒）
 	float mAngularSpeed;
 	// 前進速度（単位長 / 秒）
 	float mForwardSpeed;

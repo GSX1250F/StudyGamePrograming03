@@ -15,7 +15,7 @@ protected:
 
 private:
 	class CircleComponent* mCircle;		//衝突チェックのためのアクセスポインタ。他のオブジェクトから参照するため。
-
-	float mSpriteRotatingSpeed;
+	float mSpinSpeed;
+	float mAsteroidScale;
 };
 

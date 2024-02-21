@@ -30,7 +30,7 @@ void SpriteComponent::Draw(SDL_Renderer* renderer)
 		r.x = static_cast<int>(mOwner->GetPosition().x - r.w / 2);
 		r.y = static_cast<int>(mOwner->GetPosition().y - r.h / 2);
 
-		SDL_RenderCopyEx(renderer, mTexture, nullptr, &r, -Math::ToDegrees(mOwner->GetRotation()), nullptr, SDL_FLIP_NONE);
+		SDL_RenderCopyEx(renderer, mTexture, nullptr, &r, -Math::ToDegrees(mOwner->GetSpin()), nullptr, SDL_FLIP_NONE);
 	}
 
 

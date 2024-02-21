@@ -16,6 +16,10 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	}
 	SetPosition(randPos);
 	SetRotation(Random::GetFloatRange(0.0f, Math::TwoPi));
+	mAsteroidScale = Random::GetFloatRange(0.3f, 2.0f);
+	SetScale(mAsteroidScale);
+	mSpinSpeed = Random::GetFloatRange(-1.0f * Math::TwoPi, 1.0f * Math::TwoPi);
+	SetSpin(mSpinSpeed);
 
 	//スプライトコンポーネント作成、テクスチャ設定
 	SpriteComponent* sc = new SpriteComponent(this);
@@ -27,11 +31,7 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
-	mCircle->SetRadius(40.0f);
-
-
-	//SpriteRotationSpeed設定
-	mSpriteRotatingSpeed = Random::GetFloatRange(-2.0f, 2.0f);
+	mCircle->SetRadius(25.0f * mAsteroidScale);
 
 
 
@@ -46,6 +46,7 @@ Asteroid::~Asteroid()
 
 void Asteroid::UpdateActor(float deltaTime)
 {
-	//Spriteだけまわす
-
+	float spin = GetSpin();
+	spin += mSpinSpeed * deltaTime;
+	SetSpin(spin);
 }
