@@ -32,6 +32,10 @@ public:
 	void SetSpinAccel(float accel) { mSpinAccel = accel; }
 	void SetForwardAccel(float accel) { mForwardAccel = accel; }
 
+	float GetForwardResist() const { return mForwardResist; }
+	float GetSpinResist() const { return mSpinResist; }
+	void SetForwardResist(float resist) { mForwardResist = resist; }
+	void SetSpinResist(float resist) { mSpinResist = resist; }
 
 protected:
 
@@ -57,6 +61,10 @@ private:
 	// ‰ñ“]‰Á‘¬“x
 	float mSpinAccel;
 	
+	// ‘Oi’ïR—¦
+	float mForwardResist;
+	// ‰ñ“]’ïR—¦
+	float mSpinResist;
 
 
 };

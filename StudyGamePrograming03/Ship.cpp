@@ -23,10 +23,12 @@ Ship::Ship(Game* game) : Actor(game) , mLaserCooldown(0.0f)
 	ic->SetCounterClockwiseKey(SDL_SCANCODE_LEFT);
 	ic->SetMaxForwardSpeed(300.0f);
 	ic->SetMaxSpinSpeed(Math::TwoPi);
-	ic->SetMaxForwardForce(1000.0f);
-	ic->SetMaxSpinForce(10.0f * Math::TwoPi);
+	ic->SetMaxForwardForce(2000.0f);
+	ic->SetMaxSpinForce(20.0f * Math::TwoPi);
 	ic->SetMass(10.0f);
 	ic->SetRadius(GetScale());
+	ic->SetForwardResist(0.00002f);
+	ic->SetSpinResist(2.0f);
 
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
@@ -59,8 +61,9 @@ void Ship::ActorInput(const uint8_t* keyState)
 		{
 			// レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
 			Laser* laser = new Laser(GetGame());
-			laser->SetPosition(GetPosition());
+			laser->SetPosition(GetPosition() + 35.0f * GetScale() * Vector2(Math::Cos(GetSpin()), -Math::Sin(GetSpin())));
 			laser->SetSpin(GetSpin());
+			laser->SetVelocity(1000.0f * Vector2(Math::Cos(GetSpin()),-Math::Sin(GetSpin())));
 
 			// レーザー冷却期間リセット
 			mLaserCooldown = 0.5f;
