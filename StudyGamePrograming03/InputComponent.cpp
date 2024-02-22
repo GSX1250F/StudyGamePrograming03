@@ -18,6 +18,7 @@ InputComponent::~InputComponent()
 void InputComponent::ProcessInput(const uint8_t* keyState)
 {
 	//MoveComponent‚Ì‚½‚ß‚ÌŒvZ
+	/*
 	float forwardSpeed = 0.0f;
 	if (keyState[mForwardKey])
 	{
@@ -39,7 +40,31 @@ void InputComponent::ProcessInput(const uint8_t* keyState)
 		angularSpeed += mMaxAngularSpeed;		//Šp‘¬“x‚Ì{•ûŒü‚ÍCCW
 	}
 	SetAngularSpeed(angularSpeed);
+	*/
+	
+	//ŒÃ“T•¨—Šw‚ÅMoveComponent‚Ì‚½‚ß‚ÌŒvZ
+	//MoveComponent‚É‚Í‘Oi‚©‰ñ“]•ûŒü‚Ì—Í‚ÌÅ‘å’l‚¾‚¯‚ğ“n‚·
+	float forwardforce = 0.0f;
+	if (keyState[mForwardKey])
+	{
+		forwardforce += mMaxForwardForce;
+	}
+	else if (keyState[mBackwardKey])
+	{
+		forwardforce -= mMaxForwardForce;
+	}
+	SetForwardForce(forwardforce);
 
+	float spinforce = 0.0f;
+	if (keyState[mClockwiseKey])
+	{
+		spinforce -= mMaxSpinForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
+	}
+	else if (keyState[mCounterClockwiseKey])
+	{
+		spinforce += mMaxSpinForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
+	}
+	SetSpinForce(spinforce);
 
 }
 

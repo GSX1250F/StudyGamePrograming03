@@ -159,13 +159,14 @@ void Game::LoadData()
 	//プレイヤーの宇宙船を作成
 	new Ship(this);
 	
+	/*
 	// 小惑星を複数生成
 	const int numAsteroids = 20;
 	for (int i = 0; i < numAsteroids; i++)
 	{
 		new Asteroid(this);
 	}
-
+	*/
 }
 
 void Game::UnloadData()

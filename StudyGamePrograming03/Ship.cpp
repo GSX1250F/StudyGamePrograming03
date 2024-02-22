@@ -22,7 +22,11 @@ Ship::Ship(Game* game) : Actor(game) , mLaserCooldown(0.0f)
 	ic->SetClockwiseKey(SDL_SCANCODE_RIGHT);
 	ic->SetCounterClockwiseKey(SDL_SCANCODE_LEFT);
 	ic->SetMaxForwardSpeed(300.0f);
-	ic->SetMaxAngularSpeed(Math::TwoPi);
+	ic->SetMaxSpinSpeed(Math::TwoPi);
+	ic->SetMaxForwardForce(1000.0f);
+	ic->SetMaxSpinForce(10.0f * Math::TwoPi);
+	ic->SetMass(10.0f);
+	ic->SetRadius(GetScale());
 
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
@@ -34,38 +38,42 @@ void Ship::Init()
 {
 	//ランダムな向きで初期化
 	SetPosition(Vector2(1024.0f / 2.0f, 768.0f / 2.0f));
-	float rot = Random::GetFloatRange(0.0f, Math::TwoPi);
-	SetRotation(rot);
-	SetSpin(rot);		//スピンと動作回転を合わせる。
-	SetScale(0.7f);
+	float spin = Random::GetFloatRange(0.0f, Math::TwoPi);
+	SetRotation(0.0f);
+	SetSpin(spin);
+	SetScale(1.0f);
 
 	crash = false;
-	crashTime = 2.0f;
+	crashTime = 1.5f;
 	crashPos.x = 0.0f;
 	crashPos.y = 0.0f;
-
+	deactiveTime = 1.5f;
+	SetState(EActive);
 }
 
 void Ship::ActorInput(const uint8_t* keyState)
 {
-	if (keyState[SDL_SCANCODE_SPACE] && mLaserCooldown <= 0.0f)
+	if (crash == false) 
 	{
-		// レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
-		Laser* laser = new Laser(GetGame());
-		laser->SetPosition(GetPosition());
-		laser->SetRotation(GetRotation());
+		if (keyState[SDL_SCANCODE_SPACE] && mLaserCooldown <= 0.0f)
+		{
+			// レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
+			Laser* laser = new Laser(GetGame());
+			laser->SetPosition(GetPosition());
+			laser->SetSpin(GetSpin());
 
-		// レーザー冷却期間リセット
-		mLaserCooldown = 0.5f;
+			// レーザー冷却期間リセット
+			mLaserCooldown = 0.5f;
+		}
 	}
+	
 }
 
 void Ship::UpdateActor(float deltaTime)
 {
 	if (crash == false)
 	{
-		SetSpin(GetRotation());			// 動作回転とスピンを合わせる。
-
+		
 		mLaserCooldown -= deltaTime;	//レーザーを次に撃てるまでの時間
 
 		//位置はMoveComponentで更新される。
@@ -75,7 +83,7 @@ void Ship::UpdateActor(float deltaTime)
 			{
 				//小惑星と衝突したとき
 				crashPos = GetPosition();
-				crashRot = GetRotation();
+				crashRot = GetSpin();
 
 				//ゲーム自体を終了する場合
 				//GetGame()->SetRunning(false);
@@ -87,12 +95,18 @@ void Ship::UpdateActor(float deltaTime)
 	}
 	else
 	{
-		if (crashTime >= 0.0f)
+		if (crashTime >= 0.0f && deactiveTime >= 0.0f)
 		{
-			SetPosition(crashPos);		// MoveComponentが更新されても衝突位置に置きなおし
-			crashRot -= 2.0f * Math::TwoPi * deltaTime;
-			SetSpin(crashRot);		// MoveComponentが更新されても衝突角度に置きなおし
+			SetPosition(crashPos);		// MoveComponentが更新されても衝突したときの位置に置きなおし
+			crashRot -= 3.0f * Math::TwoPi * deltaTime;
+			SetSpin(crashRot);		// MoveComponentが更新されても衝突してからの回転角度に置きなおし
 			crashTime -= deltaTime;
+		}
+		else if (crashTime < 0.0f && deactiveTime >= 0.0f)
+		{
+			SetState(EPaused);
+			deactiveTime -= deltaTime;
+			
 		}
 		else
 		{

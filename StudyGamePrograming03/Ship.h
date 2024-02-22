@@ -24,6 +24,10 @@ private:
 	float crashRot;		//衝突したときの向き
 	bool crash;				//衝突検知
 	float crashTime;		//衝突演出時間
+	float deactiveTime;		//衝突演出後、リセットされるまでスプライトを消す時間
+
+	float mMass;	//質量
+
 
 };
 

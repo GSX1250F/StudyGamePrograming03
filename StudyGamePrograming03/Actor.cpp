@@ -6,8 +6,10 @@
 Actor::Actor(Game* game)
 	:mState(EActive),
 	mPosition(Vector2::Zero),
+	mVelocity(Vector2::Zero),
 	mScale(1.0f),
 	mRotation(0.0f),
+	mSpin(0.0f),
 	mGame(game)
 {
 	mGame->AddActor(this);
@@ -59,6 +61,7 @@ void Actor::ProcessInput(const uint8_t* keyState)
 		ActorInput(keyState);
 	}
 }
+
 //機能追加するときオーバーライドするインプット用関数
 void Actor::ActorInput(const uint8_t* keyState)
 {

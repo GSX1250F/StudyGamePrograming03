@@ -2,7 +2,15 @@
 #include "Actor.h"
 #include "Math.h"
 
-MoveComponent::MoveComponent(Actor* owner, int updateOrder) : Component(owner), mAngularSpeed(0.0f),mForwardSpeed(0.0f)
+MoveComponent::MoveComponent(Actor* owner, int updateOrder) 
+	: Component(owner), 
+	mSpinSpeed(0.0f),
+	mForwardSpeed(0.0f),
+	mSpinAccel(0),
+	mForwardAccel(0),
+	mMass(1.0f),
+	mForwardForce(0.0f),
+	mSpinForce(0.0f)
 {
 }
 
@@ -12,16 +20,25 @@ MoveComponent::~MoveComponent()
 
 void MoveComponent::Update(float deltatime)
 {
-	if (!Math::NearZero(mAngularSpeed))		// 変化がほぼゼロのときは更新しない。
+	
+	float spin = mOwner->GetSpin();
+	Vector2 vel = mOwner->GetVelocity();
+	Vector2 pos = mOwner->GetPosition();
+
+	mForwardAccel = mForwardForce / mMass;
+	mSpinAccel = mRadius * mSpinForce / mMass;
+	//mForwardSpeed += mForwardAccel * deltatime;
+	
+	if (!Math::NearZero(mSpinAccel))		// 変化がほぼゼロのときは更新しない。
 	{
-		float rot = mOwner->GetRotation();
-		rot += mAngularSpeed * deltatime;
-		mOwner->SetRotation(rot);
+		mSpinSpeed += mSpinAccel * deltatime;
+		spin += mSpinSpeed * deltatime;
+		mOwner->SetSpin(spin);
 	}
-	if (!Math::NearZero(mForwardSpeed))		// 変化がほぼゼロのときは更新しない。
+	if (!Math::NearZero(mForwardAccel))		// 変化がほぼゼロのときは更新しない。
 	{
-		Vector2 pos = mOwner->GetPosition();
-		pos += mOwner->GetForward() * mForwardSpeed * deltatime;
+		vel += Vector2(Math::Cos(spin), -Math::Sin(spin)) * mForwardAccel * deltatime;
+		pos += vel * deltatime;
 		
 		//ラッピング処理　本当はここに書くべきではない。
 		if (pos.x < -15.0f ) 
@@ -46,6 +63,8 @@ void MoveComponent::Update(float deltatime)
 		}
 
 		mOwner->SetPosition(pos);
+		mOwner->SetRotation(Math::Atan2(pos.x, pos.y));
 	}
+	
 
 }

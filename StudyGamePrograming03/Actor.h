@@ -30,13 +30,15 @@ public:
 
 	// Getters/setters
 	const Vector2& GetPosition() const { return mPosition; }
+	const Vector2& GetVelocity() const { return mVelocity; }
 	void SetPosition(const Vector2& pos) { mPosition = pos; }
+	void SetVelocity(const Vector2& vel) { mVelocity = vel; }
 	float GetScale() const { return mScale; }
 	void SetScale(float scale) { mScale = scale; }
 	float GetRotation() const { return mRotation; }
 	void SetRotation(float rotation) { mRotation = rotation; }
 
-	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }		//単位ベクトル方向を取得
+	Vector2 GetForward() const { return Vector2(Math::Cos(mSpin), -Math::Sin(mSpin)); }		//単位ベクトル方向を取得
 
 	float GetSpin() const { return mSpin; }
 	void SetSpin(float spin) { mSpin = spin; }
@@ -57,12 +59,13 @@ private:
 	State mState;
 
 	// 移動
-	Vector2 mPosition;
-	float mScale;
-	float mRotation;
+	Vector2 mPosition;		//位置x,y
+	Vector2 mVelocity;		//速度x,y
+	float mScale;			//大きさ
+	float mRotation;		//運動方向 (rad)
 
 	// 回転のみ
-	float mSpin;
+	float mSpin;			//回転方向 (rad)
 
 	std::vector<class Component*> mComponents;
 	class Game* mGame;
