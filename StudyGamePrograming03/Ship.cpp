@@ -57,7 +57,7 @@ void Ship::Init()
 	float spin = Random::GetFloatRange(0.0f, Math::TwoPi);
 	SetRotation(0.0f);
 	SetSpin(spin);
-	SetScale(1.0f);
+	SetScale(0.7f);
 
 	crash = false;
 	crashTime = 1.5f;
