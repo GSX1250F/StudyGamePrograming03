@@ -13,6 +13,7 @@ MoveComponent::MoveComponent(Actor* owner, int updateOrder)
 	mForwardForce(0.0f),
 	mSpinForce(0.0f)
 {
+	
 }
 
 MoveComponent::~MoveComponent()

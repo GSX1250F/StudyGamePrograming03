@@ -1,5 +1,5 @@
 #include "Ship.h"
-#include "SpriteComponent.h"
+#include "AnimSpriteComponent.h"
 #include "InputComponent.h"		//MoveComponentの子クラスなので、MoveComponentも読み込まれる。
 #include "Game.h"
 #include "Random.h"
@@ -10,10 +10,24 @@
 Ship::Ship(Game* game) : Actor(game) , mLaserCooldown(0.0f)
 {
 	Init();
-
+	/*
 	//スプライトコンポーネント作成、テクスチャ設定
 	SpriteComponent* sc = new SpriteComponent(this);
 	sc->SetTexture(game->GetTexture("Assets/Ship.png"));
+	*/
+
+	// アニメーションのスプライトコンポーネントを作成
+	AnimSpriteComponent* asc = new AnimSpriteComponent(this);
+	std::vector<SDL_Texture*> anims = {
+		game->GetTexture("Assets/Ship01.png"),
+		game->GetTexture("Assets/Ship02.png"),
+		game->GetTexture("Assets/Ship03.png"),
+		game->GetTexture("Assets/Ship04.png"),
+		game->GetTexture("Assets/Ship05.png")
+	};
+	asc->SetAnimTextures(anims,1,1,true);
+	mAnimComponent = asc;
+
 
 	//InputComponent作成
 	InputComponent* ic = new InputComponent(this);
@@ -57,6 +71,29 @@ void Ship::ActorInput(const uint8_t* keyState)
 {
 	if (crash == false) 
 	{
+		if (keyState[SDL_SCANCODE_LEFT])
+		{
+			mAnimComponent->SetAnimNum(2, 2, false); 
+		}
+		else if (keyState[SDL_SCANCODE_RIGHT])
+		{
+			mAnimComponent->SetAnimNum(3, 3, false); 
+		}
+		else if (keyState[SDL_SCANCODE_UP])
+		{
+			mAnimComponent->SetAnimNum(4, 4, false); 
+		}
+		else if (keyState[SDL_SCANCODE_DOWN])
+		{
+			mAnimComponent->SetAnimNum(5, 5, false); 
+		}
+		else if (mAnimComponent->mIsAnimating == false)
+		{
+			// アニメーション中が終わっていたら元のループに戻る。
+			mAnimComponent->SetAnimNum(1, 1, true);
+		}
+
+
 		if (keyState[SDL_SCANCODE_SPACE] && mLaserCooldown <= 0.0f)
 		{
 			// レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。

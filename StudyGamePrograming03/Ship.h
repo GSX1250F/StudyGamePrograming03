@@ -28,6 +28,7 @@ private:
 
 	float mMass;	//Ž¿—Ê
 
+	class AnimSpriteComponent* mAnimComponent;
 
 };
 

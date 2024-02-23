@@ -30,9 +30,9 @@ public:
 
 	// Getters/setters
 	const Vector2& GetPosition() const { return mPosition; }
-	const Vector2& GetVelocity() const { return mVelocity; }
+	const Vector2& GetVelocity() const { return mVelocity; }		//速度ゲッターを追加
 	void SetPosition(const Vector2& pos) { mPosition = pos; }
-	void SetVelocity(const Vector2& vel) { mVelocity = vel; }
+	void SetVelocity(const Vector2& vel) { mVelocity = vel; }		//速度セッターを追加
 	float GetScale() const { return mScale; }
 	void SetScale(float scale) { mScale = scale; }
 	float GetRotation() const { return mRotation; }
@@ -40,8 +40,8 @@ public:
 
 	Vector2 GetForward() const { return Vector2(Math::Cos(mSpin), -Math::Sin(mSpin)); }		//単位ベクトル方向を取得
 
-	float GetSpin() const { return mSpin; }
-	void SetSpin(float spin) { mSpin = spin; }
+	float GetSpin() const { return mSpin; }				//スピンゲッターを追加　　※Rotationに統一できるかも
+	void SetSpin(float spin) { mSpin = spin; }			//スピンセッターを追加　　※Rotationに統一できるかも
 
 
 	State GetState() const { return mState; }
