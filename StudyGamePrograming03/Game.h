@@ -28,6 +28,11 @@ public:
 	void RemoveAsteroid(class Asteroid* ast);
 	std::vector<class Asteroid*>& GetAsteroids() { return mAsteroids; }
 
+
+	//ゲームウィンドウの大きさ
+	int mWindowWidth;
+	int mWindowHeight;
+
 private:
 	void ProcessInput();
 	void UpdateGame();
@@ -52,6 +57,7 @@ private:
 	bool mIsRunning;
 	// アクターが更新中か
 	bool mUpdatingActors;
+
 
 	//Game-specific
 	class Ship* mShip; // player ship

@@ -43,6 +43,7 @@ public:
 	void SetRotSpeed(float rotspeed) { mRotSpeed = rotspeed; }
 	float GetMass() const { return mMass; }
 	void SetMass(float mass) { mMass = mass; }
+	void ConvertToPos();
 
 	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }		//向きの単位ベクトル
 
@@ -61,7 +62,8 @@ private:
 	State mState;
 
 	// 移動
-	Vector2 mPosition;		//位置x,y
+	Vector2 mPosition;		//画面上の位置
+	Vector2 mCoordinate;	//座標x,y
 	Vector2 mVelocity;		//速度x,y
 	float mScale;			//拡大率
 	float mRotation;		//回転

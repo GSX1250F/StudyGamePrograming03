@@ -11,7 +11,9 @@ Game::Game()
 	:mWindow(nullptr),
 	mRenderer(nullptr),
 	mIsRunning(true),
-	mUpdatingActors(false)
+	mUpdatingActors(false),
+	mWindowWidth(1024),
+	mWindowHeight(768)
 {
 
 }
@@ -25,7 +27,7 @@ bool Game::Initialize()
 		return false;
 	}
 	// SDLウィンドウを作成
-	mWindow = SDL_CreateWindow("Game Programming in C++ (Chapter 2)", 100, 100, 1024, 768, 0);
+	mWindow = SDL_CreateWindow("Game Programming in C++ (Chapter 2)", 100, 100, mWindowWidth, mWindowHeight, 0);
 	if (!mWindow)
 	{
 		SDL_Log("ウィンドウの作成に失敗しました: %s", SDL_GetError());
