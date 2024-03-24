@@ -9,7 +9,9 @@ Actor::Actor(Game* game)
 	mVelocity(Vector2::Zero),
 	mScale(1.0f),
 	mRotation(0.0f),
-	mSpin(0.0f),
+	mRotSpeed(0.0f),
+	mMass(1.0f),
+	mRadius(0.0f),
 	mGame(game)
 {
 	mGame->AddActor(this);
@@ -30,6 +32,10 @@ void Actor::Update(float deltaTime)
 {
 	if (mState == EActive || mState == EPaused)
 	{
+		// ˆÊ’uî•ñ‚ğXV
+		mPosition += mVelocity * deltaTime;
+		mRotation += mRotSpeed * deltaTime;
+
 		UpdateComponents(deltaTime);
 		UpdateActor(deltaTime);
 	}

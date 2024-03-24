@@ -4,14 +4,12 @@
 
 MoveComponent::MoveComponent(Actor* owner, int updateOrder) 
 	: Component(owner), 
-	mSpinSpeed(0.0f),
-	mForwardSpeed(0.0f),
-	mSpinAccel(0),
-	mForwardAccel(0),
-	mMass(1.0f),
-	mRadius(1.0f),
-	mForwardForce(0.0f),
-	mSpinForce(0.0f)
+	mMoveForce(Vector2::Zero),
+	mMoveAccel(Vector2::Zero),
+	mRotForce(0.0f),
+	mRotAccel(0.0f),
+	mMoveResist(1.0f),
+	mRotResist(1.0f)
 {
 	
 }
@@ -22,49 +20,10 @@ MoveComponent::~MoveComponent()
 
 void MoveComponent::Update(float deltatime)
 {
-	
-	Vector2 vel = mOwner->GetVelocity();	//初期速度取得
-	Vector2 pos = mOwner->GetPosition();	//初期位置取得
-	pos += vel * deltatime;					// x = x0 + vt
-	float spin = mOwner->GetSpin();		//初期角度取得
-	spin += mSpinSpeed * deltatime;			// Θ = Θ0 + ωt 
-
-	mForwardAccel = mForwardForce / mMass;
-	vel += Vector2(Math::Cos(spin), -Math::Sin(spin)) * mForwardAccel * deltatime - mForwardResist * Vector2(vel.x * Math::Abs(vel.x), vel.y * Math::Abs(vel.y));	// v = v0 + at
-	
-	mSpinAccel = mSpinForce / ( mMass * mRadius) - mSpinResist * mSpinSpeed * Math::Abs(mSpinSpeed) ;	// a_Θ = ω / rm
-	mSpinSpeed += mSpinAccel * deltatime;	// ω = ω0 + at
-
-
-	//if (!Math::NearZero(mForwardSpeed)){}		// 変化がほぼゼロのときは更新しない。
-	//if (!Math::NearZero(mSpinSpeed)){}		// 変化がほぼゼロのときは更新しない。
-	
-	//ラッピング処理　本当はここに書くべきではない。
-	if (pos.x < -15.0f ) 
-	{
-		pos.x = 1024.0f; 
-	}
-	else if (pos.x > 1024.0f + 15.0f)
-	{
-		pos.x = 0.0f;
-	}
-	if (pos.y < -15.0f ) 
-	{
-		pos.y = 768.0f;
-	}
-	else if (pos.y < - 15.0f)
-	{
-		pos.y = 768.0f;
-	}
-	else if (pos.y > 768.0f + 15.0f)
-	{
-		pos.y = 0.0f;
-	}
-
-	mOwner->SetVelocity(vel);
-	mOwner->SetPosition(pos);
-	mOwner->SetSpin(spin);
-
-	
-
+	// Actorの重心速度と回転速度を更新
+	// Actorの位置と角度はActorのUpdateで更新
+	mMoveAccel = mMoveForce * (1 / mOwner->GetMass());	//重心加速度の計算
+	mRotAccel = mRotForce / mOwner->GetMass();	//回転加速度の計算
+	mOwner->SetVelocity(mOwner->GetVelocity() + mMoveAccel * deltatime);	//v = vo + at
+	mOwner->SetRotation(mOwner->GetRotSpeed() + mRotAccel * deltatime);	//ω = ωo + ωt
 }

@@ -11,60 +11,29 @@ public:
 	//Updateをオーバーライド
 	void Update(float deltatime) override;
 
-	//各動作のパラメータのゲッター・セッター
-	float GetSpinSpeed() const { return mSpinSpeed; }
-	float GetForwardSpeed() const { return mForwardSpeed; }
-	float GetForwardAngle() const { return mForwardAngle; }
-	void SetSpinSpeed(float speed) { mSpinSpeed = speed; }
-	void SetForwardSpeed(float speed) { mForwardSpeed = speed; }
-	void SetForwardAngle(float angle) { mForwardAngle = angle; }
-
-	float GetMass() const { return mMass; }
-	float GetRadius() const { return mRadius; }
-	float GetForwardForce() const { return mForwardForce; }
-	float GetSpinForce() const { return mSpinForce; }
-	float GetForwardAccel() const { return mForwardAccel; }
-	float GetSpinAccel() const { return mSpinAccel; }
-	void SetMass(float mass) { mMass = mass; }
-	void SetRadius(float radius) { mRadius = radius; }
-	void SetSpinForce(float force) { mSpinForce = force; }
-	void SetForwardForce(float force) { mForwardForce = force; }
-	void SetSpinAccel(float accel) { mSpinAccel = accel; }
-	void SetForwardAccel(float accel) { mForwardAccel = accel; }
-
-	float GetForwardResist() const { return mForwardResist; }
-	float GetSpinResist() const { return mSpinResist; }
-	void SetForwardResist(float resist) { mForwardResist = resist; }
-	void SetSpinResist(float resist) { mSpinResist = resist; }
+	// 古典物理を実装。重心にかかる力と回転にかかる力のセッターを用意
+	void SetMoveForce(Vector2 forceVector) { mMoveForce = forceVector; }
+	void SetRotForce(float force) { mRotForce = force; }
+	void SetMoveResist(float resist) { mMoveResist = resist; }
+	void SetRotResist(float resist) { mRotResist = resist; }
 
 protected:
 
 
 private:
-	// 回転速度（ラジアン / 秒）
-	float mSpinSpeed;
-	// 前進速度（単位長 / 秒）
-	float mForwardSpeed;
-	// 前進角度（ラジアン）
-	float mForwardAngle;
-	// 古典物理学を実装する。必要なのは、質量、前進力、回転力、前進加速度、回転加速度
-	// 質量
-	float mMass;
-	// 半径
-	float mRadius;
-	// 前進力
-	float mForwardForce;
+	// 重心にかかる力
+	Vector2 mMoveForce;
 	// 回転力
-	float mSpinForce;
-	// 前進加速度
-	float mForwardAccel;
+	float mRotForce;
+	// 重心加速度
+	Vector2 mMoveAccel;
 	// 回転加速度
-	float mSpinAccel;
+	float mRotAccel;
 	
-	// 前進抵抗率
-	float mForwardResist;
-	// 回転抵抗率
-	float mSpinResist;
+	// 重心速度抵抗率(%)
+	float mMoveResist;
+	// 回転速度抵抗率(%)
+	float mRotResist;
 
 
 };
