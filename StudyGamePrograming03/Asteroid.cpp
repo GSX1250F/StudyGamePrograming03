@@ -9,15 +9,15 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 {
 	//ƒ‰ƒ“ƒ_ƒ€‚ÈˆÊ’u‚ÆŒü‚«‚Æ‘å‚«‚³‚Æ‰‘¬‚Å‰Šú‰»
 	Vector2 randPos;
-	randPos.x = 1024.0f / 2.0f ; randPos.y = 768.0f / 2.0f;
-	while (randPos.x > 1024.0f * 0.25f && randPos.x < 1024.0f *0.75f && randPos.y > 768.0f * 0.25f && randPos.y < 768.0f * 0.75f) 
+	randPos.x = GetGame()->mWindowWidth / 2.0f ; randPos.y = GetGame()->mWindowHeight / 2.0f;
+	while (randPos.x > GetGame()->mWindowWidth * 0.25f && randPos.x < GetGame()->mWindowHeight *0.75f && randPos.y > 768.0f * 0.25f && randPos.y < 768.0f * 0.75f)
 	{
-		randPos = Random::GetVector(Vector2::Zero, Vector2(1024.0f, 768.0f));
+		randPos = Random::GetVector(Vector2::Zero, Vector2(GetGame()->mWindowWidth, GetGame()->mWindowHeight));
 	}
 	SetPosition(randPos);
 	float randRot = Random::GetFloatRange(0.0f, Math::TwoPi);
 	SetRotation(randRot);
-	float randScale = Random::GetFloatRange(0.5f, 2.0f);
+	float randScale = Random::GetFloatRange(0.5f, 1.5f);
 	SetScale(randScale);
 	float mSpinSpeed = Random::GetFloatRange(-1.0f * Math::TwoPi, 1.0f * Math::TwoPi);
 	SetRotSpeed(mSpinSpeed);

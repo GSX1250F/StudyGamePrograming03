@@ -35,10 +35,10 @@ Ship::Ship(Game* game) : Actor(game) , mLaserCooldown(0.0f)
 	ic->SetBackwardKey(SDL_SCANCODE_DOWN);
 	ic->SetClockwiseKey(SDL_SCANCODE_RIGHT);
 	ic->SetCounterClockwiseKey(SDL_SCANCODE_LEFT);
-	ic->SetMaxForwardForce(100.0f);
-	ic->SetMaxRotForce(20.0f * Math::TwoPi);
-	ic->SetMoveResist(1.0f);
-	ic->SetRotResist(1.0f);
+	ic->SetMaxForwardForce(300.0f);
+	ic->SetMaxRotForce(150.0f);
+	ic->SetMoveResist(30.0f);
+	ic->SetRotResist(30.0f);
 
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
@@ -52,6 +52,7 @@ void Ship::Init()
 	float rot = Random::GetFloatRange(0.0f, Math::TwoPi);
 	SetRotation(rot);
 	SetScale(0.7f);
+	SetMass(1.0f);
 
 	crash = false;
 	crashTime = 1.5f;
@@ -107,10 +108,20 @@ void Ship::UpdateActor(float deltaTime)
 {
 	if (crash == false)
 	{
-		
+		//画面外にでたら反対の位置に移動（ラッピング処理）
+		if (GetPosition().x < 0.0f - 1 * GetRadius() ||
+			GetPosition().x > GetGame()->mWindowWidth + 1 * GetRadius())
+		{
+			SetPosition(Vector2(GetGame()->mWindowWidth - GetPosition().x, GetPosition().y));
+		}
+		if (GetPosition().y < 0.0f - 1 * GetRadius() ||
+			GetPosition().y > GetGame()->mWindowHeight + 1 * GetRadius())
+		{
+			SetPosition(Vector2(GetPosition().x, GetGame()->mWindowHeight - GetPosition().y));
+		}
+
 		mLaserCooldown -= deltaTime;	//レーザーを次に撃てるまでの時間
 
-		//位置はMoveComponentで更新される。
 		for (auto ast : GetGame()->GetAsteroids())
 		{
 			if (Intersect(*mCircle, *(ast->GetCircle())))

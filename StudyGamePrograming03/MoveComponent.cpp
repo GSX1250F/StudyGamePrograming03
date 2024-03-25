@@ -23,11 +23,17 @@ void MoveComponent::Update(float deltatime)
 	// Actor‚ÌdS‘¬“x‚Æ‰ñ“]‘¬“x‚ðXV
 	// Actor‚ÌˆÊ’u‚ÆŠp“x‚ÍActor‚ÌUpdate‚ÅXV
 	if (mOwner->GetMass() != 0) {
-		mMoveAccel = mMoveForce * (1 / mOwner->GetMass());	//dS‰Á‘¬“x‚ÌŒvŽZ
+		mMoveAccel = mMoveForce * (1 / mOwner->GetMass());	//dS‰Á‘¬“x‚ÌŒvŽZ@F=ma  a=F*(1/m)
+		//’ïR—Í = ‘¬‚³*’ïRŒW”    Œ¸‘¬ = -‘¬‚³*’ïRŒW”/Ž¿—Ê
+		Vector2 movedecel = mOwner->GetVelocity() * mMoveResist *0.01 * (1 / mOwner->GetMass());
+		mMoveAccel -= movedecel;
 	}
 	else { mMoveAccel = Vector2::Zero; }
 	if (mOwner->GetImoment() != 0 && mOwner->GetRadius() != 0) {
-		mRotAccel = mRotForce / mOwner->GetImoment() / mOwner->GetRadius();	//‰ñ“]‰Á‘¬“x‚ÌŒvŽZ
+		mRotAccel = mRotForce * mOwner->GetRadius() / mOwner->GetImoment();	//‰ñ“]‰Á‘¬“x‚ÌŒvŽZ Fr=Ia  a=Fr/I
+		//’ïR—Í = ‘¬‚³*’ïRŒW”    Œ¸‘¬ = -‘¬‚³*’ïRŒW”*”¼Œa/Šµ«ƒ‚[ƒƒ“ƒg
+		float rotdecel = mOwner->GetRotSpeed() * mOwner->GetRadius() * mRotResist / mOwner->GetImoment();
+		mRotAccel -= rotdecel;
 	}
 	else { mRotAccel = 0; }
 	mOwner->SetVelocity(mOwner->GetVelocity() + mMoveAccel * deltatime);	//v = vo + at

@@ -163,7 +163,7 @@ void Game::LoadData()
 	
 	
 	// ¬˜f¯‚ğ•¡”¶¬
-	const int numAsteroids = 1;
+	const int numAsteroids = 20;
 	for (int i = 0; i < numAsteroids; i++)
 	{
 		new Asteroid(this);

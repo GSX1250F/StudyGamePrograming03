@@ -4,14 +4,14 @@
 CircleComponent::CircleComponent(Actor* owner) : Component(owner)
 {
 	//”¼Œa‚ÍActor‚Ì”¼Œa‚Å‰Šú‰»
-	mRadius = mOwner->GetRadius();
+	SetRadius(mOwner->GetRadius());		//Actor‚Ì”¼Œa=scale * radius
 	//Actor‚ÌŠµ«ƒ‚[ƒƒ“ƒg‚ðÝ’èBˆê—l‚Ì‰~”Â‚Æ‚·‚éB(I=1/2*mR^2)
 	mOwner->SetImoment(mOwner->GetScale()*mOwner->GetScale()*mRadius*mRadius/2);
 }
 
 float CircleComponent::GetRadius() const
 {
-	return mOwner->GetScale() * mRadius;
+	return mRadius;
 }
 
 const Vector2& CircleComponent::GetCenter() const
