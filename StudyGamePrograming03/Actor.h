@@ -37,7 +37,7 @@ public:
 	void SetScale(float scale) { mScale = scale; }
 	float GetRotation() const { return mRotation; }
 	void SetRotation(float rotation) { mRotation = rotation; }
-	float GetRadius() const { return mRadius * mScale; }
+	float GetRadius() const { return mRadius * mScale; }	//Šg‘å—¦‚ğl—¶
 	void SetRadius(float radius) { mRadius = radius; }
 	float GetRotSpeed() const { return mRotSpeed; }
 	void SetRotSpeed(float rotspeed) { mRotSpeed = rotspeed; }
@@ -69,7 +69,7 @@ private:
 	float mRotation;		//‰ñ“]
 	float mRotSpeed;		//‰ñ“]‘¬“x
 	float mMass;			//¿—Ê
-	float mRadius;			//”¼Œa
+	float mRadius;			//”¼ŒaiŠg‘å—¦‚Í–³‹j
 	float mImoment;			//Šµ«ƒ‚[ƒƒ“ƒg
 	
 	std::vector<class Component*> mComponents;

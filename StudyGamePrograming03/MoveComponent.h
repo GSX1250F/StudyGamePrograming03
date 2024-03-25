@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Math.h"
 
 class MoveComponent : public Component
 {
@@ -23,7 +24,7 @@ protected:
 private:
 	// 重心にかかる力
 	Vector2 mMoveForce;
-	// 回転力
+	// 回転方向の力F　 トルク=RotForce * Radius = Imoment * RotAccel
 	float mRotForce;
 	// 重心加速度
 	Vector2 mMoveAccel;

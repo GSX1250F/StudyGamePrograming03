@@ -53,18 +53,18 @@ void InputComponent::ProcessInput(const uint8_t* keyState)
 	{
 		forwardforce -= mMaxForwardForce;
 	}
-	SetForwardForce(forwardforce);
-
-	float spinforce = 0.0f;
+	SetMoveForce(forwardforce * mOwner->GetForward());
+	
+	float rotforce = 0.0f;
 	if (keyState[mClockwiseKey])
 	{
-		spinforce -= mMaxSpinForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
+		rotforce -= mMaxRotForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
 	}
 	else if (keyState[mCounterClockwiseKey])
 	{
-		spinforce += mMaxSpinForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
+		rotforce += mMaxRotForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
 	}
-	SetSpinForce(spinforce);
+	SetRotForce(rotforce);
 
 }
 

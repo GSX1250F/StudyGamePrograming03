@@ -31,5 +31,5 @@ void MoveComponent::Update(float deltatime)
 	}
 	else { mRotAccel = 0; }
 	mOwner->SetVelocity(mOwner->GetVelocity() + mMoveAccel * deltatime);	//v = vo + at
-	mOwner->SetRotation(mOwner->GetRotSpeed() + mRotAccel * deltatime);	//É÷ = É÷o + É÷t
+	mOwner->SetRotSpeed(mOwner->GetRotSpeed() + mRotAccel * deltatime);		//É÷ = É÷o + É÷t
 }

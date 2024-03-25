@@ -35,28 +35,22 @@ Ship::Ship(Game* game) : Actor(game) , mLaserCooldown(0.0f)
 	ic->SetBackwardKey(SDL_SCANCODE_DOWN);
 	ic->SetClockwiseKey(SDL_SCANCODE_RIGHT);
 	ic->SetCounterClockwiseKey(SDL_SCANCODE_LEFT);
-	ic->SetMaxForwardSpeed(300.0f);
-	ic->SetMaxSpinSpeed(Math::TwoPi);
-	ic->SetMaxForwardForce(2000.0f);
-	ic->SetMaxSpinForce(20.0f * Math::TwoPi);
-	ic->SetMass(10.0f);
-	ic->SetRadius(GetScale());
-	ic->SetForwardResist(0.00002f);
-	ic->SetSpinResist(2.0f);
+	ic->SetMaxForwardForce(100.0f);
+	ic->SetMaxRotForce(20.0f * Math::TwoPi);
+	ic->SetMoveResist(1.0f);
+	ic->SetRotResist(1.0f);
 
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
-	mCircle->SetRadius(30.0f);
 	
 }
 
 void Ship::Init()
 {
 	//ランダムな向きで初期化
-	SetPosition(Vector2(1024.0f / 2.0f, 768.0f / 2.0f));
-	float spin = Random::GetFloatRange(0.0f, Math::TwoPi);
-	SetRotation(0.0f);
-	SetSpin(spin);
+	SetPosition(Vector2(GetGame()->mWindowWidth / 2.0f, GetGame()->mWindowHeight / 2.0f));
+	float rot = Random::GetFloatRange(0.0f, Math::TwoPi);
+	SetRotation(rot);
 	SetScale(0.7f);
 
 	crash = false;
@@ -98,9 +92,9 @@ void Ship::ActorInput(const uint8_t* keyState)
 		{
 			// レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
 			Laser* laser = new Laser(GetGame());
-			laser->SetPosition(GetPosition() + 35.0f * GetScale() * Vector2(Math::Cos(GetSpin()), -Math::Sin(GetSpin())));
-			laser->SetSpin(GetSpin());
-			laser->SetVelocity(1000.0f * Vector2(Math::Cos(GetSpin()),-Math::Sin(GetSpin())));
+			laser->SetPosition(GetPosition() + 35.0f * GetScale() * Vector2(Math::Cos(GetRotation()), -Math::Sin(GetRotation())));
+			laser->SetRotation(GetRotation());
+			laser->SetVelocity(1000.0f * Vector2(Math::Cos(GetRotation()),-Math::Sin(GetRotation())));
 
 			// レーザー冷却期間リセット
 			mLaserCooldown = 0.5f;
@@ -123,7 +117,7 @@ void Ship::UpdateActor(float deltaTime)
 			{
 				//小惑星と衝突したとき
 				crashPos = GetPosition();
-				crashRot = GetSpin();
+				crashRot = GetRotation();
 
 				//ゲーム自体を終了する場合
 				//GetGame()->SetRunning(false);
@@ -139,7 +133,7 @@ void Ship::UpdateActor(float deltaTime)
 		{
 			SetPosition(crashPos);		// MoveComponentが更新されても衝突したときの位置に置きなおし
 			crashRot -= 3.0f * Math::TwoPi * deltaTime;
-			SetSpin(crashRot);		// MoveComponentが更新されても衝突してからの回転角度に置きなおし
+			SetRotation(crashRot);		// MoveComponentが更新されても衝突してからの回転角度に置きなおし
 			crashTime -= deltaTime;
 		}
 		else if (crashTime < 0.0f && deactiveTime >= 0.0f)

@@ -44,3 +44,20 @@ Asteroid::~Asteroid()
 {
 	GetGame()->RemoveAsteroid(this);
 }
+
+void Asteroid::UpdateActor(float deltaTime)
+{
+	//画面外にでたら反対の位置に移動（ラッピング処理）
+	if (GetPosition().x < 0.0f - 2 * GetRadius() ||
+		GetPosition().x > GetGame()->mWindowWidth + 2 * GetRadius() )
+	{
+		SetPosition(Vector2(GetGame()->mWindowWidth - GetPosition().x , GetPosition().y));
+	}
+	if (GetPosition().y < 0.0f - 2 * GetRadius() ||
+		GetPosition().y > GetGame()->mWindowHeight + 2 * GetRadius())
+	{
+		SetPosition(Vector2(GetPosition().x , GetGame()->mWindowHeight - GetPosition().y));
+	}
+}
+
+

@@ -3,11 +3,20 @@
 
 CircleComponent::CircleComponent(Actor* owner) : Component(owner)
 {
-	//’†SˆÊ’u‚ÍActor‚ÌˆÊ’uA”¼Œa‚ÍActor‚Ì”¼Œa‚Å‰Šú‰»
-	mCenter = mOwner->GetPosition();
+	//”¼Œa‚ÍActor‚Ì”¼Œa‚Å‰Šú‰»
 	mRadius = mOwner->GetRadius();
 	//Actor‚ÌŠµ«ƒ‚[ƒƒ“ƒg‚ðÝ’èBˆê—l‚Ì‰~”Â‚Æ‚·‚éB(I=1/2*mR^2)
 	mOwner->SetImoment(mOwner->GetScale()*mOwner->GetScale()*mRadius*mRadius/2);
+}
+
+float CircleComponent::GetRadius() const
+{
+	return mOwner->GetScale() * mRadius;
+}
+
+const Vector2& CircleComponent::GetCenter() const
+{
+	return  mOwner->GetPosition();
 }
 
 bool Intersect(const CircleComponent& a, const CircleComponent& b)
