@@ -37,13 +37,14 @@ public:
 	void SetScale(float scale) { mScale = scale; }
 	float GetRotation() const { return mRotation; }
 	void SetRotation(float rotation) { mRotation = rotation; }
-	float GetRadius() const { return mRadius; }
+	float GetRadius() const { return mRadius * mScale; }
 	void SetRadius(float radius) { mRadius = radius; }
 	float GetRotSpeed() const { return mRotSpeed; }
 	void SetRotSpeed(float rotspeed) { mRotSpeed = rotspeed; }
 	float GetMass() const { return mMass; }
 	void SetMass(float mass) { mMass = mass; }
-	void ConvertToPos();
+	float GetImoment() const { return mImoment; }		
+	void SetImoment(float moment) { mImoment = moment; }
 
 	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }		//向きの単位ベクトル
 
@@ -63,14 +64,14 @@ private:
 
 	// 移動
 	Vector2 mPosition;		//画面上の位置
-	Vector2 mCoordinate;	//座標x,y
 	Vector2 mVelocity;		//速度x,y
 	float mScale;			//拡大率
 	float mRotation;		//回転
 	float mRotSpeed;		//回転速度
 	float mMass;			//質量
 	float mRadius;			//半径
-
+	float mImoment;			//慣性モーメント
+	
 	std::vector<class Component*> mComponents;
 	class Game* mGame;
 };

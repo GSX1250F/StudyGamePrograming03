@@ -26,8 +26,6 @@ private:
 	float crashTime;		//衝突演出時間
 	float deactiveTime;		//衝突演出後、リセットされるまでスプライトを消す時間
 
-	float mMass;	//質量
-
 	class AnimSpriteComponent* mAnimComponent;
 
 };

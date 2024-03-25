@@ -17,10 +17,10 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	SetPosition(randPos);
 	float randRot = Random::GetFloatRange(0.0f, Math::TwoPi);
 	SetRotation(randRot);
-	mAsteroidScale = Random::GetFloatRange(0.5f, 2.0f);
-	SetScale(mAsteroidScale);
-	mSpinSpeed = Random::GetFloatRange(-1.0f * Math::TwoPi, 1.0f * Math::TwoPi);
-	SetSpin(mSpinSpeed);
+	float randScale = Random::GetFloatRange(0.5f, 2.0f);
+	SetScale(randScale);
+	float mSpinSpeed = Random::GetFloatRange(-1.0f * Math::TwoPi, 1.0f * Math::TwoPi);
+	SetRotSpeed(mSpinSpeed);
 	float randSpeed = Random::GetFloatRange(50.0f, 200.0f);
 	Vector2 randVel = Vector2(Math::Cos(randRot), -Math::Sin(randRot)) * randSpeed;		//初期速度
 	SetVelocity(randVel);
@@ -30,17 +30,11 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	SpriteComponent* sc = new SpriteComponent(this);
 	sc->SetTexture(game->GetTexture("Assets/Asteroid.png"));
 
-	//MoveComponent作成、前進速度の設定
+	//MoveComponent作成　※力は働かないでただ動かすだけなら不要。
 	MoveComponent* mc = new MoveComponent(this);
-	mc->SetForwardSpeed(randSpeed);
-	mc->SetForwardResist(0.0f);
-	mc->SetSpinResist(0.0f);
 
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
-	mCircle->SetRadius(25.0f * mAsteroidScale);
-
-
 
 	// Add to mAsteroids in game
 	game->AddAsteroid(this);
@@ -49,11 +43,4 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 Asteroid::~Asteroid()
 {
 	GetGame()->RemoveAsteroid(this);
-}
-
-void Asteroid::UpdateActor(float deltaTime)
-{
-	float spin = GetSpin();
-	spin += mSpinSpeed * deltaTime;
-	SetSpin(spin);
 }

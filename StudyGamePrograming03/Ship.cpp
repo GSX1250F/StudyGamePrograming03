@@ -29,7 +29,7 @@ Ship::Ship(Game* game) : Actor(game) , mLaserCooldown(0.0f)
 	mAnimComponent = asc;
 
 
-	//InputComponentì¬
+	//InputComponentì¬.MoveComponent‚ÌŽq
 	InputComponent* ic = new InputComponent(this);
 	ic->SetForwardKey(SDL_SCANCODE_UP);
 	ic->SetBackwardKey(SDL_SCANCODE_DOWN);

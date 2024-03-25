@@ -12,6 +12,7 @@ Actor::Actor(Game* game)
 	mRotSpeed(0.0f),
 	mMass(1.0f),
 	mRadius(0.0f),
+	mImoment(0.0f),
 	mGame(game)
 {
 	mGame->AddActor(this);
@@ -33,9 +34,8 @@ void Actor::Update(float deltaTime)
 	if (mState == EActive || mState == EPaused)
 	{
 		// 位置情報を更新
-		mCoordinate += mVelocity * deltaTime;
+		mPosition += mVelocity * deltaTime;
 		mRotation += mRotSpeed * deltaTime;
-		ConvertToPos();		//xy座標系を画面座標系に変換
 		UpdateComponents(deltaTime);
 		UpdateActor(deltaTime);
 	}
@@ -71,16 +71,6 @@ void Actor::ProcessInput(const uint8_t* keyState)
 //機能追加するときオーバーライドするインプット用関数
 void Actor::ActorInput(const uint8_t* keyState)
 {
-}
-
-void Actor::ConvertToPos()
-{
-	// xy座標系を画面座標系に変換　(x,y)→(p,q)
-	// 単純に、x,y１ずつをピクセル1ずつでとりあえず仕込む
-	mPosition.x = mCoordinate.x + GetGame()->mWindowWidth / 2;
-	mPosition.y = GetGame()->mWindowHeight / 2 - mCoordinate.y;
-
- 
 }
 
 void Actor::AddComponent(Component* component)

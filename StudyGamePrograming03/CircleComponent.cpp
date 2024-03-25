@@ -1,18 +1,13 @@
 #include "CircleComponent.h"
 #include "Actor.h"
 
-CircleComponent::CircleComponent(Actor* owner) : Component(owner),mRadius(0.0f)
+CircleComponent::CircleComponent(Actor* owner) : Component(owner)
 {
-}
-
-float CircleComponent::GetRadius() const
-{
-	return mOwner->GetScale() * mRadius;
-}
-
-const Vector2& CircleComponent::GetCenter() const
-{
-	return mOwner->GetPosition();
+	//中心位置はActorの位置、半径はActorの半径で初期化
+	mCenter = mOwner->GetPosition();
+	mRadius = mOwner->GetRadius();
+	//Actorの慣性モーメントを設定。一様の円板とする。(I=1/2*mR^2)
+	mOwner->SetImoment(mOwner->GetScale()*mOwner->GetScale()*mRadius*mRadius/2);
 }
 
 bool Intersect(const CircleComponent& a, const CircleComponent& b)

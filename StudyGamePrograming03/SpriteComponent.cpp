@@ -10,6 +10,8 @@ SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
 	mTexHeight(0)
 {
 	mOwner->GetGame()->AddSprite(this);
+	mOwner->SetRadius((mTexWidth + mTexHeight) / 4 );
+	mOwner->SetImoment(mOwner->GetMass() * mOwner->GetRadius() * mOwner->GetRadius() / 2);
 }
 
 SpriteComponent::~SpriteComponent()
