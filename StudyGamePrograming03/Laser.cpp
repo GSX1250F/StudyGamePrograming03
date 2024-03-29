@@ -42,7 +42,7 @@ void Laser::UpdateActor(float deltaTime)
 				SetState(EDead);
 
 				//¬˜f¯‚ðÁ‹Ž
-				ast->SetState(EPaused);
+				ast->SetState(EDead);
 
 				break;
 			}
