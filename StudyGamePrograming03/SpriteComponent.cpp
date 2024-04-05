@@ -41,5 +41,6 @@ void SpriteComponent::SetTexture(SDL_Texture* texture)
 	mTexture = texture;
 	// ‚‚³‚Æ•‚ðÝ’è
 	SDL_QueryTexture(texture, nullptr, nullptr, &mTexWidth, &mTexHeight);
+	// ‚‚³‚Æ•‚Ì•½‹Ï‚ðActor‚Ì’¼Œa‚Æ‚·‚éB
 	mOwner->SetRadius((mTexWidth + mTexHeight) / 4);
 }
