@@ -19,8 +19,8 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	SetRotation(randRot);
 	float randScale = Random::GetFloatRange(0.5f, 1.5f);
 	SetScale(randScale);
-	float mSpinSpeed = Random::GetFloatRange(-1.0f * Math::TwoPi, 1.0f * Math::TwoPi);
-	SetRotSpeed(mSpinSpeed);
+	float rotSpeed = Random::GetFloatRange(-1.0f * Math::TwoPi, 1.0f * Math::TwoPi);
+	SetRotSpeed(rotSpeed);
 	float randSpeed = Random::GetFloatRange(50.0f, 200.0f);
 	Vector2 randVel = Vector2(Math::Cos(randRot), -Math::Sin(randRot)) * randSpeed;		//èâä˙ë¨ìx
 	SetVelocity(randVel);
