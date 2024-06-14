@@ -27,7 +27,7 @@ bool Game::Initialize()
 		return false;
 	}
 	// SDLウィンドウを作成
-	mWindow = SDL_CreateWindow("Game Programming in C++ (Chapter 2)", 100, 100, mWindowWidth, mWindowHeight, 0);
+	mWindow = SDL_CreateWindow("Game Programming in C++", 100, 100, mWindowWidth, mWindowHeight, 0);
 	if (!mWindow)
 	{
 		SDL_Log("ウィンドウの作成に失敗しました: %s", SDL_GetError());
@@ -173,14 +173,13 @@ void Game::LoadData()
 
 void Game::UnloadData()
 {
-	// アクターを消去
-	// Because ~Actor calls RemoveActor, have to use a different style loop
+	// アクターを配列から消去
 	while (!mActors.empty())
 	{
 		delete mActors.back();
 	}
 
-	// テクスチャを消去
+	// テクスチャを配列から消去
 	for (auto i : mTextures)
 	{
 		SDL_DestroyTexture(i.second);
@@ -203,7 +202,7 @@ SDL_Texture* Game::GetTexture(const std::string& filename)
 		SDL_Surface* surf = IMG_Load(filename.c_str());
 		if (!surf)
 		{
-			SDL_Log("Failed to load texture file %s", filename.c_str());
+			SDL_Log("テクスチャファイルの読み込みに失敗しました %s", filename.c_str());
 			return nullptr;
 		}
 
@@ -212,7 +211,7 @@ SDL_Texture* Game::GetTexture(const std::string& filename)
 		SDL_FreeSurface(surf);
 		if (!tex)
 		{
-			SDL_Log("Failed to convert surface to texture for %s", filename.c_str());
+			SDL_Log("サーフェイスからテクスチャに変換するのに失敗しました %s", filename.c_str());
 			return nullptr;
 		}
 
@@ -246,7 +245,7 @@ void Game::Shutdown()
 
 void Game::AddActor(Actor* actor)
 {
-	// If we're updating actors, need to add to pending
+	// アクターを更新するときは、待ちアクターに追加する
 	if (mUpdatingActors)
 	{
 		mPendingActors.emplace_back(actor);
@@ -259,20 +258,20 @@ void Game::AddActor(Actor* actor)
 
 void Game::RemoveActor(Actor* actor)
 {
-	// Is it in pending actors?
+	// 消去したいアクターが待ちアクターにある場合
 	auto iter = std::find(mPendingActors.begin(), mPendingActors.end(), actor);
 	if (iter != mPendingActors.end())
 	{
-		// Swap to end of vector and pop off (avoid erase copies)
+		// 配列の一番最後と交換し、消去する
 		std::iter_swap(iter, mPendingActors.end() - 1);
 		mPendingActors.pop_back();
 	}
 
-	// Is it in actors?
+	// 消去したいアクターがアクターにある場合
 	iter = std::find(mActors.begin(), mActors.end(), actor);
 	if (iter != mActors.end())
 	{
-		// Swap to end of vector and pop off (avoid erase copies)
+		// 配列の一番最後と交換し、消去する
 		std::iter_swap(iter, mActors.end() - 1);
 		mActors.pop_back();
 	}
@@ -280,8 +279,7 @@ void Game::RemoveActor(Actor* actor)
 
 void Game::AddSprite(SpriteComponent* sprite)
 {
-	// Find the insertion point in the sorted vector
-	// (The first element with a higher draw order than me)
+	// 更新順で配列に挿入する
 	int myDrawOrder = sprite->GetDrawOrder();
 	auto iter = mSprites.begin();
 	for (;
@@ -294,13 +292,11 @@ void Game::AddSprite(SpriteComponent* sprite)
 		}
 	}
 
-	// Inserts element before position of iterator
 	mSprites.insert(iter, sprite);
 }
 
 void Game::RemoveSprite(SpriteComponent* sprite)
 {
-	// (We can't swap because it ruins ordering)
 	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
 	mSprites.erase(iter);
 }

@@ -60,6 +60,6 @@ private:
 
 
 	//Game-specific
-	class Ship* mShip; // player ship
-	std::vector<class Asteroid*> mAsteroids; //asteroids
+	class Ship* mShip; // プレイヤーの宇宙船
+	std::vector<class Asteroid*> mAsteroids; //小惑星
 };
