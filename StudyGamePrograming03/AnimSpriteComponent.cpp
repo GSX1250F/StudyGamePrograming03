@@ -8,6 +8,8 @@ AnimSpriteComponent::AnimSpriteComponent(Actor* owner, int drawOrder)
 	, mAnimFPS(12.0f)
 	, mAnimNumBeg(0)
 	, mAnimNumLast(0)
+	, mIsAnimating(false)
+	, mLoopFlag(false)
 {
 }
 
@@ -39,7 +41,6 @@ void AnimSpriteComponent::Update(float deltaTime)
 				mCurrFrame -= (mAnimNumLast - (mAnimNumBeg - 1));
 			}
 		}
-
 
 		// 現時点でのテクスチャを設定する
 		SetTexture(mAnimTextures[static_cast<int>(mCurrFrame) + (mAnimNumBeg - 1)]);

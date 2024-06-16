@@ -18,8 +18,6 @@ public:
 
 	// ゲームから呼び出される更新関数(オーバーライド不可)
 	void Update(float deltaTime);
-	// アクターが持つ全コンポーネントを更新(オーバーライド不可)
-	void UpdateComponents(float deltaTime);
 	// アクター独自の更新処理(オーバーライド可能)
 	virtual void UpdateActor(float deltaTime);
 
@@ -28,31 +26,28 @@ public:
 	// アクター独自の入力処理(オーバーライド可能)
 	virtual void ActorInput(const uint8_t* keyState);
 
-	// Getters/setters
+	// ゲッター・セッター
+	// 位置
 	const Vector2& GetPosition() const { return mPosition; }
 	void SetPosition(const Vector2& pos) { mPosition = pos; }
-	const Vector2& GetVelocity() const { return mVelocity; }
-	void SetVelocity(const Vector2& vel) { mVelocity = vel; }
-	float GetScale() const { return mScale; }
-	void SetScale(float scale) { mScale = scale; }
-	float GetRotation() const { return mRotation; }
-	void SetRotation(float rotation) { mRotation = rotation; }
-	float GetRadius() const { return mRadius * mScale; }	//拡大率を考慮
-	void SetRadius(float radius) { mRadius = radius; }
-	float GetRotSpeed() const { return mRotSpeed; }
-	void SetRotSpeed(float rotspeed) { mRotSpeed = rotspeed; }
-	float GetMass() const { return mMass; }
-	void SetMass(float mass) { mMass = mass; }
-	float GetImoment() const { return mImoment; }		
-	void SetImoment(float moment) { mImoment = moment; }
+	// 拡大率（質量は変えない。半径に影響する）
+	const float& GetScale() const { return mScale; }
+	void SetScale(const float& scale) { mScale = scale; }
+	// 回転
+	const float& GetRotation() const { return mRotation; }
+	void SetRotation(const float& rotation) { mRotation = rotation; }
+	// 半径
+	const float& GetRadius() const { return mRadius * mScale; }	//拡大率を考慮
+	void SetRadius(const float& radius) { mRadius = radius; }
 
-	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }		//向きの単位ベクトル
+	// 向きの単位ベクトル
+	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }
 
+	// 状態
 	State GetState() const { return mState; }
 	void SetState(State state) { mState = state; }
 
 	class Game* GetGame() { return mGame; }
-
 
 	// Add/remove components
 	void AddComponent(class Component* component);
@@ -64,13 +59,9 @@ private:
 
 	// 移動
 	Vector2 mPosition;		//画面上の位置
-	Vector2 mVelocity;		//速度x,y
 	float mScale;			//拡大率
 	float mRotation;		//回転
-	float mRotSpeed;		//回転速度
-	float mMass;			//質量
 	float mRadius;			//半径（拡大率は無視）
-	float mImoment;			//慣性モーメント
 	
 	std::vector<class Component*> mComponents;
 	class Game* mGame;

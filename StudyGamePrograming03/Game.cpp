@@ -1,10 +1,13 @@
 #include "Game.h"
-#include "SDL_image.h"
+#include <SDL.h>
+#include <SDL_image.h>
 #include <algorithm>
 #include "Actor.h"
 #include "SpriteComponent.h"
 #include "Ship.h"
 #include "Asteroid.h"
+#include "BackGround.h"
+#include "ClearPict.h"
 #include "Random.h"
 
 Game::Game()
@@ -15,7 +18,6 @@ Game::Game()
 	mWindowWidth(1024),
 	mWindowHeight(768)
 {
-
 }
 
 bool Game::Initialize()
@@ -54,7 +56,6 @@ bool Game::Initialize()
 	mTicksCount = SDL_GetTicks();
 
 	return true;
-
 }
 
 void Game::RunLoop()
@@ -159,16 +160,23 @@ void Game::GenerateOutput()
 void Game::LoadData()
 {
 	//プレイヤーの宇宙船を作成
-	new Ship(this);
-	
-	
-	// 小惑星を複数生成
-	const int numAsteroids = 20;
-	for (int i = 0; i < numAsteroids; i++)
+	mShip = new Ship(this);
+
+	// 小惑星を最初に複数生成
+	int initialNumAsteroids = 15;		//初期値
+	numAsteroids = 0;
+	for (int i = 0; i < initialNumAsteroids; i++)
 	{
-		new Asteroid(this);
+		IncreaseAsteroid();
 	}
-	
+
+	//背景を作成
+	new BackGround(this, 0, -10.0f, 5, "Assets/Farback01.png");
+	new BackGround(this, 1, -10.0f, 5, "Assets/Farback02.png");
+	new BackGround(this, 0, -20.0f, 15, "Assets/Stars.png");
+	new BackGround(this, 1, -20.0f, 15, "Assets/Stars.png");
+
+	mClearPict = new ClearPict(this);
 }
 
 void Game::UnloadData()
@@ -220,6 +228,12 @@ SDL_Texture* Game::GetTexture(const std::string& filename)
 	return tex;
 }
 
+void Game::IncreaseAsteroid()
+{
+	new Asteroid(this);
+	numAsteroids++;
+}
+
 void Game::AddAsteroid(Asteroid* ast)
 {
 	mAsteroids.emplace_back(ast);
@@ -232,6 +246,12 @@ void Game::RemoveAsteroid(Asteroid* ast)
 	{
 		mAsteroids.erase(iter);
 	}
+	numAsteroids--;
+}
+
+void Game::AddBackGround(BackGround* bg)
+{
+	mBackGrounds.emplace_back(bg);
 }
 
 void Game::Shutdown()
@@ -245,7 +265,7 @@ void Game::Shutdown()
 
 void Game::AddActor(Actor* actor)
 {
-	// アクターを更新するときは、待ちアクターに追加する
+	// アクターが更新中は、待ちアクターに追加する
 	if (mUpdatingActors)
 	{
 		mPendingActors.emplace_back(actor);
@@ -282,9 +302,7 @@ void Game::AddSprite(SpriteComponent* sprite)
 	// 更新順で配列に挿入する
 	int myDrawOrder = sprite->GetDrawOrder();
 	auto iter = mSprites.begin();
-	for (;
-		iter != mSprites.end();
-		++iter)
+	for (;iter != mSprites.end();++iter)
 	{
 		if (myDrawOrder < (*iter)->GetDrawOrder())
 		{

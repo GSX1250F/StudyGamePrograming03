@@ -1,20 +1,23 @@
-#include "Ship.h"
-#include "AnimSpriteComponent.h"
-#include "InputComponent.h"		//MoveComponentの子クラスなので、MoveComponentも読み込まれる。
 #include "Game.h"
-#include "Random.h"
+#include "Ship.h"
 #include "Laser.h"
-#include "CircleComponent.h"
 #include "Asteroid.h"
+#include "ClearPict.h"
+#include "AnimSpriteComponent.h"
+#include "InputComponent.h"
+#include "Random.h"
+#include "CircleComponent.h"
 
-Ship::Ship(Game* game) : Actor(game) , mLaserCooldown(0.0f)
+Ship::Ship(Game* game)
+	: Actor(game)
+	, mLaserCooldown(0.0f)
+	, mCrashCooldown(0.0f)
+	, mShipCooldown(0.0f)
+	, mAsteroidCooldown(3.0f)
+	, crashPos(Vector2(0.0f, 0.0f))
+	, crash(false)
 {
-	Init();
-	/*
-	//スプライトコンポーネント作成、テクスチャ設定
-	SpriteComponent* sc = new SpriteComponent(this);
-	sc->SetTexture(game->GetTexture("Assets/Ship.png"));
-	*/
+	SetScale(0.8f);
 
 	// アニメーションのスプライトコンポーネントを作成
 	AnimSpriteComponent* asc = new AnimSpriteComponent(this);
@@ -28,38 +31,33 @@ Ship::Ship(Game* game) : Actor(game) , mLaserCooldown(0.0f)
 	asc->SetAnimTextures(anims,1,1,true);
 	mAnimComponent = asc;
 
-
-	//InputComponent作成.MoveComponentの子
-	InputComponent* ic = new InputComponent(this);
-	ic->SetForwardKey(SDL_SCANCODE_UP);
-	ic->SetBackwardKey(SDL_SCANCODE_DOWN);
-	ic->SetClockwiseKey(SDL_SCANCODE_RIGHT);
-	ic->SetCounterClockwiseKey(SDL_SCANCODE_LEFT);
-	ic->SetMaxForwardForce(300.0f);
-	ic->SetMaxRotForce(150.0f);
-	ic->SetMoveResist(30.0f);
-	ic->SetRotResist(30.0f);
+	//InputComponent作成
+	mInput = new InputComponent(this);
+	mInput->SetForwardKey(SDL_SCANCODE_UP);
+	mInput->SetBackwardKey(SDL_SCANCODE_DOWN);
+	mInput->SetClockwiseKey(SDL_SCANCODE_RIGHT);
+	mInput->SetCounterClockwiseKey(SDL_SCANCODE_LEFT);
+	mInput->SetMaxForwardForce(300.0f);
+	mInput->SetMaxRotForce(150.0f);
+	mInput->SetMoveResist(30.0f);
+	mInput->SetRotResist(30.0f);
+	mInput->SetMass(1.0f);
 
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
 	
+	Init();
 }
 
 void Ship::Init()
 {
-	//ランダムな向きで初期化
+	
 	SetPosition(Vector2(GetGame()->mWindowWidth / 2.0f, GetGame()->mWindowHeight / 2.0f));
+	//ランダムな向きで初期化
 	float rot = Random::GetFloatRange(0.0f, Math::TwoPi);
 	SetRotation(rot);
-	SetScale(0.7f);
-	SetMass(1.0f);
-
-	crash = false;
-	crashTime = 1.5f;
-	crashPos.x = 0.0f;
-	crashPos.y = 0.0f;
-	deactiveTime = 1.5f;
-	SetState(EActive);
+	mInput->SetVelocity(Vector2::Zero);
+	mInput->SetRotSpeed(0.0f);
 }
 
 void Ship::ActorInput(const uint8_t* keyState)
@@ -88,75 +86,96 @@ void Ship::ActorInput(const uint8_t* keyState)
 			mAnimComponent->SetAnimNum(1, 1, true);
 		}
 
-
 		if (keyState[SDL_SCANCODE_SPACE] && mLaserCooldown <= 0.0f)
 		{
 			// レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
 			Laser* laser = new Laser(GetGame());
 			laser->SetPosition(GetPosition() + 35.0f * GetScale() * Vector2(Math::Cos(GetRotation()), -Math::Sin(GetRotation())));
 			laser->SetRotation(GetRotation());
-			laser->SetVelocity(1000.0f * Vector2(Math::Cos(GetRotation()),-Math::Sin(GetRotation())));
-
+			laser->Shot();
 			// レーザー冷却期間リセット
 			mLaserCooldown = 0.5f;
 		}
-	}
-	
+	}	
 }
 
 void Ship::UpdateActor(float deltaTime)
 {
+	mLaserCooldown -= deltaTime;	//レーザーを次に撃てるまでの時間
+	mAsteroidCooldown -= deltaTime;
+
+	// 小惑星を一定時間ごとに増やす。小惑星の数が０になったらゲームクリア画面をアクティブにする。
+	if (mAsteroidCooldown < 0.0f && GetGame()->numAsteroids > 0)
+	{
+		GetGame()->IncreaseAsteroid();
+		mAsteroidCooldown = 5.0f;
+	}
+	if (GetGame()->numAsteroids == 0)
+	{
+		GetGame()->mClearPict->SetState(EActive);
+		GetGame()->mClearPict->SetPosition(Vector2(0.0f, 0.0f));
+	}
+
 	if (crash == false)
 	{
 		//画面外にでたら反対の位置に移動（ラッピング処理）
-		if (GetPosition().x < 0.0f - 1 * GetRadius() ||
-			GetPosition().x > GetGame()->mWindowWidth + 1 * GetRadius())
+		if (GetPosition().x < 0.0f - 1.0f * GetRadius() ||
+			GetPosition().x > GetGame()->mWindowWidth + 1.0f * GetRadius())
 		{
 			SetPosition(Vector2(GetGame()->mWindowWidth - GetPosition().x, GetPosition().y));
 		}
-		if (GetPosition().y < 0.0f - 1 * GetRadius() ||
-			GetPosition().y > GetGame()->mWindowHeight + 1 * GetRadius())
+		if (GetPosition().y < 0.0f - 1.0f * GetRadius() ||
+			GetPosition().y > GetGame()->mWindowHeight + 1.0f * GetRadius())
 		{
 			SetPosition(Vector2(GetPosition().x, GetGame()->mWindowHeight - GetPosition().y));
 		}
-
-		mLaserCooldown -= deltaTime;	//レーザーを次に撃てるまでの時間
-
+		//小惑星と衝突したかを判定
 		for (auto ast : GetGame()->GetAsteroids())
 		{
-			if (Intersect(*mCircle, *(ast->GetCircle())))
+			if (Intersect(*mCircle, *(ast->GetCircle())) && ast->GetState() == EActive)
 			{
-				//小惑星と衝突したとき
+				//小惑星と衝突
 				crashPos = GetPosition();
 				crashRot = GetRotation();
+				crash = true;
+				mCrashCooldown = 2.0f;
+				mShipCooldown = 2.0f;
 
 				//ゲーム自体を終了する場合
 				//GetGame()->SetRunning(false);
 
-				crash = true;
 				break;
 			}
 		}
 	}
 	else
 	{
-		if (crashTime >= 0.0f && deactiveTime >= 0.0f)
+		// 小惑星と衝突したとき
+		if (GetState() == EPaused)
 		{
-			SetPosition(crashPos);		// MoveComponentが更新されても衝突したときの位置に置きなおし
-			crashRot -= 3.0f * Math::TwoPi * deltaTime;
-			SetRotation(crashRot);		// MoveComponentが更新されても衝突してからの回転角度に置きなおし
-			crashTime -= deltaTime;
-		}
-		else if (crashTime < 0.0f && deactiveTime >= 0.0f)
-		{
-			SetState(EPaused);
-			deactiveTime -= deltaTime;
-			
+			// 状態がEPausedのとき、リスポーンするまでの時間を計算
+			mShipCooldown -= deltaTime;
+			// リスポーンするまでの時間になったら、初期位置・角度にリスポーン
+			if (mShipCooldown <= 0.0f)
+			{
+				Init();
+				SetState(EActive);
+				mShipCooldown = 0.0f;
+				crash = false;
+			}
 		}
 		else
 		{
-			//初期位置へリセット
-			Init();
+			// 衝突演出中
+			SetPosition(crashPos);		// MoveComponentが更新されても衝突したときの位置に置きなおし
+			crashRot -= 3.0f * Math::TwoPi * deltaTime;
+			SetRotation(crashRot);		// MoveComponentが更新されても衝突してからの回転角度に置きなおし
+			mCrashCooldown -= deltaTime;
+			if (mCrashCooldown <= 0.0f)
+			{
+				SetState(EPaused);
+				mCrashCooldown = 0.0f;
+			}
 		}
 	}
 

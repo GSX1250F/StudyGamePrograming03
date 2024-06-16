@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
+#include "Math.h"
 
 class Game
 {
@@ -22,16 +23,19 @@ public:
 
 	void SetRunning(bool isrunning) { mIsRunning = isrunning; }
 
+	//ゲームウィンドウの大きさ
+	int mWindowWidth;
+	int mWindowHeight;
 
 	//Game-specific	
 	void AddAsteroid(class Asteroid* ast);
 	void RemoveAsteroid(class Asteroid* ast);
 	std::vector<class Asteroid*>& GetAsteroids() { return mAsteroids; }
+	void AddBackGround(class BackGround* bg);
+	void IncreaseAsteroid();
+	int numAsteroids;
+	class ClearPict* mClearPict;	//ゲームクリア画像
 
-
-	//ゲームウィンドウの大きさ
-	int mWindowWidth;
-	int mWindowHeight;
 
 private:
 	void ProcessInput();
@@ -62,4 +66,5 @@ private:
 	//Game-specific
 	class Ship* mShip; // プレイヤーの宇宙船
 	std::vector<class Asteroid*> mAsteroids; //小惑星
+	std::vector<class BackGround*> mBackGrounds;  //背景
 };

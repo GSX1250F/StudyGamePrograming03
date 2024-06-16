@@ -6,13 +6,9 @@
 Actor::Actor(Game* game)
 	:mState(EActive),
 	mPosition(Vector2::Zero),
-	mVelocity(Vector2::Zero),
 	mScale(1.0f),
 	mRotation(0.0f),
-	mRotSpeed(0.0f),
-	mMass(1.0f),
 	mRadius(0.0f),
-	mImoment(0.0f),
 	mGame(game)
 {
 	mGame->AddActor(this);
@@ -33,19 +29,11 @@ void Actor::Update(float deltaTime)
 {
 	if (mState == EActive || mState == EPaused)
 	{
-		// 位置情報を更新
-		mPosition += mVelocity * deltaTime;
-		mRotation += mRotSpeed * deltaTime;
-		UpdateComponents(deltaTime);
+		for (auto comp : mComponents)
+		{
+			comp->Update(deltaTime);
+		}
 		UpdateActor(deltaTime);
-	}
-}
-
-void Actor::UpdateComponents(float deltaTime)
-{
-	for (auto comp : mComponents)
-	{
-		comp->Update(deltaTime);
 	}
 }
 
@@ -78,9 +66,7 @@ void Actor::AddComponent(Component* component)
 	// ソート済みの配列で挿入点を見つける
 	int myOrder = component->GetUpdateOrder();
 	auto iter = mComponents.begin();
-	for (;
-		iter != mComponents.end();
-		++iter)
+	for (;iter != mComponents.end();++iter)
 	{
 		if (myOrder < (*iter)->GetUpdateOrder())
 		{
