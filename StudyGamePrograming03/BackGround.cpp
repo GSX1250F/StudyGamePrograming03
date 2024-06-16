@@ -3,7 +3,7 @@
 #include "SpriteComponent.h"
 #include "MoveComponent.h"
 
-BackGround::BackGround(Game* game, int id, float scrollspeed, int updateorder, std::string filename) : Actor(game)
+BackGround::BackGround(Game* game)
 {
 	//MoveComponent作成
 	MoveComponent* mc = new MoveComponent(this);
@@ -14,18 +14,9 @@ BackGround::BackGround(Game* game, int id, float scrollspeed, int updateorder, s
 	sc->SetTexture(game->GetTexture(filename));
 	offset = sc->GetTexWidth();
 
-	SetPosition(Vector2(GetGame()->mWindowWidth * 0.5f + id * (offset - 1.0f), GetGame()->mWindowHeight * 0.5f + 0.0f));
+	SetPosition(Vector2(GetGame()->mWindowWidth * 0.5f + id * offset, GetGame()->mWindowHeight * 0.5f));
 
 	//背景をゲームに追加
 	game->AddBackGround(this);
 }
 
-void BackGround::UpdateActor(float deltaTime)
-{
-	// ラッピング処理する場合
-	if (GetPosition().x <= GetGame()->mWindowWidth * 0.5f - offset ||
-		GetPosition().x >= GetGame()->mWindowWidth * 0.5f + offset)
-	{
-		SetPosition(Vector2(GetGame()->mWindowWidth * 0.5f - GetPosition().x, GetPosition().y));
-	}
-}

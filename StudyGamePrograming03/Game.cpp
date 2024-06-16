@@ -171,10 +171,7 @@ void Game::LoadData()
 	}
 
 	//îwåiÇçÏê¨
-	new BackGround(this, 0, -10.0f, 5, "Assets/Farback01.png");
-	new BackGround(this, 1, -10.0f, 5, "Assets/Farback02.png");
-	new BackGround(this, 0, -20.0f, 15, "Assets/Stars.png");
-	new BackGround(this, 1, -20.0f, 15, "Assets/Stars.png");
+	new BackGround(this);
 
 	mClearPict = new ClearPict(this);
 }
@@ -247,11 +244,6 @@ void Game::RemoveAsteroid(Asteroid* ast)
 		mAsteroids.erase(iter);
 	}
 	numAsteroids--;
-}
-
-void Game::AddBackGround(BackGround* bg)
-{
-	mBackGrounds.emplace_back(bg);
 }
 
 void Game::Shutdown()

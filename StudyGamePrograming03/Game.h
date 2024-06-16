@@ -31,7 +31,6 @@ public:
 	void AddAsteroid(class Asteroid* ast);
 	void RemoveAsteroid(class Asteroid* ast);
 	std::vector<class Asteroid*>& GetAsteroids() { return mAsteroids; }
-	void AddBackGround(class BackGround* bg);
 	void IncreaseAsteroid();
 	int numAsteroids;
 	class ClearPict* mClearPict;	//ƒQ[ƒ€ƒNƒŠƒA‰æ‘œ
@@ -66,5 +65,4 @@ private:
 	//Game-specific
 	class Ship* mShip; // ƒvƒŒƒCƒ„[‚Ì‰F’ˆ‘D
 	std::vector<class Asteroid*> mAsteroids; //¬˜f¯
-	std::vector<class BackGround*> mBackGrounds;  //”wŒi
 };
