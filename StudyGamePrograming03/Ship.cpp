@@ -33,14 +33,16 @@ Ship::Ship(Game* game)
 
 	//InputComponent作成
 	mInput = new InputComponent(this);
-	mInput->SetForwardKey(SDL_SCANCODE_UP);
-	mInput->SetBackwardKey(SDL_SCANCODE_DOWN);
-	mInput->SetClockwiseKey(SDL_SCANCODE_RIGHT);
-	mInput->SetCounterClockwiseKey(SDL_SCANCODE_LEFT);
+	/*
+	mInput->SetForwardKey(SDL_KeyCode::SDLK_UP);
+	mInput->SetBackwardKey(SDL_KeyCode::SDLK_DOWN);
+	mInput->SetClockwiseKey(SDL_KeyCode::SDLK_RIGHT);
+	mInput->SetCounterClockwiseKey(SDL_KeyCode::SDLK_LEFT);
+	*/
 	mInput->SetMaxForwardForce(300.0f);
 	mInput->SetMaxRotForce(150.0f);
 	mInput->SetMoveResist(30.0f);
-	mInput->SetRotResist(30.0f);
+	mInput->SetRotResist(15.0f);
 	mInput->SetMass(1.0f);
 
 	//CircleComponent作成
@@ -60,41 +62,44 @@ void Ship::Init()
 	mInput->SetRotSpeed(0.0f);
 }
 
-void Ship::ActorInput(const uint8_t* keyState)
+void Ship::ActorInput(const SDL_Event event)
 {
 	if (crash == false) 
 	{
-		if (keyState[SDL_SCANCODE_LEFT])
+		if (event.type == SDL_KEYDOWN)
 		{
-			mAnimComponent->SetAnimNum(2, 2, false); 
+			switch (event.key.keysym.sym)
+			{
+				case SDLK_LEFT:
+					mAnimComponent->SetAnimNum(2, 2, false);
+					break;
+				case SDLK_RIGHT:
+					mAnimComponent->SetAnimNum(3, 3, false);
+					break;
+				case SDLK_UP:
+					mAnimComponent->SetAnimNum(4, 4, false);
+					break;
+				case SDLK_DOWN:
+					mAnimComponent->SetAnimNum(5, 5, false);
+					break;
+				case SDLK_SPACE:
+					if (mLaserCooldown <= 0.0f)
+					{
+						// レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
+						Laser* laser = new Laser(GetGame());
+						laser->SetPosition(GetPosition() + 35.0f * GetScale() * Vector2(Math::Cos(GetRotation()), -Math::Sin(GetRotation())));
+						laser->SetRotation(GetRotation());
+						laser->Shot();
+						// レーザー冷却期間リセット
+						mLaserCooldown = 0.5f;
+					}
+					break;
+			}
 		}
-		else if (keyState[SDL_SCANCODE_RIGHT])
-		{
-			mAnimComponent->SetAnimNum(3, 3, false); 
-		}
-		else if (keyState[SDL_SCANCODE_UP])
-		{
-			mAnimComponent->SetAnimNum(4, 4, false); 
-		}
-		else if (keyState[SDL_SCANCODE_DOWN])
-		{
-			mAnimComponent->SetAnimNum(5, 5, false); 
-		}
-		else if (mAnimComponent->mIsAnimating == false)
+		if (mAnimComponent->mIsAnimating == false)
 		{
 			// アニメーション中が終わっていたら元のループに戻る。
 			mAnimComponent->SetAnimNum(1, 1, true);
-		}
-
-		if (keyState[SDL_SCANCODE_SPACE] && mLaserCooldown <= 0.0f)
-		{
-			// レーザーオブジェクトを作成、位置と回転角を宇宙船とあわせる。
-			Laser* laser = new Laser(GetGame());
-			laser->SetPosition(GetPosition() + 35.0f * GetScale() * Vector2(Math::Cos(GetRotation()), -Math::Sin(GetRotation())));
-			laser->SetRotation(GetRotation());
-			laser->Shot();
-			// レーザー冷却期間リセット
-			mLaserCooldown = 0.5f;
 		}
 	}	
 }

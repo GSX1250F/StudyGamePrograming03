@@ -4,42 +4,37 @@
 
 InputComponent::InputComponent(Actor* owner, int updateOrder) 
 	: MoveComponent(owner)
-	, mForwardKey(0)
-	, mBackwardKey(0)
-	, mClockwiseKey(0)
-	, mCounterClockwiseKey(0)
-{
-}
+{}
 
 InputComponent::~InputComponent()
-{
-}
+{}
 
-void InputComponent::ProcessInput(const uint8_t* keyState)
+void InputComponent::ProcessInput(const SDL_Event event)
 {
 	//ŒÃ“T•¨—Šw‚ÅMoveComponent‚Ì‚½‚ß‚ÌŒvZ
 	//MoveComponent‚É‚Í‘Oi‚©‰ñ“]•ûŒü‚Ì—Í‚ÌÅ‘å’l‚¾‚¯‚ğ“n‚·
 	float forwardforce = 0.0f;
-	if (keyState[mForwardKey])
+	float rotforce = 0.0f;
+	if (event.type == SDL_KEYDOWN)
 	{
-		forwardforce += mMaxForwardForce;
-	}
-	else if (keyState[mBackwardKey])
-	{
-		forwardforce -= mMaxForwardForce;
+		switch (event.key.keysym.sym)
+		{
+			case SDLK_UP:
+				forwardforce = mMaxForwardForce;
+				break;
+			case SDLK_DOWN:
+				forwardforce = - mMaxForwardForce;
+				break;
+			case SDLK_LEFT:
+				rotforce = mMaxRotForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
+				break;
+			case SDLK_RIGHT:
+				rotforce = - mMaxRotForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
+				break;
+		}
+		
 	}
 	SetMoveForce(forwardforce * mOwner->GetForward());
-	
-	float rotforce = 0.0f;
-	if (keyState[mClockwiseKey])
-	{
-		rotforce -= mMaxRotForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
-	}
-	else if (keyState[mCounterClockwiseKey])
-	{
-		rotforce += mMaxRotForce;		//Šp“x‚Ì{•ûŒü‚ÍCCW
-	}
 	SetRotForce(rotforce);
-
 }
 

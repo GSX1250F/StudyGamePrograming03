@@ -15,14 +15,11 @@ public:
 	int GetDrawOrder() const { return mDrawOrder; }
 	int GetTexWidth() const { return mTexWidth; }
 	int GetTexHeight() const { return mTexHeight; }
+	SDL_Texture* GetTexture() const { return mTexture; }
 
-	void SetTexWidth(int width) { mTexWidth = width; }
-	void SetTexHeight(int height) { mTexHeight = height; }
-
-
-protected:
+private:
 	SDL_Texture* mTexture;
 	int mDrawOrder;
-	int mTexWidth;			//スプライトの横幅
-	int mTexHeight;			//スプライトの縦幅
+	int mTexWidth;
+	int mTexHeight;
 };

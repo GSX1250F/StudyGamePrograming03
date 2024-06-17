@@ -42,22 +42,22 @@ void Actor::UpdateActor(float deltaTime)
 }
 
 //新しく追加されたインプット用関数
-void Actor::ProcessInput(const uint8_t* keyState)
+void Actor::ProcessInput(const SDL_Event event)
 {
 	if (mState == EActive)
 	{
 		// First process input for components
 		for (auto comp : mComponents)
 		{
-			comp->ProcessInput(keyState);
+			comp->ProcessInput(event);
 		}
 
-		ActorInput(keyState);
+		ActorInput(event);
 	}
 }
 
 //機能追加するときオーバーライドするインプット用関数
-void Actor::ActorInput(const uint8_t* keyState)
+void Actor::ActorInput(const SDL_Event event)
 {
 }
 
