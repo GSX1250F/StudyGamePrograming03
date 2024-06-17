@@ -23,6 +23,7 @@
     <ClCompile Include="AnimSpriteComponent.cpp" />
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="BackGround.cpp" />
+    <ClCompile Include="BGSpriteComponent.cpp" />
     <ClCompile Include="CircleComponent.cpp" />
     <ClCompile Include="ClearPict.cpp" />
     <ClCompile Include="Componert.cpp" />
@@ -41,6 +42,7 @@
     <ClInclude Include="AnimSpriteComponent.h" />
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="BackGround.h" />
+    <ClInclude Include="BGSpriteComponent.h" />
     <ClInclude Include="CircleComponent.h" />
     <ClInclude Include="ClearPict.h" />
     <ClInclude Include="Component.h" />

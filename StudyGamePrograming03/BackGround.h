@@ -1,25 +1,17 @@
 #pragma once
 #include "Actor.h"
-#include "SpriteComponent.h"
-#include <string>
+#include "BGSpriteComponent.h"
 
 class BackGround : public Actor
 {
 public:
 	BackGround(class Game* game);
-	~BackGround();
 
-	void Update(float deltaTime);
+	void UpdateActor(float deltaTime) override;
 	
 	void LoadData();
 
 private:
-	struct BGTexture
-	{
-		SpriteComponent* sprite;
-		Vector2 BGpos;
-		float scrollSpeed;
-	};
-	std::vector<BGTexture> mBGTextures;
+	std::vector<BGSpriteComponent*> mBGsprites;
 };
 

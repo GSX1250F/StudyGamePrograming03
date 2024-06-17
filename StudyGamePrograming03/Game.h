@@ -28,14 +28,12 @@ public:
 	int mWindowHeight;
 
 	//Game-specific	
-	void AddAsteroid(class Asteroid* ast);
+	void AddAsteroid();
 	void RemoveAsteroid(class Asteroid* ast);
 	std::vector<class Asteroid*>& GetAsteroids() { return mAsteroids; }
-	void IncreaseAsteroid();
-	int numAsteroids;
-	class ClearPict* mClearPict;	//ゲームクリア画像
-
-
+	class Ship* GetShip() { return mShip; }
+	class ClearPict* GetClearPict() { return mClearPict; }
+	
 private:
 	void ProcessInput();
 	void UpdateGame();
@@ -65,4 +63,5 @@ private:
 	//Game-specific
 	class Ship* mShip; // プレイヤーの宇宙船
 	std::vector<class Asteroid*> mAsteroids; //小惑星
+	class ClearPict* mClearPict;	//ゲームクリア画像
 };

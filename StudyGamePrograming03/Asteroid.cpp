@@ -26,7 +26,7 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	SpriteComponent* sc = new SpriteComponent(this);
 	sc->SetTexture(game->GetTexture("Assets/Asteroid.png"));
 
-	//MoveComponent作成　※力は働かないでただ動かすだけなら不要。
+	//MoveComponent作成
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetVelocity(randVel);
 	mc->SetRotSpeed(rotSpeed);
@@ -34,8 +34,6 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
 
-	// Add to mAsteroids in game
-	game->AddAsteroid(this);
 }
 
 Asteroid::~Asteroid()

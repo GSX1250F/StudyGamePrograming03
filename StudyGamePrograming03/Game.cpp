@@ -164,10 +164,9 @@ void Game::LoadData()
 
 	// ¬˜f¯‚ğÅ‰‚É•¡”¶¬
 	int initialNumAsteroids = 15;		//‰Šú’l
-	numAsteroids = 0;
 	for (int i = 0; i < initialNumAsteroids; i++)
 	{
-		IncreaseAsteroid();
+		AddAsteroid();
 	}
 
 	//”wŒi‚ğì¬
@@ -225,15 +224,10 @@ SDL_Texture* Game::GetTexture(const std::string& filename)
 	return tex;
 }
 
-void Game::IncreaseAsteroid()
+void Game::AddAsteroid()
 {
-	new Asteroid(this);
-	numAsteroids++;
-}
-
-void Game::AddAsteroid(Asteroid* ast)
-{
-	mAsteroids.emplace_back(ast);
+	Asteroid* ast = new Asteroid(this);	
+	mAsteroids.emplace_back(ast);	//¬˜f¯‚ª‘‰Á‚·‚é‚Æ‚«‚Í”z—ñ‚Ìˆê”ÔÅŒã‚É’Ç‰Á‚·‚éB
 }
 
 void Game::RemoveAsteroid(Asteroid* ast)
@@ -243,7 +237,6 @@ void Game::RemoveAsteroid(Asteroid* ast)
 	{
 		mAsteroids.erase(iter);
 	}
-	numAsteroids--;
 }
 
 void Game::Shutdown()

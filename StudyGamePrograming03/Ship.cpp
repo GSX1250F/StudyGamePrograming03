@@ -105,15 +105,15 @@ void Ship::UpdateActor(float deltaTime)
 	mAsteroidCooldown -= deltaTime;
 
 	// 小惑星を一定時間ごとに増やす。小惑星の数が０になったらゲームクリア画面をアクティブにする。
-	if (mAsteroidCooldown < 0.0f && GetGame()->numAsteroids > 0)
+	int numAsteroids = GetGame()->GetAsteroids().size();
+	if (mAsteroidCooldown < 0.0f && numAsteroids > 0)
 	{
-		GetGame()->IncreaseAsteroid();
+		GetGame()->AddAsteroid();
 		mAsteroidCooldown = 5.0f;
 	}
-	if (GetGame()->numAsteroids == 0)
+	if (numAsteroids == 0)
 	{
-		GetGame()->mClearPict->SetState(EActive);
-		GetGame()->mClearPict->SetPosition(Vector2(0.0f, 0.0f));
+		GetGame()->GetClearPict()->SetState(EActive);
 	}
 
 	if (crash == false)

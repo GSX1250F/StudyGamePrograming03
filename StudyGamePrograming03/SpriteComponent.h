@@ -20,7 +20,7 @@ public:
 	void SetTexHeight(int height) { mTexHeight = height; }
 
 
-private:
+protected:
 	SDL_Texture* mTexture;
 	int mDrawOrder;
 	int mTexWidth;			//スプライトの横幅
