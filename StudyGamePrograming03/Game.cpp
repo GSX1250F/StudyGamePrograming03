@@ -153,6 +153,15 @@ void Game::GenerateOutput()
 	SDL_RenderPresent(mRenderer);
 }
 
+void Game::Shutdown()
+{
+	UnloadData();
+	IMG_Quit();
+	SDL_DestroyRenderer(mRenderer);
+	SDL_DestroyWindow(mWindow);
+	SDL_Quit();
+}
+
 void Game::LoadData()
 {
 	//プレイヤーの宇宙船を作成
@@ -220,30 +229,6 @@ SDL_Texture* Game::GetTexture(const std::string& filename)
 	return tex;
 }
 
-void Game::AddAsteroid()
-{
-	Asteroid* ast = new Asteroid(this);	
-	mAsteroids.emplace_back(ast);	//小惑星が増加するときは配列の一番最後に追加する。
-}
-
-void Game::RemoveAsteroid(Asteroid* ast)
-{
-	auto iter = std::find(mAsteroids.begin(), mAsteroids.end(), ast);
-	if (iter != mAsteroids.end())
-	{
-		mAsteroids.erase(iter);
-	}
-}
-
-void Game::Shutdown()
-{
-	UnloadData();
-	IMG_Quit();
-	SDL_DestroyRenderer(mRenderer);
-	SDL_DestroyWindow(mWindow);
-	SDL_Quit();
-}
-
 void Game::AddActor(Actor* actor)
 {
 	// アクターが更新中は、待ちアクターに追加する
@@ -283,7 +268,7 @@ void Game::AddSprite(SpriteComponent* sprite)
 	// 更新順で配列に挿入する
 	int myDrawOrder = sprite->GetDrawOrder();
 	auto iter = mSprites.begin();
-	for (;iter != mSprites.end();++iter)
+	for (; iter != mSprites.end(); ++iter)
 	{
 		if (myDrawOrder < (*iter)->GetDrawOrder())
 		{
@@ -299,3 +284,22 @@ void Game::RemoveSprite(SpriteComponent* sprite)
 	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
 	mSprites.erase(iter);
 }
+
+//Game Specific
+void Game::AddAsteroid()
+{
+	Asteroid* ast = new Asteroid(this);	
+	mAsteroids.emplace_back(ast);	//小惑星が増加するときは配列の一番最後に追加する。
+}
+
+void Game::RemoveAsteroid(Asteroid* ast)
+{
+	auto iter = std::find(mAsteroids.begin(), mAsteroids.end(), ast);
+	if (iter != mAsteroids.end())
+	{
+		mAsteroids.erase(iter);
+	}
+}
+
+
+
