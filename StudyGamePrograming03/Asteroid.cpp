@@ -2,35 +2,35 @@
 #include "SpriteComponent.h"
 #include "MoveComponent.h"
 #include "Game.h"
+#include "Renderer.h"
 #include "Random.h"
 #include "CircleComponent.h"
 
 Asteroid::Asteroid(Game* game) : Actor(game)
 {
 	//ランダムな位置と向きと大きさと初速で初期化
-	Vector2 randPos = Vector2::Zero;
-	while (randPos.x > GetGame()->mWindowWidth * 0.25f && randPos.x < GetGame()->mWindowHeight *0.75f && randPos.y > 768.0f * 0.25f && randPos.y < 768.0f * 0.75f)
+	Vector2 randPos = Vector2(GetGame()->mWindowWidth * 0.5f, GetGame()->mWindowHeight * 0.5f);
+	//画面の中央3/5区画以外になるまで繰り返し処理
+	while (randPos.x > GetGame()->mWindowWidth * 0.2f &&
+		   randPos.x < GetGame()->mWindowWidth *0.8f &&
+		   randPos.y > GetGame()->mWindowHeight * 0.2f &&
+		   randPos.y < GetGame()->mWindowHeight * 0.8f)
 	{
 		randPos = Random::GetVector(Vector2::Zero, Vector2(GetGame()->mWindowWidth, GetGame()->mWindowHeight));
 	}
 	SetPosition(randPos);
-	float randRot = Random::GetFloatRange(0.0f, Math::TwoPi);
-	SetRotation(randRot);
-	float randScale = Random::GetFloatRange(0.5f, 2.5f);
-	SetScale(randScale);
-	float rotSpeed = Random::GetFloatRange(-1.0f * Math::TwoPi, 1.0f * Math::TwoPi);
-	float randSpeed = Random::GetFloatRange(50.0f, 200.0f);
-	Vector2 randVel = Vector2(Math::Cos(randRot), -Math::Sin(randRot)) * randSpeed;		//初期速度
+	SetRotation(Random::GetFloatRange(0.0f, Math::TwoPi));
+	SetScale(Random::GetFloatRange(0.8f, 2.5f));
 	
 	//スプライトコンポーネント作成、テクスチャ設定
 	SpriteComponent* sc = new SpriteComponent(this);
-	sc->SetTexture(game->GetTexture("Assets/Asteroid.png"));
+	sc->SetTexture(game->GetRenderer()->GetTexture("Assets/Asteroid.png"));
 
 	//MoveComponent作成
 	MoveComponent* mc = new MoveComponent(this);
-	mc->SetVelocity(randVel);
-	mc->SetRotSpeed(rotSpeed);
-
+	mc->SetVelocity(GetForward() * Random::GetFloatRange(50.0f, 200.0f));
+	mc->SetRotSpeed(Random::GetFloatRange(-1.0f * Math::TwoPi, 1.0f * Math::TwoPi));
+	
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
 

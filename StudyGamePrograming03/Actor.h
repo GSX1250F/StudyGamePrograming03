@@ -55,15 +55,11 @@ public:
 	void RemoveComponent(class Component* component);
 
 private:
-	// アクターの状態
-	State mState;
-
-	// 移動
+	State mState;			//アクター状態
 	Vector2 mPosition;		//画面上の位置
 	float mScale;			//拡大率
 	float mRotation;		//回転
 	float mRadius;			//半径（拡大率は無視）
-	
 	std::vector<class Component*> mComponents;
 	class Game* mGame;
 };

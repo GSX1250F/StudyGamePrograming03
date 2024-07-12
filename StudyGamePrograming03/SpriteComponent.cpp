@@ -1,26 +1,26 @@
 #include "SpriteComponent.h"
 #include "Actor.h"
 #include "Game.h"
-#include <cmath>
+#include "Renderer.h"
 
-SpriteComponent::SpriteComponent(Actor* owner, int drawOrder)
-	:Component(owner),
-	mTexture(nullptr),
-	mDrawOrder(drawOrder),
-	mTexWidth(0),
-	mTexHeight(0)
+SpriteComponent::SpriteComponent(Actor* owner, int drawOrder):Component(owner)
+	,mTexture(nullptr)
+	,mDrawOrder(drawOrder)
+	,mTexWidth(0)
+	,mTexHeight(0)
+	,mVisible(true)
 {
-	mOwner->GetGame()->AddSprite(this);
+	mOwner->GetGame()->GetRenderer()->AddSprite(this);
 }
 
 SpriteComponent::~SpriteComponent()
 {
-	mOwner->GetGame()->RemoveSprite(this);
+	mOwner->GetGame()->GetRenderer()->RemoveSprite(this);
 }
 
 void SpriteComponent::Draw(SDL_Renderer* renderer)
 {
-	if (mTexture && mOwner->GetState() != mOwner->EPaused)
+	if (mTexture && GetVisible())
 	{
 		SDL_Rect r;
 		// 高さと幅を所有アクターのスケールに合わせる
@@ -31,8 +31,6 @@ void SpriteComponent::Draw(SDL_Renderer* renderer)
 
 		SDL_RenderCopyEx(renderer, mTexture, nullptr, &r, -Math::ToDegrees(mOwner->GetRotation()), nullptr, SDL_FLIP_NONE);
 	}
-
-
 }
 
 void SpriteComponent::SetTexture(SDL_Texture* texture)

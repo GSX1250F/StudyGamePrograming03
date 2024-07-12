@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <algorithm>
 #include "Actor.h"
+#include "Renderer.h"
 #include "SpriteComponent.h"
 #include "Ship.h"
 #include "Asteroid.h"
@@ -10,8 +11,7 @@
 #include "ClearPict.h"
 #include "Random.h"
 
-Game::Game()
-	:mWindow(nullptr),
+Game::Game():
 	mRenderer(nullptr),
 	mIsRunning(true),
 	mUpdatingActors(false),
@@ -28,27 +28,16 @@ bool Game::Initialize()
 		SDL_Log("SDLを初期化できません: %s", SDL_GetError());
 		return false;
 	}
-	// SDLウィンドウを作成
-	mWindow = SDL_CreateWindow("Game Programming in C++", 100, 100, mWindowWidth, mWindowHeight, 0);
-	if (!mWindow)
+	// レンダラー作成
+	mRenderer = new Renderer(this);
+	if (!mRenderer->Initialize(mWindowWidth, mWindowHeight))
 	{
-		SDL_Log("ウィンドウの作成に失敗しました: %s", SDL_GetError());
+		SDL_Log("レンダラーの初期化に失敗しました");
+		delete mRenderer;
+		mRenderer = nullptr;
 		return false;
 	}
-	// SDLレンダラーを作成
-	mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (!mRenderer)
-	{
-		SDL_Log("レンダラーの作成に失敗しました: %s", SDL_GetError());
-		return false;
-	}
-	// SDL_imageを初期化
-	if (IMG_Init(IMG_INIT_PNG) == 0)
-	{
-		SDL_Log("SDL_imageを初期化できません: %s", SDL_GetError());
-		return false;
-	}
-
+	
 	Random::Init();		//乱数設定の初期化?
 
 	LoadData();
@@ -141,24 +130,16 @@ void Game::UpdateGame()
 
 void Game::GenerateOutput()
 {
-	SDL_SetRenderDrawColor(mRenderer, 220, 220, 220, 255);
-	SDL_RenderClear(mRenderer);
-
-	// すべてのスプライトコンポーネントを描画
-	for (auto sprite : mSprites)
-	{
-		sprite->Draw(mRenderer);
-	}
-
-	SDL_RenderPresent(mRenderer);
+	mRenderer->Draw();
 }
 
 void Game::Shutdown()
 {
 	UnloadData();
-	IMG_Quit();
-	SDL_DestroyRenderer(mRenderer);
-	SDL_DestroyWindow(mWindow);
+	if (mRenderer)
+	{
+		mRenderer->Shutdown();
+	}
 	SDL_Quit();
 }
 
@@ -177,7 +158,7 @@ void Game::LoadData()
 	//背景を作成
 	new BackGround(this);
 
-	mClearPict = new ClearPict(this);
+	new ClearPict(this);
 }
 
 void Game::UnloadData()
@@ -188,45 +169,10 @@ void Game::UnloadData()
 		delete mActors.back();
 	}
 
-	// テクスチャを配列から消去
-	for (auto i : mTextures)
+	if (mRenderer)
 	{
-		SDL_DestroyTexture(i.second);
+		mRenderer->UnloadData();
 	}
-	mTextures.clear();
-}
-
-SDL_Texture* Game::GetTexture(const std::string& filename)
-{
-	SDL_Texture* tex = nullptr;
-
-	auto iter = mTextures.find(filename);
-	if (iter != mTextures.end())
-	{
-		tex = iter->second;
-	}
-	else
-	{
-		// ファイルからロード
-		SDL_Surface* surf = IMG_Load(filename.c_str());
-		if (!surf)
-		{
-			SDL_Log("テクスチャファイルの読み込みに失敗しました %s", filename.c_str());
-			return nullptr;
-		}
-
-		// サーフェイスからテクスチャを作成
-		tex = SDL_CreateTextureFromSurface(mRenderer, surf);
-		SDL_FreeSurface(surf);
-		if (!tex)
-		{
-			SDL_Log("サーフェイスからテクスチャに変換するのに失敗しました %s", filename.c_str());
-			return nullptr;
-		}
-
-		mTextures.emplace(filename.c_str(), tex);
-	}
-	return tex;
 }
 
 void Game::AddActor(Actor* actor)
@@ -263,27 +209,6 @@ void Game::RemoveActor(Actor* actor)
 	}
 }
 
-void Game::AddSprite(SpriteComponent* sprite)
-{
-	// 更新順で配列に挿入する
-	int myDrawOrder = sprite->GetDrawOrder();
-	auto iter = mSprites.begin();
-	for (; iter != mSprites.end(); ++iter)
-	{
-		if (myDrawOrder < (*iter)->GetDrawOrder())
-		{
-			break;
-		}
-	}
-
-	mSprites.insert(iter, sprite);
-}
-
-void Game::RemoveSprite(SpriteComponent* sprite)
-{
-	auto iter = std::find(mSprites.begin(), mSprites.end(), sprite);
-	mSprites.erase(iter);
-}
 
 //Game Specific
 void Game::AddAsteroid()

@@ -16,10 +16,7 @@ public:
 	void AddActor(class Actor* actor);
 	void RemoveActor(class Actor* actor);
 
-	void AddSprite(class SpriteComponent* sprite);
-	void RemoveSprite(class SpriteComponent* sprite);
-
-	SDL_Texture* GetTexture(const std::string& fileName);
+	class Renderer* GetRenderer() { return mRenderer; }
 
 	void SetRunning(bool isrunning) { mIsRunning = isrunning; }
 
@@ -32,7 +29,6 @@ public:
 	void RemoveAsteroid(class Asteroid* ast);
 	std::vector<class Asteroid*>& GetAsteroids() { return mAsteroids; }
 	class Ship* GetShip() { return mShip; }
-	class ClearPict* GetClearPict() { return mClearPict; }
 	
 private:
 	void ProcessInput();
@@ -41,27 +37,16 @@ private:
 	void LoadData();
 	void UnloadData();
 
-	// テクスチャの配列
-	std::unordered_map<std::string, SDL_Texture*> mTextures;
-
-	// すべてのアクター
 	std::vector<class Actor*> mActors;
-	// すべての待ちアクター
 	std::vector<class Actor*> mPendingActors;
 
-	// すべての描画されるスプライトコンポーネント
-	std::vector<class SpriteComponent*> mSprites;
-
-	SDL_Window* mWindow;
-	SDL_Renderer* mRenderer;
+	class Renderer* mRenderer;
 	Uint32 mTicksCount;
 	bool mIsRunning;
-	// アクターが更新中か
 	bool mUpdatingActors;
 
 
 	//Game-specific
 	class Ship* mShip; // プレイヤーの宇宙船
 	std::vector<class Asteroid*> mAsteroids; //小惑星
-	class ClearPict* mClearPict;	//ゲームクリア画像
 };

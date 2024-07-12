@@ -8,7 +8,6 @@ public:
 
 	class CircleComponent* GetCircle() { return mCircle; }
 
-	// アクター独自の更新処理(オーバーライド可能)
 	void UpdateActor(float deltaTime) override;
 
 private:
