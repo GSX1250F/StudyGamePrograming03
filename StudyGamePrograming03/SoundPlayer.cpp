@@ -15,11 +15,13 @@ bool SoundPlayer::Initialize()
     // Initialize SDL.
     if (SDL_Init(SDL_INIT_AUDIO) < 0)
     {
+        SDL_Log("Mixerの初期化に失敗しました: %s", SDL_GetError());
         return false;
     }
     // Initialize SDL_mixer 
     if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
     {
+        SDL_Log("Mix_OpenAudioの初期化に失敗しました: %s", SDL_GetError());
         return false;
     }        
 	return true;
@@ -57,20 +59,20 @@ void SoundPlayer::RemoveSndCmpnt(SoundComponent* sndC)
 
 Mix_Chunk* SoundPlayer::GetAliasName(std::string fileName)
 {
-    //音声ファイルを開き、SoundControlリストに登録し、AliasNameを返す
-    std::string cmd;
-
-        Dim scl As New SoundControl
-        scl.AliasName = "aliasName" & mSoundControls.Count    'aliasName = "aliasName" + id
-        scl.Control = ""
-
-        'ファイルオープン
-        cmd = "open """ + fileName + """ alias " + scl.AliasName
+    //音声ファイルを開き、mControlsとmAliasNamesリストに登録し、AliasNameを返す
+    //std::string cmd;
+    //Dim cmd As String
+    int i = mAliasNames.size();
+    //ファイルオープン
+    Mix_Chunk* alias;
+    alias = Mix_LoadMUS
+    cmd = "open " & fileName & " alias " & "AliasName" + i
         If mciSendString(cmd, Nothing, 0, 0) < > 0 Then
         Return Nothing
         Else
-        mSoundControls.Add(scl)
-        Return scl.AliasName
+        mAliasNames.Add("AliasName" & i)
+        mControls.Add("")
+        Return mAliasNames(i)
         End If
 }
 

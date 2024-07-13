@@ -6,12 +6,7 @@
 class SoundPlayer
 {
 public:
-	struct SoundControl
-	{
-		Mix_Chunk* AliasName;
-		std::string Control;		//"play","replay","resume","stop","pause","delete"
-	};
-
+	
 	SoundPlayer(class Game* game);
 	~SoundPlayer();
 
@@ -29,8 +24,8 @@ public:
 
 
 private:
-	std::vector<class SoundComponent*> mSndCmpnts;
-	std::vector<struct SoundControl*> mSoundControls;
-
+	std::vector<Mix_Chunk*> mAliasNames;
+	std::vector<string> mControls;		//"play","replay","resume","stop","pause","delete"
+	std::vector<class SoundComponent*> mSndCmpnts;	
 };
 
