@@ -16,7 +16,7 @@ public:
 	virtual void Update(float deltaTime) {};
 
 	// 各コンポーネント入力処理（オーバーライド可能）
-	virtual void ProcessInput(const SDL_Event event) {}
+	virtual void ProcessInput(const uint8_t* keyState) {}
 
 	// 更新順ゲッター
 	int GetUpdateOrder() const { return mUpdateOrder; }

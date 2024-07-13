@@ -8,21 +8,30 @@ class InputComponent : public MoveComponent
 public:
 	//コンストラクタ。Update Orderは早め。
 	InputComponent(class Actor* owner, int updateOrder = 10);
-	~InputComponent();
 
 	// 入力処理（オーバーライド）
-	void ProcessInput(const SDL_Event event) override;
+	void ProcessInput(const uint8_t* keyState) override;
 
-	// プライベート関数のゲッター・セッター
-	void SetMaxForwardForce(float power) { mMaxForwardForce = power; }
-	void SetMaxRotForce(float power) { mMaxRotForce = power; }
-	float GetMaxForwardForce() { return mMaxForwardForce; }
-	float GetMaxRotForce() { return mMaxRotForce; }
+	// セッター
+	void SetMaxForwardVelocity(float value) { mMaxForwardVelocity = value; }
+	void SetMaxRotSpeed(float value) { mMaxRotSpeed = value; }
+	void SetMaxForwardForce(float value) { mMaxForwardForce = value; }
+	void SetMaxRotForce(float value) { mMaxRotForce = value; }
+	void SetForwardKey(int key) { mFwdKey = key; }
+	void SetBackwardKey(int key) { mBwdKey = key; }
+	void SetClockwiseKey(int key) { mCwsKey = key; }
+	void SetCounterClockwiseKey(int key) { mCCwsKey = key; }
 
 
 private:
 	// 前進・回転方向の力の最大値
 	float mMaxForwardForce;
 	float mMaxRotForce;
+	float mMaxForwardVelocity;
+	float mMaxRotSpeed;
+	int mFwdKey;
+	int mBwdKey;
+	int mCwsKey;
+	int mCCwsKey;
 };
 

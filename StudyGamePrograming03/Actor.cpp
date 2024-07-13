@@ -40,20 +40,20 @@ void Actor::UpdateActor(float deltaTime)
 {
 }
 
-void Actor::ProcessInput(const SDL_Event event)
+void Actor::ProcessInput(const uint8_t* keyState)
 {
 	if (mState == EActive)
 	{
 		for (auto comp : mComponents)
 		{
-			comp->ProcessInput(event);
+			comp->ProcessInput(keyState);
 		}
 
-		ActorInput(event);
+		ActorInput(keyState);
 	}
 }
 
-void Actor::ActorInput(const SDL_Event event)
+void Actor::ActorInput(const uint8_t* keyState)
 {
 }
 

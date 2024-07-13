@@ -23,9 +23,9 @@ public:
 	virtual void UpdateActor(float deltaTime);
 
 	// ゲームから呼び出されるProcess Input(オーバーライド不可)
-	void ProcessInput(const SDL_Event event);
+	void ProcessInput(const uint8_t* keyState);
 	// アクター独自の入力処理(オーバーライド可能)
-	virtual void ActorInput(const SDL_Event event);
+	virtual void ActorInput(const uint8_t* keyState);
 
 	// ゲッター・セッター
 	// 位置
