@@ -11,7 +11,7 @@
 Ship::Ship(Game* game):Actor(game)
 {
 	//SomeSpriteComponentçÏê¨
-	mSSC = new SomeSpriteComponent(this);
+	mSSC = new SomeSpriteComponent(this,30);
 	std::vector<SDL_Texture*> mtexs = {
 		game->GetRenderer()->GetTexture("Assets/Ship01.png"),
 		game->GetRenderer()->GetTexture("Assets/Ship02.png"),
@@ -30,10 +30,10 @@ Ship::Ship(Game* game):Actor(game)
 	mIC->SetMoveResist(30.0f);
 	mIC->SetRotResist(15.0f);
 	mIC->SetMass(1.0f);
-	mIC->SetForwardKey(SDL_KeyCode::SDLK_UP);
-	mIC->SetBackwardKey(SDL_KeyCode::SDLK_DOWN);
-	mIC->SetClockwiseKey(SDL_KeyCode::SDLK_RIGHT);
-	mIC->SetCounterClockwiseKey(SDL_KeyCode::SDLK_LEFT);
+	mIC->SetForwardKey(SDL_SCANCODE_UP);
+	mIC->SetBackwardKey(SDL_SCANCODE_DOWN);
+	mIC->SetClockwiseKey(SDL_SCANCODE_RIGHT);
+	mIC->SetCounterClockwiseKey(SDL_SCANCODE_LEFT);
 
 	//CircleComponentçÏê¨
 	mCircle = new CircleComponent(this);
@@ -62,19 +62,19 @@ void Ship::ActorInput(const uint8_t* keyState)
 {
 	if (mCrash == false) 
 	{
-		if (keyState[SDL_SCANCODE_LEFT])
+		if (keyState[mIC->GetCounterClockwiseKey()])
 		{
 			mSSC->SetTextureFromId(1);
 		}
-		else if (keyState[SDL_SCANCODE_RIGHT])
+		else if (keyState[mIC->GetClockwiseKey()])
 		{
 			mSSC->SetTextureFromId(2);
 		}
-		else if (keyState[SDL_SCANCODE_UP])
+		else if (keyState[mIC->GetForwardKey()])
 		{
 			mSSC->SetTextureFromId(3);
 		}
-		else if (keyState[SDL_SCANCODE_DOWN])
+		else if (keyState[mIC->GetBackwardKey()])
 		{
 			mSSC->SetTextureFromId(4);
 		}

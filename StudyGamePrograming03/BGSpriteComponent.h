@@ -11,7 +11,7 @@ public:
 	void Draw(SDL_Renderer* renderer) override;
 	void SetBGSpritePos(Vector2 pos) { mBGSpritePos = pos; }
 	Vector2 GetBGSpritePos() { return mBGSpritePos; }
-	void SetScrollSpeed(Vector2 speed) { mScrollSpeed = speed; };
+	void SetScrollSpeed(Vector2 speed) { mScrollSpeed = speed; }
 	Vector2 GetScrollSpeed() { return mScrollSpeed; }
 
 private:

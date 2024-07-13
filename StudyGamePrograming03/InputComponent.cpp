@@ -29,12 +29,12 @@ void InputComponent::ProcessInput(const uint8_t* keyState)
 	if (keyState[mCwsKey])
 	{
 		// rot = mMaxRotSpeed;       //単純移動の場合
-		rot = mMaxRotForce;		//角度の＋方向はCCW
+		rot = -mMaxRotForce;		//角度の＋方向はCCW
 	}
 	if (keyState[mCCwsKey])
 	{
 		// rot = -mMaxRotSpeed;       //単純移動の場合
-		rot = -mMaxRotForce;		//角度の＋方向はCCW
+		rot = mMaxRotForce;		//角度の＋方向はCCW
 	}
 	
 	// 単純移動の場合
