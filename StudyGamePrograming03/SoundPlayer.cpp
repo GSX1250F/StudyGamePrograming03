@@ -27,23 +27,74 @@ bool SoundPlayer::Initialize()
 	return true;
 }
 
+void SoundPlayer::UnloadData()
+{
+    while (mAliasNames.size() > 0)
+    {
+        Mix_FreeChunk(mAliasNames[0]);
+        mAliasNames.erase(mAliasNames.begin());
+    }
+}
+
 void SoundPlayer::Shutdown()
 {
     // quit SDL_mixer
     Mix_CloseAudio();
 }
 
-void SoundPlayer::UnloadData()
-{
-    while (mSoundControls.size() > 0)
-    {
-        Mix_FreeChunk(mSoundControls[0]->AliasName);
-        mSoundControls.erase(mSoundControls.begin());
-    }
-}
 
 void SoundPlayer::Play()
 {
+    //Controlに応じてAliasNameにMCIコントロールを行う。
+    int i;
+    if (mControls.size() > 0)
+    {
+        for (int i = 0; i < mControls.size(); i++)
+        {
+            if (mControls[i].substr(0, 4) == "play")
+            {
+                ControlPlay(i);
+            }
+            else if (mControls[i].substr(0, 6) == "replay")
+            {
+                ControlReplay(i);
+            }
+            else if (mControls[i].substr(0, 4) == "stop")
+            {
+                ControlStop(i);
+            }
+            else if (mControls[i].substr(0, 5) == "pause")
+            {
+                ControlPause(i);
+            }
+        }
+        //controlがdeleteの処理
+        bool flag = false;
+        i = 0;
+        while (flag == false)
+        {
+            if (mControls[i].substr(0, 6) == "delete")
+            {
+                std::string status = ControlGetStatus(i);
+                if (status.substr(0, 7) == "playing")
+                {
+                    //何もしない
+                }
+                else
+                {
+                    ControlClose(mAliasNames[i]);
+                    mAliasNames.erase(mAliasNames.begin() + i);
+                    mControls.erase(mControls.begin() + i);
+                    i -= 1;
+                }
+            }
+            i += 1;
+            if (i >= mControls.size() - 1)
+            {
+                flag = true;
+            }
+        }
+    }
 }
 
 void SoundPlayer::AddSndCmpnt(SoundComponent* sndC)
@@ -60,22 +111,61 @@ void SoundPlayer::RemoveSndCmpnt(SoundComponent* sndC)
 Mix_Chunk* SoundPlayer::GetAliasName(std::string fileName)
 {
     //音声ファイルを開き、mControlsとmAliasNamesリストに登録し、AliasNameを返す
-    //std::string cmd;
-    //Dim cmd As String
     int i = mAliasNames.size();
     //ファイルオープン
-    Mix_Chunk* alias;
-    alias = Mix_LoadMUS
-    cmd = "open " & fileName & " alias " & "AliasName" + i
-        If mciSendString(cmd, Nothing, 0, 0) < > 0 Then
-        Return Nothing
-        Else
-        mAliasNames.Add("AliasName" & i)
-        mControls.Add("")
-        Return mAliasNames(i)
-        End If
+    Mix_Chunk* alias = Mix_LoadWAV(fileName.c_str());
+    if (alias == NULL) 
+    {
+        return nullptr;
+    }
+    else
+    {
+        mAliasNames.emplace_back(alias);
+        mControls.emplace_back("");
+        return mAliasNames[i];
+    }
 }
 
 void SoundPlayer::SetSoundControl(Mix_Chunk* aliasName, std::string control)
+{
+    if (mAliasNames.size() > 0)
+    {
+        for (int i = 0; i < mAliasNames.size(); i++)
+        {
+            if (mAliasNames[i] == aliasName)
+            {
+                mControls[i] = mControls[i] + control;
+                break;
+            }
+        }
+    }
+}
+
+std::string SoundPlayer::ControlGetStatus(int id)
+{
+    return std::string();
+}
+
+void SoundPlayer::ControlPlay(int id)
+{
+}
+
+void SoundPlayer::ControlReplay(int id)
+{
+}
+
+void SoundPlayer::ControlPause(int id)
+{
+}
+
+void SoundPlayer::ControlStop(int id)
+{
+}
+
+void SoundPlayer::ControlResume(int id)
+{
+}
+
+void SoundPlayer::ControlClose(Mix_Chunk* aliasName)
 {
 }
