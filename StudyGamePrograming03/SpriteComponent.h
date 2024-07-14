@@ -19,7 +19,7 @@ public:
 	int GetTexWidth() const { return mTexWidth; }
 	void SetTexHeight(int height) { mTexHeight = height; }
 	int GetTexHeight() const { return mTexHeight; }
-	void SetVisible(bool visible) { mVisible = visible; }
+	void SetVisible(bool value) { mVisible = value; }
 	bool GetVisible() const { return mVisible; }
 	
 private:

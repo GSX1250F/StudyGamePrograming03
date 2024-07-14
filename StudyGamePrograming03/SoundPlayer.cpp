@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "SoundComponent.h"
 
-SoundPlayer::SoundPlayer(Game* game)
+SoundPlayer::SoundPlayer(Game* game) : mGame(game)
 {}
 
 SoundPlayer::~SoundPlayer()
@@ -12,87 +12,47 @@ SoundPlayer::~SoundPlayer()
 
 bool SoundPlayer::Initialize()
 {
-    // Initialize SDL.
+    // SDL初期化
     if (SDL_Init(SDL_INIT_AUDIO) < 0)
     {
-        SDL_Log("Mixerの初期化に失敗しました: %s", SDL_GetError());
+        SDL_Log("SDLの初期化に失敗しました: %s", SDL_GetError());
         return false;
     }
-    // Initialize SDL_mixer 
-    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+    // SDL_mixer初期化
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
     {
-        SDL_Log("Mix_OpenAudioの初期化に失敗しました: %s", SDL_GetError());
+        SDL_Log("SDL_mixerの初期化に失敗しました: %s", SDL_GetError());
         return false;
-    }        
+    }
+    // 同時発声数を16に設定
+    if (Mix_AllocateChannels(16) < 0)
+    {
+        SDL_Log("同時発声数の設定に失敗しました: %s", SDL_GetError());
+        return false;
+    }
+
 	return true;
 }
 
 void SoundPlayer::UnloadData()
 {
-    while (mAliasNames.size() > 0)
-    {
-        Mix_FreeChunk(mAliasNames[0]);
-        mAliasNames.erase(mAliasNames.begin());
-    }
+    mChunks.clear();
 }
 
 void SoundPlayer::Shutdown()
 {
-    // quit SDL_mixer
-    Mix_CloseAudio();
+    Mix_CloseAudio();               // SDL_Mixerクローズ 
 }
 
 
 void SoundPlayer::Play()
 {
-    //Controlに応じてAliasNameにMCIコントロールを行う。
-    int i;
-    if (mControls.size() > 0)
+    // すべてのサウンドコンポーネントを再生
+    for (auto sndC : mSndCmpnts)
     {
-        for (int i = 0; i < mControls.size(); i++)
+        if (sndC->GetPlayable())
         {
-            if (mControls[i].substr(0, 4) == "play")
-            {
-                ControlPlay(i);
-            }
-            else if (mControls[i].substr(0, 6) == "replay")
-            {
-                ControlReplay(i);
-            }
-            else if (mControls[i].substr(0, 4) == "stop")
-            {
-                ControlStop(i);
-            }
-            else if (mControls[i].substr(0, 5) == "pause")
-            {
-                ControlPause(i);
-            }
-        }
-        //controlがdeleteの処理
-        bool flag = false;
-        i = 0;
-        while (flag == false)
-        {
-            if (mControls[i].substr(0, 6) == "delete")
-            {
-                std::string status = ControlGetStatus(i);
-                if (status.substr(0, 7) == "playing")
-                {
-                    //何もしない
-                }
-                else
-                {
-                    ControlClose(mAliasNames[i]);
-                    mAliasNames.erase(mAliasNames.begin() + i);
-                    mControls.erase(mControls.begin() + i);
-                    i -= 1;
-                }
-            }
-            i += 1;
-            if (i >= mControls.size() - 1)
-            {
-                flag = true;
-            }
+            sndC->Play();
         }
     }
 }
@@ -108,64 +68,27 @@ void SoundPlayer::RemoveSndCmpnt(SoundComponent* sndC)
     mSndCmpnts.erase(iter);
 }
 
-Mix_Chunk* SoundPlayer::GetAliasName(std::string fileName)
+Mix_Chunk* SoundPlayer::GetChunk(const std::string& filename)
 {
-    //音声ファイルを開き、mControlsとmAliasNamesリストに登録し、AliasNameを返す
-    int i = mAliasNames.size();
-    //ファイルオープン
-    Mix_Chunk* alias = Mix_LoadWAV(fileName.c_str());
-    if (alias == NULL) 
+    Mix_Chunk* chunk = nullptr;
+
+    // すでにロード済みなら、その音を返す。
+    auto iter = mChunks.find(filename);
+    if (iter != mChunks.end())
     {
-        return nullptr;
+        chunk = iter->second;
     }
     else
     {
-        mAliasNames.emplace_back(alias);
-        mControls.emplace_back("");
-        return mAliasNames[i];
-    }
-}
-
-void SoundPlayer::SetSoundControl(Mix_Chunk* aliasName, std::string control)
-{
-    if (mAliasNames.size() > 0)
-    {
-        for (int i = 0; i < mAliasNames.size(); i++)
+        // ファイルからロード
+        chunk = Mix_LoadWAV(filename.c_str());
+        if (!chunk)
         {
-            if (mAliasNames[i] == aliasName)
-            {
-                mControls[i] = mControls[i] + control;
-                break;
-            }
+            SDL_Log("効果音ファイルの読み込みに失敗しました %s", filename.c_str());
+            return nullptr;
         }
+        mChunks.emplace(filename.c_str(), chunk);
     }
-}
 
-std::string SoundPlayer::ControlGetStatus(int id)
-{
-    return std::string();
-}
-
-void SoundPlayer::ControlPlay(int id)
-{
-}
-
-void SoundPlayer::ControlReplay(int id)
-{
-}
-
-void SoundPlayer::ControlPause(int id)
-{
-}
-
-void SoundPlayer::ControlStop(int id)
-{
-}
-
-void SoundPlayer::ControlResume(int id)
-{
-}
-
-void SoundPlayer::ControlClose(Mix_Chunk* aliasName)
-{
+    return chunk;
 }

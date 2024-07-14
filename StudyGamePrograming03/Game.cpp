@@ -1,10 +1,13 @@
 #include "Game.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <algorithm>
 #include "Actor.h"
 #include "Renderer.h"
+#include "SoundPlayer.h"
 #include "SpriteComponent.h"
+#include "SoundComponent.h"
 #include "Ship.h"
 #include "Asteroid.h"
 #include "BackGround.h"
@@ -13,6 +16,7 @@
 
 Game::Game():
 	mRenderer(nullptr),
+	mSoundPlayer(nullptr),
 	mIsRunning(true),
 	mUpdatingActors(false),
 	mWindowWidth(1024),
@@ -37,6 +41,16 @@ bool Game::Initialize()
 		mRenderer = nullptr;
 		return false;
 	}
+	// サウンドプレイヤ作成
+	mSoundPlayer = new SoundPlayer(this);
+	if (!mSoundPlayer->Initialize())
+	{
+		SDL_Log("サウンドプレイヤの初期化に失敗しました");
+		delete mSoundPlayer;
+		mSoundPlayer = nullptr;
+		return false;
+	}
+
 	
 	Random::Init();		//乱数設定の初期化?
 
@@ -133,6 +147,7 @@ void Game::UpdateGame()
 void Game::GenerateOutput()
 {
 	mRenderer->Draw();
+	mSoundPlayer->Play();
 }
 
 void Game::Shutdown()
@@ -141,6 +156,10 @@ void Game::Shutdown()
 	if (mRenderer)
 	{
 		mRenderer->Shutdown();
+	}
+	if (mSoundPlayer)
+	{
+		mSoundPlayer->Shutdown();
 	}
 	SDL_Quit();
 }
@@ -175,6 +194,12 @@ void Game::UnloadData()
 	{
 		mRenderer->UnloadData();
 	}
+
+	if (mSoundPlayer)
+	{
+		mSoundPlayer->UnloadData();
+	}
+
 }
 
 void Game::AddActor(Actor* actor)

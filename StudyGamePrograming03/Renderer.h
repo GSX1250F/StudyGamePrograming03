@@ -12,8 +12,8 @@ public:
 	~Renderer();
 
 	bool Initialize(float screenWidth, float screenHeight);
-	void Shutdown();
 	void UnloadData();
+	void Shutdown();
 
 	void Draw();
 

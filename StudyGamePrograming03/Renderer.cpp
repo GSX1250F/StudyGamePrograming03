@@ -37,15 +37,16 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 	return true;
 }
 
+void Renderer::UnloadData()
+{
+	mTextures.clear();
+}
+
 void Renderer::Shutdown()
 {
 	SDL_DestroyWindow(mWindow);
 }
 
-void Renderer::UnloadData()
-{
-	mTextures.clear();
-}
 
 void Renderer::Draw()
 {
@@ -90,6 +91,7 @@ SDL_Texture* Renderer::GetTexture(const std::string& filename)
 {
 	SDL_Texture* tex = nullptr;
 
+	// すでにロード済みなら、そのテクスチャを返す。
 	auto iter = mTextures.find(filename);
 	if (iter != mTextures.end())
 	{

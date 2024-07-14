@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include "SoundComponent.h"
 
 class SoundPlayer
 {
@@ -18,22 +18,19 @@ public:
 
 	void Play();
 
-	void AddSndCmpnt(SoundComponent* sndC);
-	void RemoveSndCmpnt(SoundComponent* sndC);
+	void AddSndCmpnt(class SoundComponent* sndC);
+	void RemoveSndCmpnt(class SoundComponent* sndC);
 
-	Mix_Chunk* GetAliasName(std::string fileName);
-	void SetSoundControl(Mix_Chunk* aliasName, std::string control);
-	std::string ControlGetStatus(int id);
-	void ControlPlay(int id);
-	void ControlReplay(int id);
-	void ControlPause(int id);
-	void ControlStop(int id);
-	void ControlResume(int id);
-	void ControlClose(Mix_Chunk* aliasName);
-
+	Mix_Chunk* GetChunk(const std::string& filename);
+	
 private:
-	std::vector<Mix_Chunk*> mAliasNames;
-	std::vector<std::string> mControls;		//"play","replay","resume","stop","pause","delete"
+	// 効果音のマップ
+	std::unordered_map<std::string, Mix_Chunk*> mChunks;
+	
+	// サウンドコンポーネントの配列
 	std::vector<class SoundComponent*> mSndCmpnts;	
+
+	// Game
+	class Game* mGame;
 };
 

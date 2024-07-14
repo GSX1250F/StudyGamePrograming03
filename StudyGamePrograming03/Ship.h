@@ -21,5 +21,6 @@ private:
 	class CircleComponent* mCircle; 
 	class SomeSpriteComponent* mSSC;
 	class InputComponent* mIC;
+	class SomeSoundComponent* mSSDC;
 };
 

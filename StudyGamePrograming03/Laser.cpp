@@ -1,10 +1,12 @@
 #include "Game.h"
 #include "Renderer.h"
+#include "SoundPlayer.h"
 #include "Laser.h"
 #include "Asteroid.h"
 #include "SpriteComponent.h"
 #include "MoveComponent.h"	
 #include "CircleComponent.h"
+#include "SoundComponent.h"
 
 Laser::Laser(Game* game) : Actor(game),mDeathTime(2.0f), mLaserSpeed(900.0f)
 {
@@ -52,6 +54,9 @@ void Laser::Shot()
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetVelocity(mLaserSpeed * GetForward());
 
-	
+	//SoundComponentì¬
+	SoundComponent* sndC = new SoundComponent(this);
+	sndC->SetChunk(GetGame()->GetSoundPlayer()->GetChunk("Assets/beam.wav"));
+	sndC->SetControl("play");
 }
 

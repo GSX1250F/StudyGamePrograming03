@@ -7,6 +7,8 @@
 #include "InputComponent.h"
 #include "Random.h"
 #include "CircleComponent.h"
+#include "SomeSoundComponent.h"
+#include "SoundPlayer.h"
 
 Ship::Ship(Game* game):Actor(game)
 {
@@ -37,7 +39,14 @@ Ship::Ship(Game* game):Actor(game)
 
 	//CircleComponent作成
 	mCircle = new CircleComponent(this);
-	
+
+	mSSDC = new SomeSoundComponent(this);
+	std::vector<Mix_Chunk*> mchunks = {
+		game->GetSoundPlayer()->GetChunk("Assets/thruster.wav"),
+		game->GetSoundPlayer()->GetChunk("Assets/explosion.wav")
+	};
+	mSSDC->SetSomeChunks(mchunks);
+
 	Init();
 }
 
@@ -51,6 +60,7 @@ void Ship::Init()
 	mIC->SetRotSpeed(0.0f);
 	SetState(EActive);
 	mSSC->SetVisible(true);
+	mSSDC->SetPlayable(true);
 
 	mLaserCooldown = 0.0f;
 	mCrashCooldown = 0.0f;
@@ -65,18 +75,26 @@ void Ship::ActorInput(const uint8_t* keyState)
 		if (keyState[mIC->GetCounterClockwiseKey()])
 		{
 			mSSC->SetTextureFromId(1);
+			mSSDC->SetChunkFromId(0);
+			mSSDC->SetControl("play");
 		}
 		else if (keyState[mIC->GetClockwiseKey()])
 		{
 			mSSC->SetTextureFromId(2);
+			mSSDC->SetChunkFromId(0);
+			mSSDC->SetControl("play");
 		}
 		else if (keyState[mIC->GetForwardKey()])
 		{
 			mSSC->SetTextureFromId(3);
+			mSSDC->SetChunkFromId(0);
+			mSSDC->SetControl("play");
 		}
 		else if (keyState[mIC->GetBackwardKey()])
 		{
 			mSSC->SetTextureFromId(4);
+			mSSDC->SetChunkFromId(0);
+			mSSDC->SetControl("play");
 		}
 		else
 		{
@@ -125,6 +143,8 @@ void Ship::UpdateActor(float deltaTime)
 				mCrash = true;
 				mCrashCooldown = 4.0f;
 				mCrashingTime = 2.0f;
+				mSSDC->SetChunkFromId(0);
+				mSSDC->SetControl("play");
 				break;
 			}
 		}
@@ -145,6 +165,8 @@ void Ship::UpdateActor(float deltaTime)
 				//衝突演出後、リスポーンするまで表示停止
 				SetState(EPaused);
 				mSSC->SetVisible(false);
+				mSSDC->SetPlayable(false);
+
 			}
 			else
 			{

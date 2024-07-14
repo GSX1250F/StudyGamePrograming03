@@ -1,5 +1,5 @@
 #pragma once
-#include "SDL.h"
+#include <SDL.h>
 #include <unordered_map>
 #include <string>
 #include <vector>
@@ -17,6 +17,7 @@ public:
 	void RemoveActor(class Actor* actor);
 
 	class Renderer* GetRenderer() { return mRenderer; }
+	class SoundPlayer* GetSoundPlayer() { return mSoundPlayer; }
 
 	void SetRunning(bool isrunning) { mIsRunning = isrunning; }
 
@@ -41,6 +42,7 @@ private:
 	std::vector<class Actor*> mPendingActors;
 
 	class Renderer* mRenderer;
+	class SoundPlayer* mSoundPlayer;
 	Uint32 mTicksCount;
 	bool mIsRunning;
 	bool mUpdatingActors;
