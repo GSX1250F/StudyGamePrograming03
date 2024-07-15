@@ -20,10 +20,14 @@ public:
 	void SetPlayable(bool value) { mPlayable = value; }
 	bool GetPlayable() const { return mPlayable; }
 	
+	void SetPendingRemove(bool value) { mPendingRemove = value; }
+	bool GetPendingRemove() const { return mPendingRemove; }
+
 private:
 	bool mPlayable;
 	Mix_Chunk* mChunk;
 	std::string mControl;
+	bool mPendingRemove;
 	
 	
 };

@@ -53,7 +53,22 @@ void SoundPlayer::Play()
         if (sndC->GetPlayable())
         {
             sndC->Play();
+
         }
+    }
+    // 削除待ちサウンドコンポーネントを一時配列に追加。
+    std::vector<SoundComponent*> deadSndCmpnts;
+    for (auto sndC : mSndCmpnts)
+    {
+        if (sndC->GetPendingRemove())
+        {
+            deadSndCmpnts.emplace_back(sndC);
+        }
+    }
+    // 削除待ちサウンドコンポーネントを削除
+    for (auto sndC : deadSndCmpnts)
+    {
+        RemoveSndCmpnt(sndC);
     }
 }
 

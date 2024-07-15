@@ -7,13 +7,15 @@
 SoundComponent::SoundComponent(Actor* owner):Component(owner)
 	,mChunk(nullptr)
 	,mPlayable(true)
+	,mPendingRemove(false)
 {
 	mOwner->GetGame()->GetSoundPlayer()->AddSndCmpnt(this);
 }
 
 SoundComponent::~SoundComponent()
 {
-	mOwner->GetGame()->GetSoundPlayer()->RemoveSndCmpnt(this);
+	SetPendingRemove(true);
+	//mOwner->GetGame()->GetSoundPlayer()->RemoveSndCmpnt(this);
 }
 
 void SoundComponent::Play()
