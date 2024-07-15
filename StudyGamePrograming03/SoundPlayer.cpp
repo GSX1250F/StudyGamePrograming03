@@ -36,7 +36,16 @@ bool SoundPlayer::Initialize()
 
 void SoundPlayer::UnloadData()
 {
+    for (auto iter = mChunks.begin(); iter != mChunks.end(); iter++)
+    {
+        Mix_FreeChunk(iter->second);
+    }
     mChunks.clear();
+    for (auto iter = mMusics.begin(); iter != mMusics.end(); iter++)
+    {
+        Mix_FreeMusic(iter->second);
+    }
+    mMusics.clear();
 }
 
 void SoundPlayer::Shutdown()
@@ -47,40 +56,21 @@ void SoundPlayer::Shutdown()
 
 void SoundPlayer::Play()
 {
-    // すべてのサウンドコンポーネントを再生
-    for (auto sndC : mSndCmpnts)
+    // 再生待ち効果音を再生
+    for (auto chunk : mPendingPlayChunks)
     {
-        if (sndC->GetPlayable())
-        {
-            sndC->Play();
-
-        }
+        Mix_PlayChannel(-1, chunk, 0);            // 効果音再生
     }
-    // 削除待ちサウンドコンポーネントを一時配列に追加。
-    std::vector<SoundComponent*> deadSndCmpnts;
-    for (auto sndC : mSndCmpnts)
+    // 再生後、配列をクリア
+    mPendingPlayChunks.clear();
+
+    // 再生待ち音楽を再生
+    for (auto music : mPendingPlayMusics)
     {
-        if (sndC->GetPendingRemove())
-        {
-            deadSndCmpnts.emplace_back(sndC);
-        }
+        Mix_PlayMusic(music, -1);            // 効果音再生
     }
-    // 削除待ちサウンドコンポーネントを削除
-    for (auto sndC : deadSndCmpnts)
-    {
-        RemoveSndCmpnt(sndC);
-    }
-}
-
-void SoundPlayer::AddSndCmpnt(SoundComponent* sndC)
-{
-    mSndCmpnts.emplace_back(sndC);
-}
-
-void SoundPlayer::RemoveSndCmpnt(SoundComponent* sndC)
-{
-    auto iter = std::find(mSndCmpnts.begin(), mSndCmpnts.end(), sndC);
-    mSndCmpnts.erase(iter);
+    // 再生後、配列をクリア
+    mPendingPlayChunks.clear();
 }
 
 Mix_Chunk* SoundPlayer::GetChunk(const std::string& filename)
@@ -106,4 +96,40 @@ Mix_Chunk* SoundPlayer::GetChunk(const std::string& filename)
     }
 
     return chunk;
+}
+
+Mix_Music* SoundPlayer::GetMusic(const std::string& filename)
+{
+    Mix_Music* music = nullptr;
+    // すでにロード済みなら、その音を返す。
+    auto iter = mMusics.find(filename);
+    if (iter != mMusics.end())
+    {
+        music = iter->second;
+    }
+    else
+    {
+        // ファイルからロード
+        music = Mix_LoadMUS(filename.c_str());
+        if (!music)
+        {
+            SDL_Log("音楽ファイルの読み込みに失敗しました %s", filename.c_str());
+            return nullptr;
+        }
+        mMusics.emplace(filename.c_str(), music);
+    }
+
+    return music;
+}
+
+void SoundPlayer::SetPendingPlayChunk(Mix_Chunk* chunk)
+{
+    // 再生待ち効果音の配列に加える。
+    mPendingPlayChunks.emplace_back(chunk);
+}
+
+void SoundPlayer::SetPendingPlayMusic(Mix_Music* music)
+{
+    // 再生待ち音楽の配列に加える。
+    mPendingPlayMusics.emplace_back(music);
 }

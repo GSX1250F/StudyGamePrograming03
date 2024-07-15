@@ -44,5 +44,6 @@ void InputComponent::ProcessInput(const uint8_t* keyState)
 	// ニュートン力学を使う場合
 	SetMoveForce(fwd * mOwner->GetForward());
 	SetRotForce(rot);
-}
 
+	preKeyState = keyState;		//前フレームの入力にコピー
+}

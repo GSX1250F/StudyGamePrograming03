@@ -7,8 +7,7 @@
 
 class SoundPlayer
 {
-public:
-	
+public:	
 	SoundPlayer(class Game* game);
 	~SoundPlayer();
 
@@ -18,17 +17,25 @@ public:
 
 	void Play();
 
-	void AddSndCmpnt(class SoundComponent* sndC);
-	void RemoveSndCmpnt(class SoundComponent* sndC);
-
 	Mix_Chunk* GetChunk(const std::string& filename);
-	
+	Mix_Music* GetMusic(const std::string& filename);
+
+	void SetPendingPlayChunk(Mix_Chunk* chunk);
+	void SetPendingPlayMusic(Mix_Music* music);
+
 private:
 	// 効果音のマップ
 	std::unordered_map<std::string, Mix_Chunk*> mChunks;
 	
-	// サウンドコンポーネントの配列
-	std::vector<class SoundComponent*> mSndCmpnts;	
+	// 音楽のマップ
+	std::unordered_map<std::string, Mix_Music*> mMusics;
+
+	// 再生待ち効果音の配列
+	std::vector<Mix_Chunk*> mPendingPlayChunks;
+
+	// 再生待ち音楽の配列
+	std::vector<Mix_Music*> mPendingPlayMusics;
+
 
 	// Game
 	class Game* mGame;

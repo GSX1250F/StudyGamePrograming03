@@ -70,31 +70,36 @@ void Ship::Init()
 
 void Ship::ActorInput(const uint8_t* keyState)
 {
+	const uint8_t* preKeyState = mIC->GetPreKeyState();
 	if (mCrash == false) 
 	{
 		if (keyState[mIC->GetCounterClockwiseKey()])
 		{
 			mSSC->SetTextureFromId(1);
-			mSSDC->SetChunkFromId(0);
-			mSSDC->SetControl("play");
+			// ˜A‘±‰Ÿ‚µ‚Å–³‚©‚Á‚½‚ç‰¹‚ðo‚·
+			if (!preKeyState[mIC->GetCounterClockwiseKey()])
+			{
+				mSSDC->SetChunkFromId(0);
+				mSSDC->SetPendingPlayChunk();
+			}			
 		}
 		else if (keyState[mIC->GetClockwiseKey()])
 		{
 			mSSC->SetTextureFromId(2);
 			mSSDC->SetChunkFromId(0);
-			mSSDC->SetControl("play");
+			mSSDC->SetPendingPlayChunk();
 		}
 		else if (keyState[mIC->GetForwardKey()])
 		{
 			mSSC->SetTextureFromId(3);
 			mSSDC->SetChunkFromId(0);
-			mSSDC->SetControl("play");
+			mSSDC->SetPendingPlayChunk();
 		}
 		else if (keyState[mIC->GetBackwardKey()])
 		{
 			mSSC->SetTextureFromId(4);
 			mSSDC->SetChunkFromId(0);
-			mSSDC->SetControl("play");
+			mSSDC->SetPendingPlayChunk();
 		}
 		else
 		{
@@ -143,8 +148,8 @@ void Ship::UpdateActor(float deltaTime)
 				mCrash = true;
 				mCrashCooldown = 4.0f;
 				mCrashingTime = 2.0f;
-				mSSDC->SetChunkFromId(0);
-				mSSDC->SetControl("play");
+				mSSDC->SetChunkFromId(1);
+				mSSDC->SetPendingPlayChunk();;
 				break;
 			}
 		}

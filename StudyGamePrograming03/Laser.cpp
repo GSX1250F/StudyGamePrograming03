@@ -57,6 +57,6 @@ void Laser::Shot()
 	//SoundComponentì¬
 	SoundComponent* sndC = new SoundComponent(this);
 	sndC->SetChunk(GetGame()->GetSoundPlayer()->GetChunk("Assets/beam.wav"));
-	sndC->SetControl("play");
+	sndC->SetPendingPlayChunk();
 }
 
