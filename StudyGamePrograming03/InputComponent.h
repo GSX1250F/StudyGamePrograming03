@@ -27,8 +27,6 @@ public:
 	int GetCounterClockwiseKey() { return mCCwsKey; }
 	void SetCounterClockwiseKey(int key) { mCCwsKey = key; }
 
-	const uint8_t* GetPreKeyState() { return preKeyState; }
-
 private:
 	// 前進・回転方向の力の最大値
 	float mMaxForwardForce;
@@ -39,6 +37,6 @@ private:
 	int mBwdKey;
 	int mCwsKey;
 	int mCCwsKey;
-	const uint8_t* preKeyState;	//前フレームのキー入力。連続で押していることを検知する。
+
 };
 

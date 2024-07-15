@@ -20,7 +20,7 @@ public:
 	Mix_Chunk* GetChunk(const std::string& filename);
 	Mix_Music* GetMusic(const std::string& filename);
 
-	void SetPendingPlayChunk(Mix_Chunk* chunk);
+	void SetPendingPlayChunk(int channel, Mix_Chunk* chunk);	//channelが-1のときは空いているチャンネルが自動的に使用される。
 	void SetPendingPlayMusic(Mix_Music* music);
 
 private:

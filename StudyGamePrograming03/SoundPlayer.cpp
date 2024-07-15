@@ -122,7 +122,7 @@ Mix_Music* SoundPlayer::GetMusic(const std::string& filename)
     return music;
 }
 
-void SoundPlayer::SetPendingPlayChunk(Mix_Chunk* chunk)
+void SoundPlayer::SetPendingPlayChunk(int channel, Mix_Chunk* chunk)
 {
     // Ä¶‘Ò‚¿Œø‰Ê‰¹‚Ì”z—ñ‚É‰Á‚¦‚éB
     mPendingPlayChunks.emplace_back(chunk);

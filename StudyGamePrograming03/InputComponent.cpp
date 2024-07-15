@@ -7,7 +7,7 @@ InputComponent::InputComponent(Actor* owner, int updateOrder)
 	,mMaxForwardVelocity(0.0f)
 	,mMaxRotSpeed(0.0f)
 	,mMaxForwardForce(0.0f)
-	,mMaxRotForce(0.0f)	
+	,mMaxRotForce(0.0f)
 {}
 
 void InputComponent::ProcessInput(const uint8_t* keyState)
@@ -44,6 +44,4 @@ void InputComponent::ProcessInput(const uint8_t* keyState)
 	// ニュートン力学を使う場合
 	SetMoveForce(fwd * mOwner->GetForward());
 	SetRotForce(rot);
-
-	preKeyState = keyState;		//前フレームの入力にコピー
 }
