@@ -59,7 +59,35 @@ void SoundPlayer::Play()
     // 再生待ち効果音を再生
     for (auto ck : mPendingPlayChunks)
     {
-        Mix_PlayChannel(ck.channel, ck.chunk, ck.repeat);            // 効果音再生
+        if (ck.control == "replay")
+        {
+            // チャンネル指定の場合は一度再生を止めて再生する。
+            if (ck.channel >= 0) { Mix_HaltChannel(ck.channel); }
+            Mix_PlayChannel(ck.channel, ck.chunk, ck.repeat);
+        }
+        if (ck.control == "pause")
+        {
+            // 一時停止する。チャンネルが-1のときは全チャンネルを一時停止。
+            Mix_Pause(ck.channel);
+        }
+        if (ck.control == "stop")
+        {
+            // 停止する。チャンネルが-1のときは全チャンネルを停止。
+            Mix_HaltChannel(ck.channel);
+        }
+        if (ck.control == "resume")
+        {
+            // 再開する。チャンネルが-1のときは全チャンネルを再開。
+            Mix_Resume(ck.channel);
+        }
+        if (ck.control == "play")
+        {
+            // チャンネル指定の場合は、再生中は何もしない。
+            if ((ck.channel >= 0 && Mix_Playing(ck.channel) <= 0) || (ck.channel < 0))
+            { 
+                Mix_PlayChannel(ck.channel, ck.chunk, ck.repeat);
+            }
+        }
     }
     // 再生後、配列をクリア
     mPendingPlayChunks.clear();

@@ -42,7 +42,7 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 
 Asteroid::~Asteroid()
 {
-	mSDC->SetPendingPlayChunk(-1, 0);
+	mSDC->SetPendingPlayChunk(-1, "replay");
 	GetGame()->RemoveAsteroid(this);
 }
 

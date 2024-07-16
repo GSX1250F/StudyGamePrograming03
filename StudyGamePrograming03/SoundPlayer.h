@@ -9,6 +9,7 @@ struct ChunkControl
 {
 	int channel;		// 0～15, -1は空いているところを使う。
 	Mix_Chunk* chunk;
+	std::string control;	// play,pause,halt,resume,replay
 	int repeat;			// 0:1回だけ。-1:無限ループ
 };
 struct MusicControl

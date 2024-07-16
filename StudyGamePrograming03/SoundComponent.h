@@ -10,7 +10,7 @@ public:
 	SoundComponent(class Actor* owner);
 	~SoundComponent();
 
-	virtual void SetPendingPlayChunk(int channel, int repeat);
+	virtual void SetPendingPlayChunk(int channel, std::string control);
 
 	virtual void SetChunk(Mix_Chunk* chunk) { mChunk = chunk; }
 	virtual void SetMusic(Mix_Music* music) { mMusic = music; }

@@ -12,12 +12,13 @@ SoundComponent::SoundComponent(Actor* owner):Component(owner)
 SoundComponent::~SoundComponent()
 {}
 
-void SoundComponent::SetPendingPlayChunk(int channel, int repeat)
+void SoundComponent::SetPendingPlayChunk(int channel, std::string control)
 {
 	ChunkControl chunkCtl;
 	chunkCtl.channel = channel;
 	chunkCtl.chunk = mChunk;
-	chunkCtl.repeat = repeat;
+	chunkCtl.control = control;
+	chunkCtl.repeat = 0;
 	mOwner->GetGame()->GetSoundPlayer()->SetPendingPlayChunk(chunkCtl);
 }
 
