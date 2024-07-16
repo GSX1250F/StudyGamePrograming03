@@ -77,25 +77,25 @@ void Ship::ActorInput(const uint8_t* keyState)
 		{
 			mSSC->SetTextureFromId(1);
 			mSSDC->SetChunkFromId(0);
-			mSSDC->SetPendingPlayChunk();
+			mSSDC->SetPendingPlayChunk(0,0);
 		}
 		else if (keyState[mIC->GetClockwiseKey()])
 		{
 			mSSC->SetTextureFromId(2);
 			mSSDC->SetChunkFromId(0);
-			mSSDC->SetPendingPlayChunk();
+			mSSDC->SetPendingPlayChunk(1,0);
 		}
 		else if (keyState[mIC->GetForwardKey()])
 		{
 			mSSC->SetTextureFromId(3);
 			mSSDC->SetChunkFromId(0);
-			mSSDC->SetPendingPlayChunk();
+			mSSDC->SetPendingPlayChunk(2,0);
 		}
 		else if (keyState[mIC->GetBackwardKey()])
 		{
 			mSSC->SetTextureFromId(4);
 			mSSDC->SetChunkFromId(0);
-			mSSDC->SetPendingPlayChunk();
+			mSSDC->SetPendingPlayChunk(3,0);
 		}
 		else
 		{
@@ -145,7 +145,7 @@ void Ship::UpdateActor(float deltaTime)
 				mCrashCooldown = 4.0f;
 				mCrashingTime = 2.0f;
 				mSSDC->SetChunkFromId(1);
-				mSSDC->SetPendingPlayChunk();;
+				mSSDC->SetPendingPlayChunk(4,0);;
 				break;
 			}
 		}

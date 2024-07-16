@@ -57,17 +57,17 @@ void SoundPlayer::Shutdown()
 void SoundPlayer::Play()
 {
     // 再生待ち効果音を再生
-    for (auto chunk : mPendingPlayChunks)
+    for (auto ck : mPendingPlayChunks)
     {
-        Mix_PlayChannel(-1, chunk, 0);            // 効果音再生
+        Mix_PlayChannel(ck.channel, ck.chunk, ck.repeat);            // 効果音再生
     }
     // 再生後、配列をクリア
     mPendingPlayChunks.clear();
 
     // 再生待ち音楽を再生
-    for (auto music : mPendingPlayMusics)
+    for (auto mc : mPendingPlayMusics)
     {
-        Mix_PlayMusic(music, -1);            // 効果音再生
+        Mix_PlayMusic(mc.music, mc.repeat);            // 効果音再生
     }
     // 再生後、配列をクリア
     mPendingPlayChunks.clear();
@@ -122,14 +122,14 @@ Mix_Music* SoundPlayer::GetMusic(const std::string& filename)
     return music;
 }
 
-void SoundPlayer::SetPendingPlayChunk(ChunkControl* chunkCtl)
+void SoundPlayer::SetPendingPlayChunk(ChunkControl chunkCtl)
 {
     // 再生待ち効果音の配列に加える。
     mPendingPlayChunks.emplace_back(chunkCtl);
 }
 
-void SoundPlayer::SetPendingPlayMusic(MusicControl* musicCtl)
+void SoundPlayer::SetPendingPlayMusic(MusicControl musicCtl)
 {
     // 再生待ち音楽の配列に加える。
-    mPendingPlayMusics.emplace_back(music);
+    mPendingPlayMusics.emplace_back(musicCtl);
 }
