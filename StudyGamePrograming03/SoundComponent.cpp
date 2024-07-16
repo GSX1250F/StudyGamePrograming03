@@ -15,6 +15,9 @@ SoundComponent::~SoundComponent()
 void SoundComponent::SetPendingPlayChunk(int channel, int repeat)
 {
 	ChunkControl* chunkCtl;
-	mOwner->GetGame()->GetSoundPlayer()->SetPendingPlayChunk(mChunk);
+	chunkCtl.channel = channel;
+	chunkCtl.chunk = GetChunk;
+	chunkCtl.repeat = repeat;
+	mOwner->GetGame()->GetSoundPlayer()->SetPendingPlayChunk(chunkCtl);
 }
 
