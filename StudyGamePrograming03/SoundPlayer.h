@@ -8,6 +8,18 @@
 class SoundPlayer
 {
 public:	
+	struct ChunkControl
+	{
+		int channel;		// 0～15, -1は空いているところを使う。
+		Mix_Chunk* chunk;
+		int repeat;			// 0:1回だけ。-1:無限ループ
+	};
+	struct MusicControl
+	{
+		Mix_Music* music;
+		int repeat;			// 0:1回だけ。-1:無限ループ
+	};
+
 	SoundPlayer(class Game* game);
 	~SoundPlayer();
 
@@ -20,8 +32,8 @@ public:
 	Mix_Chunk* GetChunk(const std::string& filename);
 	Mix_Music* GetMusic(const std::string& filename);
 
-	void SetPendingPlayChunk(int channel, Mix_Chunk* chunk);	//channelが-1のときは空いているチャンネルが自動的に使用される。
-	void SetPendingPlayMusic(Mix_Music* music);
+	void SetPendingPlayChunk(ChunkControl* chunkCtl);	
+	void SetPendingPlayMusic(MusicControl* musicCtl);
 
 private:
 	// 効果音のマップ

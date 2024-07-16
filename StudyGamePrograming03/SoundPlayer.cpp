@@ -122,13 +122,13 @@ Mix_Music* SoundPlayer::GetMusic(const std::string& filename)
     return music;
 }
 
-void SoundPlayer::SetPendingPlayChunk(int channel, Mix_Chunk* chunk)
+void SoundPlayer::SetPendingPlayChunk(ChunkControl* chunkCtl)
 {
     // 再生待ち効果音の配列に加える。
-    mPendingPlayChunks.emplace_back(chunk);
+    mPendingPlayChunks.emplace_back(chunkCtl);
 }
 
-void SoundPlayer::SetPendingPlayMusic(Mix_Music* music)
+void SoundPlayer::SetPendingPlayMusic(MusicControl* musicCtl)
 {
     // 再生待ち音楽の配列に加える。
     mPendingPlayMusics.emplace_back(music);
