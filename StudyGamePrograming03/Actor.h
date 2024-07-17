@@ -17,16 +17,16 @@ public:
 	Actor(class Game* game);
 	virtual ~Actor();
 
-	// ゲームから呼び出される更新関数(オーバーライド不可)
-	void Update(float deltaTime);
-	// アクター独自の更新処理(オーバーライド可能)
-	virtual void UpdateActor(float deltaTime);
-
 	// ゲームから呼び出されるProcess Input(オーバーライド不可)
 	void ProcessInput(const uint8_t* keyState);
 	// アクター独自の入力処理(オーバーライド可能)
 	virtual void ActorInput(const uint8_t* keyState);
 
+	// ゲームから呼び出される更新関数(オーバーライド不可)
+	void Update(float deltaTime);
+	// アクター独自の更新処理(オーバーライド可能)
+	virtual void UpdateActor(float deltaTime);
+	
 	// ゲッター・セッター
 	// 位置
 	const Vector2& GetPosition() const { return mPosition; }

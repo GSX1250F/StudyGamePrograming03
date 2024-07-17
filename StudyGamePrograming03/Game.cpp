@@ -14,15 +14,15 @@
 #include "ClearPict.h"
 #include "Random.h"
 
-Game::Game():
-	mRenderer(nullptr),
-	mSoundPlayer(nullptr),
-	mIsRunning(true),
-	mUpdatingActors(false),
-	mWindowWidth(1024),
-	mWindowHeight(768)
-{
-}
+Game::Game()
+	:mRenderer(nullptr)
+	,mSoundPlayer(nullptr)
+	,mIsRunning(true)
+	,mUpdatingActors(false)
+	,mTicksCount(0)
+	,mWindowWidth(1024)
+	,mWindowHeight(768)
+{}
 
 bool Game::Initialize()
 {
@@ -50,13 +50,10 @@ bool Game::Initialize()
 		mSoundPlayer = nullptr;
 		return false;
 	}
-
-	
+		
 	Random::Init();		//乱数設定の初期化?
 
 	LoadData();
-
-	mTicksCount = SDL_GetTicks();
 
 	return true;
 }
@@ -99,17 +96,9 @@ void Game::ProcessInput()
 
 void Game::UpdateGame()
 {
-	// デルタタイムの計算
-	// 前のフレームから 16ms 経つまで待つ
-	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
-
-	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
-
-	// デルタタイムを最大値で制限する
-	if (deltaTime > 0.05f)
-	{
-		deltaTime = 0.05f;
-	}
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));	// 前のフレームから 16ms 経つまで待つ
+	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;		// デルタタイムの計算
+	if (deltaTime > 0.05f){	deltaTime = 0.05f;}			// デルタタイムを最大値で制限する
 	mTicksCount = SDL_GetTicks();
 
 	// すべてのアクターを更新
