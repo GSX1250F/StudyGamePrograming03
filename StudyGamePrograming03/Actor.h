@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include "Math.h"
-#include <cstdint>
 #include <SDL.h>
 
 class Actor
