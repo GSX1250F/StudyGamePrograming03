@@ -3,7 +3,6 @@
 
 Component::Component(Actor* owner, int updateOrder)	:mOwner(owner),	mUpdateOrder(updateOrder)
 {
-	// アクターのヴェクターに追加
 	mOwner->AddComponent(this);
 }
 
