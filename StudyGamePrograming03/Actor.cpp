@@ -24,22 +24,6 @@ Actor::~Actor()
 	}
 }
 
-void Actor::Update(float deltaTime)
-{
-	if (mState == EActive || mState == EPaused)
-	{
-		for (auto comp : mComponents)
-		{
-			comp->Update(deltaTime);
-		}
-		UpdateActor(deltaTime);
-	}
-}
-
-void Actor::UpdateActor(float deltaTime)
-{
-}
-
 void Actor::ProcessInput(const uint8_t* keyState)
 {
 	if (mState == EActive)
@@ -56,6 +40,23 @@ void Actor::ProcessInput(const uint8_t* keyState)
 void Actor::ActorInput(const uint8_t* keyState)
 {
 }
+
+void Actor::Update(float deltaTime)
+{
+	if (mState == EActive || mState == EPaused)
+	{
+		for (auto comp : mComponents)
+		{
+			comp->Update(deltaTime);
+		}
+		UpdateActor(deltaTime);
+	}
+}
+
+void Actor::UpdateActor(float deltaTime)
+{
+}
+
 
 void Actor::AddComponent(Component* component)
 {
