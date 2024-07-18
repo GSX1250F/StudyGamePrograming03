@@ -12,7 +12,7 @@
 
 Ship::Ship(Game* game):Actor(game)
 {
-	//SomeSpriteComponentçÏê¨
+	//SomeSpriteComponentê∂ê¨
 	mSSC = new SomeSpriteComponent(this,30);
 	std::vector<SDL_Texture*> mtexs = {
 		game->GetRenderer()->GetTexture("Assets/Ship01.png"),
@@ -23,7 +23,7 @@ Ship::Ship(Game* game):Actor(game)
 	};
 	mSSC->SetSomeTextures(mtexs);
 	
-	//InputComponentçÏê¨
+	//InputComponentê∂ê¨
 	mIC = new InputComponent(this);
 	//mIC->SetMaxForwardVelocity(200.0f);
 	//mIC->SetMaxRotSpeed(5.0f);
@@ -37,9 +37,10 @@ Ship::Ship(Game* game):Actor(game)
 	mIC->SetClockwiseKey(SDL_SCANCODE_RIGHT);
 	mIC->SetCounterClockwiseKey(SDL_SCANCODE_LEFT);
 
-	//CircleComponentçÏê¨
+	//CircleComponentê∂ê¨
 	mCircle = new CircleComponent(this);
 
+	//SomeSoundComponentê∂ê¨
 	mSSDC = new SomeSoundComponent(this);
 	std::vector<Mix_Chunk*> mchunks = {
 		game->GetSoundPlayer()->GetChunk("Assets/thruster.wav"),
