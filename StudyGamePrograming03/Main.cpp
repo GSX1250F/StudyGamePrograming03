@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "Actor.h"
 
 int main(int argc, char** argv)
 {

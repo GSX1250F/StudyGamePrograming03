@@ -9,7 +9,6 @@
 #include "CircleComponent.h"
 #include "SomeSoundComponent.h"
 #include "SoundPlayer.h"
-#include <iostream>
 
 Ship::Ship(Game* game):Actor(game)
 {

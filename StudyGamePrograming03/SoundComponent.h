@@ -2,7 +2,6 @@
 #include "Component.h"
 #include <SDL.h>
 #include <string>
-#include <SDL_mixer.h>
 
 class SoundComponent : public Component
 {

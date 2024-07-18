@@ -1,6 +1,5 @@
 #pragma once
 #include "MoveComponent.h"
-#include <cstdint>
 #include <SDL.h>
 
 class InputComponent : public MoveComponent
