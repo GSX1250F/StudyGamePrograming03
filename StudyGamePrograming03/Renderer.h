@@ -20,13 +20,13 @@ public:
 	void AddSprite(class SpriteComponent* sprite);
 	void RemoveSprite(class SpriteComponent* sprite);
 
-	class SDL_Texture* GetTexture(const std::string& fileName);
+	SDL_Texture* GetTexture(const std::string& fileName);
 	
 	float GetScreenWidth() const { return mScreenWidth; }
 	float GetScreenHeight() const { return mScreenHeight; }
 private:
 	// テクスチャのマップ
-	std::unordered_map<std::string, class SDL_Texture*> mTextures;
+	std::unordered_map<std::string, SDL_Texture*> mTextures;
 	
 	// スプライトコンポーネントの配列
 	std::vector<class SpriteComponent*> mSprites;
