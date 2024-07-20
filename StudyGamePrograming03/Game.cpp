@@ -167,11 +167,12 @@ void Game::LoadData()
 	}
 
 	new AsteroidControl(this);
+
+	new ClearPict(this);
+
 	/*
 	//”wŒi‚ğì¬
 	new BackGround(this);
-
-	new ClearPict(this);
 	*/
 }
 
