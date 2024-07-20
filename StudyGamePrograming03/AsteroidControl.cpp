@@ -2,7 +2,7 @@
 #include "Game.h"
 
 AsteroidControl::AsteroidControl(Game* game):Actor(game)
-    , InitCooldown(0.1f)
+    , InitCooldown(5.0f)
     , mAsteroidCooldown(InitCooldown)    
 {
 }
