@@ -157,7 +157,7 @@ void Game::LoadData()
 {
 	//プレイヤーの宇宙船を作成
 	mShip = new Ship(this);
-
+	/*
 	// 小惑星を最初に複数生成
 	int initialNumAsteroids = 15;		//初期値
 	for (int i = 0; i < initialNumAsteroids; i++)
@@ -169,6 +169,7 @@ void Game::LoadData()
 	new BackGround(this);
 
 	new ClearPict(this);
+	*/
 }
 
 void Game::UnloadData()

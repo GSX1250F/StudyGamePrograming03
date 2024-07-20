@@ -3,18 +3,14 @@
 #include "Math.h"
 
 MoveComponent::MoveComponent(Actor* owner, int updateOrder) 
-	: Component(owner), 
-	mVelocity(Vector2::Zero),		// dSˆÚ“®‘¬“x
-	mRotSpeed(0.0f),				// ‰ñ“]‘¬“x
-	mMass(1.0f),					// ¿—Ê
-	mMoveForce(Vector2::Zero),		// dS‚É‚©‚©‚é—Í
-	mMoveAccel(Vector2::Zero),		// dS‰Á‘¬“x	=dS‚É‚©‚©‚é—Í / ¿—Ê
-	mRotForce(0.0f),				// ‰ñ“]•ûŒü‚Ì—ÍF +•ûŒü‚ÍCCW
-	mRotAccel(0.0f),				// ‰ñ“]‰Á‘¬“x
-	mMoveResist(0.0f),				// dS‘¬“x’ïR—¦(%)
-	mRotResist(0.0f),				// ‰ñ“]‘¬“x’ïR—¦(%)
-	mTorque(0.0f),					// ƒgƒ‹ƒN=‰ñ“]•ûŒü‚Ì—Í * ”¼Œa = Šµ«ƒ‚[ƒƒ“ƒg * ‰ñ“]‰Á‘¬“x
-	mImoment(0.0f)					// Šµ«ƒ‚[ƒƒ“ƒg
+	: Component(owner) 
+	,mVelocity(Vector2::Zero)		// •ÀiˆÚ“®‘¬“x
+	,mRotSpeed(0.0f)				// ‰ñ“]‘¬“x
+	,mMass(1.0f)					// ¿—Ê
+	,mMoveForce(Vector2::Zero)		// dS‚É‚©‚©‚é—Í
+	,mRotForce(0.0f)				// ‰ñ“]•ûŒü‚Ì—ÍF +•ûŒü‚ÍCCW
+	,mMoveResist(0.0f)				// dS‘¬“x’ïR—¦(%)
+	,mRotResist(0.0f)				// ‰ñ“]‘¬“x’ïR—¦(%)
 {
 }
 
@@ -24,41 +20,56 @@ MoveComponent::~MoveComponent()
 
 void MoveComponent::Update(float deltatime)
 {
-	// Actor‚ÌˆÊ’u‚ğXV
+	// ˆÊ’u‚ÆŒü‚«‚ğXV
 	mOwner->SetPosition(mOwner->GetPosition() + mVelocity * deltatime);		//x = xo + vt
-	// Actor‚Ì•ûŒü‚ğXV
 	mOwner->SetRotation(mOwner->GetRotation() + mRotSpeed * deltatime);		//ƒ¦ = ƒ¦o + ƒÖt
 
-	// dS‘¬“x‚ğXV
+	// ‘¬“x‚ÆŠp‘¬“x‚ğXV
+	SetVelocity(mVelocity + GetMoveAccel() * deltatime);	//v = vo + at
+	SetRotSpeed(mRotSpeed + GetRotAccel() * deltatime);		//ƒÖ = ƒÖo + bt
+}
+
+Vector2 MoveComponent::GetMoveAccel()
+{
 	if (!Math::NearZero(mMass))
 	{
-		//dS‰Á‘¬“x‚ÌŒvZ@F=ma  a=F*(1/m)
-		mMoveAccel = mMoveForce * (1.0f / mMass);
-		//’ïR—Í = ‘¬‚³*’ïRŒW”    Œ¸‘¬ = -‘¬‚³*’ïRŒW”/¿—Ê
-		Vector2 movedecel = mVelocity * mMoveResist * 0.01f * (1 / mMass);
-		mMoveAccel -= movedecel;
+		Vector2 accel = mMoveForce * (1 / mMass);    //dS‰Á‘¬“x‚ÌŒvZ@F=ma  a=F*(1/m)
+		accel -= mVelocity * mMoveResist * 0.01f * (1 / mMass);
+		return accel;
 	}
 	else
 	{
-		mMoveAccel = Vector2::Zero;
+		return Vector2::Zero;
 	}
+}
 
+float MoveComponent::GetRotAccel()
+{
 	// •ûŒü‚ğXV
 	// Šµ«ƒ‚[ƒƒ“ƒgŒvZ	 ¦2ŸŒ³‚É‚¨‚¢‚Ä‚ÍAˆê—l–§“x‚Ì‰~”Â‚Æ‚·‚éB I=0.5*¿—Ê*”¼Œa^2
-	mImoment = 0.5f * mMass * mOwner->GetRadius() * mOwner->GetRadius();
-	if (!Math::NearZero(mImoment))
+	
+	if (!Math::NearZero(GetImoment()))
 	{
-		// ƒgƒ‹ƒNŒvZ@@ƒgƒ‹ƒN=‰ñ“]•ûŒü‚Ì—Í * ”¼Œa
-		mTorque = mRotForce * mOwner->GetRadius();
 		// ‰ñ“]‰Á‘¬“x‚ÌŒvZ@‰ñ“]‰Á‘¬“x = ƒgƒ‹ƒN / Šµ«ƒ‚[ƒƒ“ƒg
-		mRotAccel = mTorque / mImoment;		//‰ñ“]‰Á‘¬“x‚ÌŒvZ Fr=Ia  a=Fr/I
+		float accel = GetTorque() / GetImoment();		//‰ñ“]‰Á‘¬“x‚ÌŒvZ Fr=Ia  a=Fr/I
 		//’ïR—Í = ‘¬‚³*’ïRŒW”    Œ¸‘¬ = -‘¬‚³*’ïRŒW”*”¼Œa/Šµ«ƒ‚[ƒƒ“ƒg
-		float rotdecel = mRotSpeed * mOwner->GetRadius() * mRotResist / mImoment;
-		mRotAccel -= rotdecel;
+		accel -= mRotSpeed * mOwner->GetRadius() * mRotResist / GetImoment();
+		return accel;
 	}
-	else { mRotAccel = 0.0f; }
+	else
+	{
+		return 0.0f; 
+	}
+}
 
-	// ‘¬“x‚ÆŠp‘¬“x‚ğXV
-	mVelocity += mMoveAccel * deltatime;	//v = vo + at
-	mRotSpeed += mRotAccel * deltatime;		//ƒÖ = ƒÖo + bt
+float MoveComponent::GetImoment()
+{
+	// Šµ«ƒ‚[ƒƒ“ƒgŒvZ@¦2ŸŒ³‚É‚¨‚¢‚Ä‚ÍAˆê—l–§“x‚Ì‰~”Â‚Æ‚·‚éB I=0.5*¿—Ê*”¼Œa^2
+	return 0.5f * mMass * mOwner->GetRadius() * mOwner->GetRadius();
+}
+
+float MoveComponent::GetTorque()
+{
+	// ƒgƒ‹ƒNŒvZ@ƒgƒ‹ƒN=‰ñ“]•ûŒü‚Ì—Í * ”¼Œa
+	return mRotForce * mOwner->GetRadius();
 }

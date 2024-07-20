@@ -13,51 +13,42 @@ public:
 	void Update(float deltatime) override;
 
 	// 単純に動かすのに必要なパラメータのセッター＆ゲッター
-	// 速度
-	Vector2 GetVelocity() { return mVelocity; }
+	// 並進移動速度
 	void SetVelocity(Vector2 vel) { mVelocity = vel; }
 	// 回転速度
-	float GetRotSpeed() const { return mRotSpeed; }
 	void SetRotSpeed(float rotspeed) { mRotSpeed = rotspeed; }
 
 	// 古典物理に必要なパラメータのセッター＆ゲッター
-	//重心にかかる力
-	Vector2 GetMoveForce() { return mMoveForce; }
-	void SetMoveForce(Vector2 forceVector) { mMoveForce = forceVector; }
-	//回転方向の力
-	float GetRotForce() { return mRotForce; }
-	void SetRotForce(float force) { mRotForce = force; }
-	//重心移動の抵抗率
-	float GetMoveResist() { return mMoveResist; }
-	void SetMoveResist(float resist) { mMoveResist = resist; }
-	//回転移動の抵抗率
-	float GetRotResist() { return mRotResist; }
-	void SetRotResist(float resist) { mRotResist = resist; }
-	// 質量
-	float GetMass() { return mMass; }
-	void SetMass(float mass) { mMass = mass; }
-	// トルク
-	float GetTorque() { return mTorque; }
-	void SetTorque(float torque) { mTorque = torque; }
-	// 慣性モーメント
-	float GetImoment() { return mImoment; }
-	void SetImoment(float imoment) { mImoment = imoment; }
+	// 並進移動加速度
+	Vector2 GetMoveAccel();
+	// 回転移動加速度
+	float GetRotAccel();
 
+	// 質量
+	void SetMass(float v) { mMass = v; }
+	//重心にかかる力
+	void SetMoveForce(Vector2 v) { mMoveForce = v; }
+	//回転方向の力
+	void SetRotForce(float v) { mRotForce = v; }
+	// 慣性モーメント
+	float GetImoment();
+	// トルク
+	float GetTorque();
+	//並進移動の抵抗率
+	void SetMoveResist(float v) { mMoveResist = v; }
+	//回転移動の抵抗率
+	void SetRotResist(float v) { mRotResist = v; }
+	
 private:
 	// 単純移動パラメータ
-	Vector2 mVelocity;		// 重心移動速度
+	Vector2 mVelocity;		// 並進移動速度
 	float mRotSpeed;		// 回転速度
 
-	// 古典物理パラメータ
+	// ニュートン力学パラメータ
 	float mMass;			// 質量
 	Vector2 mMoveForce;		// 重心にかかる力
 	float mRotForce;		// 回転方向の力F +方向はCCW
-	float mTorque;			// トルク=回転方向の力 * 半径 = 慣性モーメント * 回転加速度
-	Vector2 mMoveAccel;		// 重心加速度	=重心にかかる力 / 質量
-	float mRotAccel;		// 回転加速度
-	float mImoment;			// 慣性モーメント
 	float mMoveResist;		// 重心速度抵抗率(%)
 	float mRotResist;		// 回転速度抵抗率(%)
-
 };
 
