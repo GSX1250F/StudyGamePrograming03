@@ -2,7 +2,8 @@
 #include "Game.h"
 
 AsteroidControl::AsteroidControl(Game* game):Actor(game)
-	,mAsteroidCooldown(4.0)
+    , InitCooldown(0.1f)
+    , mAsteroidCooldown(InitCooldown)    
 {
 }
 
@@ -14,7 +15,7 @@ void AsteroidControl::UpdateActor(float deltaTime)
     if(mAsteroidCooldown < 0.0 && numAsteroids > 0)
     {
         GetGame()->AddAsteroid();
-        mAsteroidCooldown = 5.0;
+        mAsteroidCooldown = InitCooldown;
     }
         
 }

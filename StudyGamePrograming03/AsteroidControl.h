@@ -7,6 +7,8 @@ public:
 	
 	void UpdateActor(float deltaTime) override;
 
+private:
 	float mAsteroidCooldown;
+	float InitCooldown;
 };
 

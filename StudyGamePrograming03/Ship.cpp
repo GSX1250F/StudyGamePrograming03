@@ -24,7 +24,7 @@ Ship::Ship(Game* game):Actor(game)
 	mSSC->SetSomeTextures(mtexs);
 	
 	//InputComponent¶¬
-	mIC = new InputComponent(this);
+	mIC = new InputComponent(this);	
 	//mIC->SetMaxForwardVelocity(200.0f);
 	//mIC->SetMaxRotSpeed(5.0f);
 	mIC->SetMaxForwardForce(300.0f);

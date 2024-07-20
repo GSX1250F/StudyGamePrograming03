@@ -10,6 +10,7 @@
 #include "SoundComponent.h"
 #include "Ship.h"
 #include "Asteroid.h"
+#include "AsteroidControl.h"
 #include "BackGround.h"
 #include "ClearPict.h"
 #include "Random.h"
@@ -157,7 +158,7 @@ void Game::LoadData()
 {
 	//ƒvƒŒƒCƒ„[‚Ì‰F’ˆ‘D‚ğì¬
 	mShip = new Ship(this);
-	/*
+	
 	// ¬˜f¯‚ğÅ‰‚É•¡”¶¬
 	int initialNumAsteroids = 15;		//‰Šú’l
 	for (int i = 0; i < initialNumAsteroids; i++)
@@ -165,6 +166,8 @@ void Game::LoadData()
 		AddAsteroid();
 	}
 
+	new AsteroidControl(this);
+	/*
 	//”wŒi‚ğì¬
 	new BackGround(this);
 
