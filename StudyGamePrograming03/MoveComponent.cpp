@@ -45,9 +45,6 @@ Vector2 MoveComponent::GetMoveAccel()
 
 float MoveComponent::GetRotAccel()
 {
-	// 方向を更新
-	// 慣性モーメント計算	 ※2次元においては、一様密度の円板とする。 I=0.5*質量*半径^2
-	
 	if (!Math::NearZero(GetImoment()))
 	{
 		// 回転加速度の計算　回転加速度 = トルク / 慣性モーメント

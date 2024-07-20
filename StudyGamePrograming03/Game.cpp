@@ -166,14 +166,14 @@ void Game::LoadData()
 		AddAsteroid();
 	}
 
+	// ¬˜f¯‚ğˆê’èŠÔ‚²‚Æ‚É’Ç‰Á‚·‚é
 	new AsteroidControl(this);
 
+	// ƒQ[ƒ€ƒNƒŠƒA[‰æ–Ê
 	new ClearPict(this);
 
-	/*
-	//”wŒi‚ğì¬
-	new BackGround(this);
-	*/
+	// ”wŒi
+	new BackGround(this);	
 }
 
 void Game::UnloadData()
