@@ -7,15 +7,16 @@
 
 struct ChunkControl
 {
-	int channel;		// 0～15, -1は空いているところを使う。
-	Mix_Chunk* chunk;
-	std::string control;	// play,pause,halt,resume,replay
-	int repeat;			// 0:1回だけ。-1:無限ループ
+	int Channel;		// 0～15, -1は空いているところを使う。
+	Mix_Chunk* Chunk;
+	std::string Control;	// play,pause,halt,resume,replay
+	int Repeat;			// 0:1回だけ。-1:無限ループ
 };
 struct MusicControl
 {
-	Mix_Music* music;
-	int repeat;			// 0:1回だけ。-1:無限ループ
+	Mix_Music* Music;
+	std::string Control;	// play,pause,halt,resume,replay
+	int Repeat;			// 0:1回だけ。-1:無限ループ
 };
 
 class SoundPlayer
@@ -31,11 +32,11 @@ public:
 
 	void Play();
 
-	Mix_Chunk* GetChunk(const std::string& filename);
-	Mix_Music* GetMusic(const std::string& filename);
+	void AddChunk(const std::string& filename);
+	void AddMusic(const std::string& filename);
 
-	void SetPendingPlayChunk(ChunkControl chunkCtl);	
-	void SetPendingPlayMusic(MusicControl musicCtl);
+	void SetChunkControl(const int& channel, const std::string filename, const std::string control, const int& repeat);
+	void SetMusicControl(const std::string filename, const std::string control, const int& repeat);
 
 private:
 	// 効果音のマップ
@@ -45,13 +46,9 @@ private:
 	std::unordered_map<std::string, Mix_Music*> mMusics;
 
 	// 再生待ち効果音の配列
-	std::vector<ChunkControl> mPendingPlayChunks;
+	std::vector<ChunkControl> mChunkControls;
 
 	// 再生待ち音楽の配列
-	std::vector<MusicControl> mPendingPlayMusics;
-
-
-	// Game
-	class Game* mGame;
+	std::vector<MusicControl> mMusicControls;
 };
 

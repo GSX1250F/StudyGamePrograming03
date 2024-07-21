@@ -2,9 +2,8 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <algorithm>
-#include "SoundComponent.h"
 
-SoundPlayer::SoundPlayer(Game* game) : mGame(game)
+SoundPlayer::SoundPlayer(Game* game)
 {}
 
 SoundPlayer::~SoundPlayer()
@@ -53,111 +52,129 @@ void SoundPlayer::Shutdown()
     Mix_CloseAudio();               // SDL_Mixerクローズ 
 }
 
-
 void SoundPlayer::Play()
 {
-    // 再生待ち効果音を再生
-    for (auto ck : mPendingPlayChunks)
+    // 効果音を制御
+    for (auto cc : mChunkControls)
     {
-        if (ck.control == "replay")
+        if (cc.Control == "replay")
         {
             // チャンネル指定の場合は一度再生を止めて再生する。
-            if (ck.channel >= 0) { Mix_HaltChannel(ck.channel); }
-            Mix_PlayChannel(ck.channel, ck.chunk, ck.repeat);
+            if (cc.Channel >= 0) { Mix_HaltChannel(cc.Channel); }
+            Mix_PlayChannel(cc.Channel, cc.Chunk, cc.Repeat);
         }
-        if (ck.control == "pause")
+        if (cc.Control == "pause")
         {
             // 一時停止する。チャンネルが-1のときは全チャンネルを一時停止。
-            Mix_Pause(ck.channel);
+            Mix_Pause(cc.Channel);
         }
-        if (ck.control == "stop")
+        if (cc.Control == "stop")
         {
             // 停止する。チャンネルが-1のときは全チャンネルを停止。
-            Mix_HaltChannel(ck.channel);
+            Mix_HaltChannel(cc.Channel);
         }
-        if (ck.control == "resume")
+        if (cc.Control == "resume")
         {
             // 再開する。チャンネルが-1のときは全チャンネルを再開。
-            Mix_Resume(ck.channel);
+            Mix_Resume(cc.Channel);
         }
-        if (ck.control == "play")
+        if (cc.Control == "play")
         {
             // チャンネル指定の場合は、再生中は何もしない。
-            if ((ck.channel >= 0 && Mix_Playing(ck.channel) <= 0) || (ck.channel < 0))
+            if ((cc.Channel >= 0 && Mix_Playing(cc.Channel) <= 0) || (cc.Channel < 0))
             { 
-                Mix_PlayChannel(ck.channel, ck.chunk, ck.repeat);
+                Mix_PlayChannel(cc.Channel, cc.Chunk, cc.Repeat);
             }
         }
     }
-    // 再生後、配列をクリア
-    mPendingPlayChunks.clear();
+    // 制御後、配列をクリア
+    mChunkControls.clear();
 
     // 再生待ち音楽を再生
-    for (auto mc : mPendingPlayMusics)
+    for (auto mc : mMusicControls)
     {
-        Mix_PlayMusic(mc.music, mc.repeat);            // 効果音再生
+        if (mc.Control == "replay")
+        {
+            // 一度再生を止めて再生する。
+            Mix_HaltMusic(); 
+            Mix_PlayMusic(mc.Music, mc.Repeat);
+        }
+        if (mc.Control == "pause")
+        {
+            // 一時停止する。
+            Mix_PauseMusic();
+        }
+        if (mc.Control == "stop")
+        {
+            // 停止する。
+            Mix_HaltMusic();
+        }
+        if (mc.Control == "resume")
+        {
+            // 再開する。
+            Mix_ResumeMusic();
+        }
+        if (mc.Control == "play")
+        {
+            // 再生中は何もしない。
+            if (Mix_PlayingMusic() <= 0)
+            {
+                Mix_PlayMusic(mc.Music, mc.Repeat);
+            }
+        }
     }
-    // 再生後、配列をクリア
-    mPendingPlayChunks.clear();
+    // 制御後、配列をクリア
+    mMusicControls.clear();
 }
 
-Mix_Chunk* SoundPlayer::GetChunk(const std::string& filename)
+void SoundPlayer::AddChunk(const std::string& filename)
 {
-    Mix_Chunk* chunk = nullptr;
-
-    // すでにロード済みなら、その音を返す。
+    // すでにロード済みなら、何もしない
     auto iter = mChunks.find(filename);
-    if (iter != mChunks.end())
-    {
-        chunk = iter->second;
-    }
-    else
+    if (iter == mChunks.end())
     {
         // ファイルからロード
-        chunk = Mix_LoadWAV(filename.c_str());
+        Mix_Chunk* chunk = Mix_LoadWAV(filename.c_str());
         if (!chunk)
         {
             SDL_Log("効果音ファイルの読み込みに失敗しました %s", filename.c_str());
-            return nullptr;
         }
         mChunks.emplace(filename.c_str(), chunk);
     }
-
-    return chunk;
 }
 
-Mix_Music* SoundPlayer::GetMusic(const std::string& filename)
+void SoundPlayer::AddMusic(const std::string& filename)
 {
-    Mix_Music* music = nullptr;
-    // すでにロード済みなら、その音を返す。
+    // すでにロード済みなら、何もしない
     auto iter = mMusics.find(filename);
-    if (iter != mMusics.end())
-    {
-        music = iter->second;
-    }
-    else
+    if (iter == mMusics.end())
     {
         // ファイルからロード
-        music = Mix_LoadMUS(filename.c_str());
+        Mix_Music* music = Mix_LoadMUS(filename.c_str());
         if (!music)
         {
             SDL_Log("音楽ファイルの読み込みに失敗しました %s", filename.c_str());
-            return nullptr;
         }
         mMusics.emplace(filename.c_str(), music);
     }
-
-    return music;
 }
 
-void SoundPlayer::SetPendingPlayChunk(ChunkControl chunkCtl)
+void SoundPlayer::SetChunkControl(const int& channel, const std::string filename, const std::string control, const int& repeat)
 {
-    // 再生待ち効果音の配列に加える。
-    mPendingPlayChunks.emplace_back(chunkCtl);
+    ChunkControl* cc;
+    cc->Channel = channel;
+    cc->Chunk = mChunks.find(filename)->second;
+    cc->Control = control;
+    cc->Repeat = repeat;
+    mChunkControls.emplace_back(cc);
 }
 
-void SoundPlayer::SetPendingPlayMusic(MusicControl musicCtl)
+void SoundPlayer::SetMusicControl(const std::string filename, const std::string control, const int& repeat)
 {
-    // 再生待ち音楽の配列に加える。
-    mPendingPlayMusics.emplace_back(musicCtl);
+    MusicControl* mc;
+    mc->Music = mMusics.find(filename)->second;
+    mc->Control = control;
+    mc->Repeat = repeat;
+    mMusicControls.emplace_back(mc);
 }
+
