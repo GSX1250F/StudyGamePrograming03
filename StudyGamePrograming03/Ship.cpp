@@ -7,7 +7,6 @@
 #include "InputComponent.h"
 #include "Random.h"
 #include "CircleComponent.h"
-#include "SomeSoundComponent.h"
 #include "SoundPlayer.h"
 
 Ship::Ship(Game* game):Actor(game)
@@ -41,12 +40,14 @@ Ship::Ship(Game* game):Actor(game)
 	mCircle = new CircleComponent(this);
 
 	//SomeSoundComponent生成
-	mSSDC = new SomeSoundComponent(this);
-	std::vector<Mix_Chunk*> mchunks = {
-		game->GetSoundPlayer()->GetChunk("Assets/thruster.wav"),
-		game->GetSoundPlayer()->GetChunk("Assets/explosion.wav")
+	mChunkFiles = {
+		"Assets/thruster.wav",
+		"Assets/explosion.wav"
 	};
-	mSSDC->SetSomeChunks(mchunks);
+	for (auto file : mChunkFiles)
+	{
+		game->GetSoundPlayer()->AddChunk(file);
+	}
 
 	Init();
 }
@@ -61,7 +62,6 @@ void Ship::Init()
 	mIC->SetRotSpeed(0.0f);
 	SetState(EActive);
 	mSSC->SetVisible(true);
-	mSSDC->SetPlayable(true);
 
 	mLaserCooldown = 0.0f;
 	mCrashCooldown = 0.0f;
@@ -76,26 +76,22 @@ void Ship::ActorInput(const uint8_t* keyState)
 		if (keyState[mIC->GetCounterClockwiseKey()])
 		{
 			mSSC->SetTextureFromId(1);
-			mSSDC->SetChunkFromId(0);
-			mSSDC->SetPendingPlayChunk(0,"play");
+			GetGame()->GetSoundPlayer()->SetChunkControl(0,mChunkFiles[0],"play",0);
 		}
 		else if (keyState[mIC->GetClockwiseKey()])
 		{
 			mSSC->SetTextureFromId(2);
-			mSSDC->SetChunkFromId(0);
-			mSSDC->SetPendingPlayChunk(1,"play");
+			GetGame()->GetSoundPlayer()->SetChunkControl(1, mChunkFiles[0], "play", 0);
 		}
 		else if (keyState[mIC->GetForwardKey()])
 		{
 			mSSC->SetTextureFromId(3);
-			mSSDC->SetChunkFromId(0);
-			mSSDC->SetPendingPlayChunk(2,"play");
+			GetGame()->GetSoundPlayer()->SetChunkControl(2, mChunkFiles[0], "play", 0);
 		}
 		else if (keyState[mIC->GetBackwardKey()])
 		{
 			mSSC->SetTextureFromId(4);
-			mSSDC->SetChunkFromId(0);
-			mSSDC->SetPendingPlayChunk(3,"play");
+			GetGame()->GetSoundPlayer()->SetChunkControl(3, mChunkFiles[0], "play", 0);
 		}
 		else
 		{
@@ -144,8 +140,7 @@ void Ship::UpdateActor(float deltaTime)
 				mCrash = true;
 				mCrashCooldown = 4.0f;
 				mCrashingTime = 2.0f;
-				mSSDC->SetChunkFromId(1);
-				mSSDC->SetPendingPlayChunk(4,"replay");;
+				GetGame()->GetSoundPlayer()->SetChunkControl(4, mChunkFiles[1], "replay", 0);
 				break;
 			}
 		}
@@ -166,8 +161,6 @@ void Ship::UpdateActor(float deltaTime)
 				//衝突演出後、リスポーンするまで表示停止
 				SetState(EPaused);
 				mSSC->SetVisible(false);
-				mSSDC->SetPlayable(false);
-
 			}
 			else
 			{

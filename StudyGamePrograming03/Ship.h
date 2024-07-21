@@ -21,6 +21,6 @@ private:
 	class CircleComponent* mCircle; 
 	class SomeSpriteComponent* mSSC;
 	class InputComponent* mIC;
-	class SomeSoundComponent* mSSDC;
+	std::vector<std::string> mChunkFiles;
 };
 

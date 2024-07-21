@@ -36,9 +36,7 @@
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Ship.cpp" />
-    <ClCompile Include="SomeSoundComponent.cpp" />
     <ClCompile Include="SomeSpriteComponent.cpp" />
-    <ClCompile Include="SoundComponent.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
   </ItemGroup>
@@ -59,9 +57,7 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Ship.h" />
-    <ClInclude Include="SomeSoundComponent.h" />
     <ClInclude Include="SomeSpriteComponent.h" />
-    <ClInclude Include="SoundComponent.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="SpriteComponent.h" />
   </ItemGroup>

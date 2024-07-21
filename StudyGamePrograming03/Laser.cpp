@@ -6,7 +6,6 @@
 #include "SpriteComponent.h"
 #include "MoveComponent.h"	
 #include "CircleComponent.h"
-#include "SoundComponent.h"
 
 Laser::Laser(Game* game)
 	: Actor(game)
@@ -57,9 +56,8 @@ void Laser::Shot()
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetVelocity(mLaserSpeed * GetForward());
 
-	//SoundComponentì¬
-	SoundComponent* sndC = new SoundComponent(this);
-	sndC->SetChunk(GetGame()->GetSoundPlayer()->GetChunk("Assets/beam.wav"));
-	sndC->SetPendingPlayChunk(5,"replay");
+	std::string chunkfile = "Assets/beam.wav";
+	GetGame()->GetSoundPlayer()->AddChunk(chunkfile);
+	GetGame()->GetSoundPlayer()->SetChunkControl(5,chunkfile,"replay",0);
 }
 
