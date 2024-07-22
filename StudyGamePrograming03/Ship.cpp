@@ -13,14 +13,14 @@ Ship::Ship(Game* game):Actor(game)
 {
 	//SomeSpriteComponentê∂ê¨
 	mSSC = new SomeSpriteComponent(this,30);
-	std::vector<SDL_Texture*> mtexs = {
-		game->GetRenderer()->GetTexture("Assets/Ship01.png"),
-		game->GetRenderer()->GetTexture("Assets/Ship02.png"),
-		game->GetRenderer()->GetTexture("Assets/Ship03.png"),
-		game->GetRenderer()->GetTexture("Assets/Ship04.png"),
-		game->GetRenderer()->GetTexture("Assets/Ship05.png")
-	};
-	mSSC->SetSomeTextures(mtexs);
+	mSSC->TextureFiles = {
+			"Assets/Ship01.png",
+			"Assets/Ship02.png",
+			"Assets/Ship03.png",
+			"Assets/Ship04.png",
+			"Assets/Ship05.png" };
+	
+	mSSC->SetSomeTextures(mSSC->TextureFiles);
 	
 	//InputComponentê∂ê¨
 	mIC = new InputComponent(this);	
@@ -75,27 +75,27 @@ void Ship::ActorInput(const uint8_t* keyState)
 	{
 		if (keyState[mIC->GetCounterClockwiseKey()])
 		{
-			mSSC->SetTextureFromId(1);
+			mSSC->SelectTexture(mSSC->TextureFiles[1]);
 			GetGame()->GetSoundPlayer()->SetChunkControl(0,mChunkFiles[0],"play",0);
 		}
 		else if (keyState[mIC->GetClockwiseKey()])
 		{
-			mSSC->SetTextureFromId(2);
+			mSSC->SelectTexture(mSSC->TextureFiles[2]);
 			GetGame()->GetSoundPlayer()->SetChunkControl(1, mChunkFiles[0], "play", 0);
 		}
 		else if (keyState[mIC->GetForwardKey()])
 		{
-			mSSC->SetTextureFromId(3);
+			mSSC->SelectTexture(mSSC->TextureFiles[3]);
 			GetGame()->GetSoundPlayer()->SetChunkControl(2, mChunkFiles[0], "play", 0);
 		}
 		else if (keyState[mIC->GetBackwardKey()])
 		{
-			mSSC->SetTextureFromId(4);
+			mSSC->SelectTexture(mSSC->TextureFiles[4]);
 			GetGame()->GetSoundPlayer()->SetChunkControl(3, mChunkFiles[0], "play", 0);
 		}
 		else
 		{
-			mSSC->SetTextureFromId(0);
+			mSSC->SelectTexture(mSSC->TextureFiles[0]);
 		}
 		
 		if (keyState[SDL_SCANCODE_SPACE] && mLaserCooldown <= 0.0f)
