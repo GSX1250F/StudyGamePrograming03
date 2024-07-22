@@ -31,14 +31,14 @@ public:
 	const Vector2& GetPosition() const { return mPosition; }
 	void SetPosition(const Vector2& pos) { mPosition = pos; }
 	// Šg‘å—¦i¿—Ê‚Í•Ï‚¦‚È‚¢B”¼Œa‚É‰e‹¿‚·‚éj
-	const float& GetScale() const { return mScale; }
-	void SetScale(const float& scale) { mScale = scale; }
+	float GetScale() const { return mScale; }
+	void SetScale(float scale) { mScale = scale; }
 	// ‰ñ“]
 	const float& GetRotation() const { return mRotation; }
 	void SetRotation(const float& rotation) { mRotation = rotation; }
 	// ”¼Œa
-	const float& GetRadius() const { return mRadius * mScale; }	//Šg‘å—¦‚ğl—¶
-	void SetRadius(const float& radius) { mRadius = radius; }
+	float GetRadius() const { return mRadius * mScale; }	//Šg‘å—¦‚ğl—¶
+	void SetRadius(float radius) { mRadius = radius; }
 
 	// Œü‚«‚Ì’PˆÊƒxƒNƒgƒ‹
 	Vector2 GetForward() const { return Vector2(Math::Cos(mRotation), -Math::Sin(mRotation)); }

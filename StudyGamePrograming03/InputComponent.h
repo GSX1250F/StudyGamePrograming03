@@ -17,13 +17,13 @@ public:
 	void SetMaxForwardForce(float value) { mMaxForwardForce = value; }
 	void SetMaxRotForce(float value) { mMaxRotForce = value; }
 	
-	int GetForwardKey() { return mFwdKey; }
+	int GetForwardKey() const { return mFwdKey; }
 	void SetForwardKey(int key) { mFwdKey = key; }
-	int GetBackwardKey() { return mBwdKey; }
+	int GetBackwardKey() const { return mBwdKey; }
 	void SetBackwardKey(int key) { mBwdKey = key; }
-	int GetClockwiseKey() { return mCwsKey; }
+	int GetClockwiseKey() const { return mCwsKey; }
 	void SetClockwiseKey(int key) { mCwsKey = key; }
-	int GetCounterClockwiseKey() { return mCCwsKey; }
+	int GetCounterClockwiseKey() const { return mCCwsKey; }
 	void SetCounterClockwiseKey(int key) { mCCwsKey = key; }
 
 private:

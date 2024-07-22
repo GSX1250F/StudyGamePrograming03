@@ -35,8 +35,8 @@ public:
 	void AddChunk(const std::string& filename);
 	void AddMusic(const std::string& filename);
 
-	void SetChunkControl(int channel, std::string filename, std::string control, int repeat);
-	void SetMusicControl(std::string filename, std::string control, int repeat);
+	void SetChunkControl(const int& channel,const std::string& filename,const std::string& control,const int& repeat);
+	void SetMusicControl(const std::string& filename,const std::string& control,const int& repeat);
 
 private:
 	// 効果音のマップ
@@ -46,9 +46,9 @@ private:
 	std::unordered_map<std::string, Mix_Music*> mMusics;
 
 	// 再生待ち効果音の配列
-	std::vector<ChunkControl> mChunkControls;
+	std::vector<ChunkControl*> mChunkControls;
 
 	// 再生待ち音楽の配列
-	std::vector<MusicControl> mMusicControls;
+	std::vector<MusicControl*> mMusicControls;
 };
 

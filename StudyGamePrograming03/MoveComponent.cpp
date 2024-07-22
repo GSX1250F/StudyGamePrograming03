@@ -29,7 +29,7 @@ void MoveComponent::Update(float deltatime)
 	SetRotSpeed(mRotSpeed + GetRotAccel() * deltatime);		//ƒÖ = ƒÖo + bt
 }
 
-Vector2 MoveComponent::GetMoveAccel()
+Vector2 MoveComponent::GetMoveAccel() const
 {
 	if (!Math::NearZero(mMass))
 	{
@@ -43,7 +43,7 @@ Vector2 MoveComponent::GetMoveAccel()
 	}
 }
 
-float MoveComponent::GetRotAccel()
+float MoveComponent::GetRotAccel() const
 {
 	if (!Math::NearZero(GetImoment()))
 	{
@@ -59,13 +59,13 @@ float MoveComponent::GetRotAccel()
 	}
 }
 
-float MoveComponent::GetImoment()
+float MoveComponent::GetImoment() const
 {
 	// Šµ«ƒ‚[ƒƒ“ƒgŒvZ@¦2ŸŒ³‚É‚¨‚¢‚Ä‚ÍAˆê—l–§“x‚Ì‰~”Â‚Æ‚·‚éB I=0.5*¿—Ê*”¼Œa^2
 	return 0.5f * mMass * mOwner->GetRadius() * mOwner->GetRadius();
 }
 
-float MoveComponent::GetTorque()
+float MoveComponent::GetTorque() const
 {
 	// ƒgƒ‹ƒNŒvZ@ƒgƒ‹ƒN=‰ñ“]•ûŒü‚Ì—Í * ”¼Œa
 	return mRotForce * mOwner->GetRadius();

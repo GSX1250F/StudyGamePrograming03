@@ -20,9 +20,9 @@ public:
 
 	// 古典物理に必要なパラメータのセッター＆ゲッター
 	// 並進移動加速度
-	Vector2 GetMoveAccel();
+	Vector2 GetMoveAccel() const;
 	// 回転移動加速度
-	float GetRotAccel();
+	float GetRotAccel() const;
 
 	// 質量
 	void SetMass(float v) { mMass = v; }
@@ -31,9 +31,9 @@ public:
 	//回転方向の力
 	void SetRotForce(float v) { mRotForce = v; }
 	// 慣性モーメント
-	float GetImoment();
+	float GetImoment() const;
 	// トルク
-	float GetTorque();
+	float GetTorque() const;
 	//並進移動の抵抗率
 	void SetMoveResist(float v) { mMoveResist = v; }
 	//回転移動の抵抗率
