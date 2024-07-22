@@ -41,8 +41,8 @@ Ship::Ship(Game* game):Actor(game)
 
 	//SomeSoundComponentê∂ê¨
 	mChunkFiles = {
-		"Assets/thruster.wav",
-		"Assets/explosion.wav"
+		"Assets/thruster.mp3",
+		"Assets/explosion.mp3"
 	};
 	for (auto file : mChunkFiles)
 	{

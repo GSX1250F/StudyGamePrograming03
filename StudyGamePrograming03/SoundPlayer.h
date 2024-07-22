@@ -35,8 +35,8 @@ public:
 	void AddChunk(const std::string& filename);
 	void AddMusic(const std::string& filename);
 
-	void SetChunkControl(const int& channel, const std::string filename, const std::string control, const int& repeat);
-	void SetMusicControl(const std::string filename, const std::string control, const int& repeat);
+	void SetChunkControl(int channel, std::string filename, std::string control, int repeat);
+	void SetMusicControl(std::string filename, std::string control, int repeat);
 
 private:
 	// Œø‰Ê‰¹‚Ìƒ}ƒbƒv

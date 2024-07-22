@@ -159,22 +159,22 @@ void SoundPlayer::AddMusic(const std::string& filename)
     }
 }
 
-void SoundPlayer::SetChunkControl(const int& channel, const std::string filename, const std::string control, const int& repeat)
+void SoundPlayer::SetChunkControl(int channel, std::string filename, std::string control, int repeat)
 {
-    ChunkControl* cc;
-    cc->Channel = channel;
-    cc->Chunk = mChunks.find(filename)->second;
-    cc->Control = control;
-    cc->Repeat = repeat;
+    ChunkControl cc;
+    cc.Channel = channel;
+    cc.Chunk = mChunks.find(filename)->second;
+    cc.Control = control;
+    cc.Repeat = repeat;
     mChunkControls.emplace_back(cc);
 }
 
-void SoundPlayer::SetMusicControl(const std::string filename, const std::string control, const int& repeat)
+void SoundPlayer::SetMusicControl(std::string filename, std::string control, int repeat)
 {
-    MusicControl* mc;
-    mc->Music = mMusics.find(filename)->second;
-    mc->Control = control;
-    mc->Repeat = repeat;
+    MusicControl mc;
+    mc.Music = mMusics.find(filename)->second;
+    mc.Control = control;
+    mc.Repeat = repeat;
     mMusicControls.emplace_back(mc);
 }
 
