@@ -45,9 +45,9 @@ private:
 	std::unordered_map<std::string, Mix_Music*> mMusics;
 
 	// Ä¶‘Ò‚¿Œø‰Ê‰¹‚Ì”z—ñ
-	std::vector<ChunkControl*> mChunkControls;
+	std::vector<ChunkControl> mChunkControls;
 
 	// Ä¶‘Ò‚¿‰¹Šy‚Ì”z—ñ
-	std::vector<MusicControl*> mMusicControls;
+	std::vector<MusicControl> mMusicControls;
 };
 

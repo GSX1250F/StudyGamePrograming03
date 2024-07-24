@@ -57,33 +57,33 @@ void SoundPlayer::Play()
     // 効果音を制御
     for (auto cc : mChunkControls)
     {
-        if (cc->Control == "replay")
+        if (cc.Control == "replay")
         {
             // チャンネル指定の場合は一度再生を止めて再生する。
-            if (cc->Channel >= 0) { Mix_HaltChannel(cc->Channel); }
-            Mix_PlayChannel(cc->Channel, cc->Chunk, cc->Repeat);
+            if (cc.Channel >= 0) { Mix_HaltChannel(cc.Channel); }
+            Mix_PlayChannel(cc.Channel, cc.Chunk, cc.Repeat);
         }
-        if (cc->Control == "pause")
+        if (cc.Control == "pause")
         {
             // 一時停止する。チャンネルが-1のときは全チャンネルを一時停止。
-            Mix_Pause(cc->Channel);
+            Mix_Pause(cc.Channel);
         }
-        if (cc->Control == "stop")
+        if (cc.Control == "stop")
         {
             // 停止する。チャンネルが-1のときは全チャンネルを停止。
-            Mix_HaltChannel(cc->Channel);
+            Mix_HaltChannel(cc.Channel);
         }
-        if (cc->Control == "resume")
+        if (cc.Control == "resume")
         {
             // 再開する。チャンネルが-1のときは全チャンネルを再開。
-            Mix_Resume(cc->Channel);
+            Mix_Resume(cc.Channel);
         }
-        if (cc->Control == "play")
+        if (cc.Control == "play")
         {
             // チャンネル指定の場合は、再生中は何もしない。
-            if ((cc->Channel >= 0 && Mix_Playing(cc->Channel) <= 0) || (cc->Channel < 0))
+            if ((cc.Channel >= 0 && Mix_Playing(cc.Channel) <= 0) || (cc.Channel < 0))
             { 
-                Mix_PlayChannel(cc->Channel, cc->Chunk, cc->Repeat);
+                Mix_PlayChannel(cc.Channel, cc.Chunk, cc.Repeat);
             }
         }
     }
@@ -93,33 +93,33 @@ void SoundPlayer::Play()
     // 再生待ち音楽を再生
     for (auto mc : mMusicControls)
     {
-        if (mc->Control == "replay")
+        if (mc.Control == "replay")
         {
             // 一度再生を止めて再生する。
             Mix_HaltMusic(); 
-            Mix_PlayMusic(mc->Music, mc->Repeat);
+            Mix_PlayMusic(mc.Music, mc.Repeat);
         }
-        if (mc->Control == "pause")
+        if (mc.Control == "pause")
         {
             // 一時停止する。
             Mix_PauseMusic();
         }
-        if (mc->Control == "stop")
+        if (mc.Control == "stop")
         {
             // 停止する。
             Mix_HaltMusic();
         }
-        if (mc->Control == "resume")
+        if (mc.Control == "resume")
         {
             // 再開する。
             Mix_ResumeMusic();
         }
-        if (mc->Control == "play")
+        if (mc.Control == "play")
         {
             // 再生中は何もしない。
             if (Mix_PlayingMusic() <= 0)
             {
-                Mix_PlayMusic(mc->Music, mc->Repeat);
+                Mix_PlayMusic(mc.Music, mc.Repeat);
             }
         }
     }
@@ -161,20 +161,20 @@ void SoundPlayer::AddMusic(const std::string& filename)
 
 void SoundPlayer::SetChunkControl(const int& channel, const std::string& filename, const std::string& control, const int& repeat)
 {
-    ChunkControl* cc = new ChunkControl;
-    cc->Channel = channel;
-    cc->Chunk = mChunks.find(filename)->second;
-    cc->Control = control;
-    cc->Repeat = repeat;
+    ChunkControl cc;
+    cc.Channel = channel;
+    cc.Chunk = mChunks.find(filename)->second;
+    cc.Control = control;
+    cc.Repeat = repeat;
     mChunkControls.emplace_back(cc);
 }
 
 void SoundPlayer::SetMusicControl(const std::string& filename, const std::string& control, const int& repeat)
 {
-    MusicControl* mc = new MusicControl;
-    mc->Music = mMusics.find(filename)->second;
-    mc->Control = control;
-    mc->Repeat = repeat;
+    MusicControl mc;
+    mc.Music = mMusics.find(filename)->second;
+    mc.Control = control;
+    mc.Repeat = repeat;
     mMusicControls.emplace_back(mc);
 }
 
