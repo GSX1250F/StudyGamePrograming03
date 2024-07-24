@@ -35,6 +35,7 @@ Asteroid::Asteroid(Game* game) : Actor(game)
 	//CircleComponentì¬
 	mCircle = new CircleComponent(this);
 
+	//Œø‰Ê‰¹ì¬
 	mChunkFile = "Assets/destroy.mp3";
 	game->GetSoundPlayer()->AddChunk(mChunkFile);
 }

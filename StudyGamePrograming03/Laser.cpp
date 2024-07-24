@@ -55,9 +55,5 @@ void Laser::Shot()
 	//MoveComponentì¬
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetVelocity(mLaserSpeed * GetForward());
-
-	std::string chunkfile = "Assets/beam.mp3";
-	GetGame()->GetSoundPlayer()->AddChunk(chunkfile);
-	GetGame()->GetSoundPlayer()->SetChunkControl(5,chunkfile,"replay",0);
 }
 

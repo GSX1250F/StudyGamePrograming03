@@ -39,9 +39,10 @@ Ship::Ship(Game* game):Actor(game)
 	//CircleComponent生成
 	mCircle = new CircleComponent(this);
 
-	//SomeSoundComponent生成
+	//効果音生成
 	mChunkFiles = {
 		"Assets/thruster.mp3",
+		"Assets/beam.mp3",
 		"Assets/explosion.mp3"
 	};
 	for (auto file : mChunkFiles)
@@ -107,6 +108,7 @@ void Ship::ActorInput(const uint8_t* keyState)
 			laser->Shot();
 			// レーザー冷却期間リセット
 			mLaserCooldown = 0.7f;
+			GetGame()->GetSoundPlayer()->SetChunkControl(4, mChunkFiles[1], "replay", 0);
 		}		
 	}	
 }
@@ -140,7 +142,7 @@ void Ship::UpdateActor(float deltaTime)
 				mCrash = true;
 				mCrashCooldown = 4.0f;
 				mCrashingTime = 2.0f;
-				GetGame()->GetSoundPlayer()->SetChunkControl(4, mChunkFiles[1], "replay", 0);
+				GetGame()->GetSoundPlayer()->SetChunkControl(5, mChunkFiles[2], "replay", 0);
 				break;
 			}
 		}
