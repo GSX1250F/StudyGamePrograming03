@@ -5,24 +5,9 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-struct ChunkControl
-{
-	int Channel;		// 0～15, -1は空いているところを使う。
-	Mix_Chunk* Chunk;
-	std::string Control;	// play,pause,halt,resume,replay
-	int Repeat;			// 0:1回だけ。-1:無限ループ
-};
-struct MusicControl
-{
-	Mix_Music* Music;
-	std::string Control;	// play,pause,halt,resume,replay
-	int Repeat;			// 0:1回だけ。-1:無限ループ
-};
-
 class SoundPlayer
 {
 public:	
-	
 	SoundPlayer(class Game* game);
 	~SoundPlayer();
 
@@ -39,6 +24,20 @@ public:
 	void SetMusicControl(const std::string& filename,const std::string& control,const int& repeat);
 
 private:
+	struct ChunkControl
+	{
+		int Channel;		// 0～15, -1は空いているところを使う。
+		Mix_Chunk* Chunk;
+		std::string Control;	// play,pause,halt,resume,replay
+		int Repeat;			// 0:1回だけ。-1:無限ループ
+	};
+	struct MusicControl
+	{
+		Mix_Music* Music;
+		std::string Control;	// play,pause,halt,resume,replay
+		int Repeat;			// 0:1回だけ。-1:無限ループ
+	};
+
 	// 効果音のマップ
 	std::unordered_map<std::string, Mix_Chunk*> mChunks;
 	
