@@ -6,8 +6,8 @@ class Ship : public Actor
 public:
 	Ship(Game* game);
 	
-	void UpdateActor(float deltaTime) override;
 	void ActorInput(const uint8_t* keyState) override;
+	void UpdateActor(float deltaTime) override;
 
 	void Init();
 
