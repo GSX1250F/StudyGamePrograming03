@@ -45,11 +45,16 @@ void Actor::Update(float deltaTime)
 {
 	if (mState == EActive || mState == EPaused)
 	{
-		for (auto comp : mComponents)
-		{
-			comp->Update(deltaTime);
-		}
+		UpdateComponents(deltaTime); 
 		UpdateActor(deltaTime);
+	}
+}
+
+void Actor::UpdateComponents(float deltaTime)
+{
+	for (auto comp : mComponents)
+	{
+		comp->Update(deltaTime);
 	}
 }
 

@@ -4,13 +4,13 @@
 #include <algorithm>
 #include "SpriteComponent.h"
 
-Renderer::Renderer(Game* game) :mGame(game),mWindow(nullptr)
-{
-}
+Renderer::Renderer(Game* game) 
+	:mGame(game)
+	,mWindow(nullptr)
+{}
 
 Renderer::~Renderer()
-{
-}
+{}
 
 bool Renderer::Initialize(float screenWidth, float screenHeight)
 {
@@ -18,7 +18,15 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 	mScreenHeight = screenHeight;
 
 	// SDLウィンドウを作成
-	mWindow = SDL_CreateWindow("Game Programming in C++", 100, 100, static_cast<int>(screenWidth), static_cast<int>(screenHeight), 0);
+	mWindow = SDL_CreateWindow(
+		"Game Programming in C++",
+		100,
+		100,
+		static_cast<int>(screenWidth),
+		static_cast<int>(screenHeight),
+		0
+	);
+
 	if (!mWindow)
 	{
 		SDL_Log("ウィンドウの作成に失敗しました: %s", SDL_GetError());

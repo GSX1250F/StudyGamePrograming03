@@ -23,6 +23,8 @@ public:
 
 	// ゲームから呼び出される更新関数(オーバーライド不可)
 	void Update(float deltaTime);
+	// アクターが持つ全コンポーネントを更新(オーバーライド不可)
+	void UpdateComponents(float deltaTime);
 	// アクター独自の更新処理(オーバーライド可能)
 	virtual void UpdateActor(float deltaTime);
 	
