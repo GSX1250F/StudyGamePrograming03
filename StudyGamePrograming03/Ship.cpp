@@ -28,7 +28,7 @@ Ship::Ship(Game* game):Actor(game)
 	//mIC->SetMaxRotSpeed(5.0f);
 	mIC->SetMaxForwardForce(300.0f);
 	mIC->SetMaxRotForce(150.0f);
-	mIC->SetMoveResist(30.0f);
+	mIC->SetMoveResist(20.0f);
 	mIC->SetRotResist(15.0f);
 	mIC->SetMass(1.0f);
 	mIC->SetForwardKey(SDL_SCANCODE_UP);

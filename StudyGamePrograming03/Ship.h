@@ -1,5 +1,7 @@
 #pragma once
 #include "Actor.h"
+#include <string>
+#include <vector>
 
 class Ship : public Actor
 {
