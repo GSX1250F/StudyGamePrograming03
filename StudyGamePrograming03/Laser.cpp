@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "Renderer.h"
-#include "SoundPlayer.h"
 #include "Laser.h"
 #include "Asteroid.h"
 #include "SpriteComponent.h"
