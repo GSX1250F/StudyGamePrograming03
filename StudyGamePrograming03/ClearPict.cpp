@@ -23,4 +23,3 @@ void ClearPict::UpdateActor(float deltaTime)
 		sc->SetVisible(true);
 	}
 }
-
