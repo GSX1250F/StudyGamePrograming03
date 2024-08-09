@@ -6,7 +6,6 @@
 #include "Actor.h"
 #include "Renderer.h"
 #include "SoundPlayer.h"
-#include "SpriteComponent.h"
 #include "Ship.h"
 #include "Asteroid.h"
 #include "AsteroidControl.h"
