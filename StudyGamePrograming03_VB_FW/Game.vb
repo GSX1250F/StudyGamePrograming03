@@ -133,7 +133,7 @@ Public Class Game
         '死んだアクターを一時配列に追加
         Dim deadActors As New List(Of Actor)
         For Each actor In mActors
-            If actor.GetState() = actor.State.EDead Then
+            If actor.GetState() = Actor.State.EDead Then
                 deadActors.Add(actor)
             End If
         Next
