@@ -62,7 +62,7 @@ Public Class BackGround
 
 
 	End Sub
-	Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
+	Public Overrides Sub UpdateActor(ByVal deltaTime As Single)
 		'ラッピング処理
 		Dim v As New Vector2
 		For Each bg In mBGs

@@ -29,20 +29,20 @@
 
     Public Overridable Sub Draw(ByRef mGraphics As Object)
         If (mTexture IsNot Nothing) And (mVisible = True) Then
-            Dim w As Double = mTexWidth * mOwner.GetScale()
-            Dim h As Double = mTexHeight * mOwner.GetScale()
-            Dim x0 As Double = mOwner.GetPosition().X
-            Dim y0 As Double = mOwner.GetPosition().Y
+            Dim w As Single = mTexWidth * mOwner.GetScale()
+            Dim h As Single = mTexHeight * mOwner.GetScale()
+            Dim x0 As Single = mOwner.GetPosition().X
+            Dim y0 As Single = mOwner.GetPosition().Y
 
             '画像を回転して表示
-            Dim angle As Double = mOwner.GetRotation()
+            Dim angle As Single = mOwner.GetRotation()
 
-            Dim x1 As Integer = CInt((-w / 2) * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0)
-            Dim y1 As Integer = CInt(-(-w / 2) * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0)
-            Dim x2 As Integer = CInt(w / 2 * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0)
-            Dim y2 As Integer = CInt(-w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0)
-            Dim x3 As Integer = CInt((-w / 2) * Math.Cos(angle) + h / 2 * Math.Sin(angle) + x0)
-            Dim y3 As Integer = CInt(-(-w / 2) * Math.Sin(angle) + h / 2 * Math.Cos(angle) + y0)
+            Dim x1 As Single = (-w / 2) * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0
+            Dim y1 As Single = w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
+            Dim x2 As Single = w / 2 * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0
+            Dim y2 As Single = -w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
+            Dim x3 As Single = (-w / 2) * Math.Cos(angle) + h / 2 * Math.Sin(angle) + x0
+            Dim y3 As Single = w / 2 * Math.Sin(angle) + h / 2 * Math.Cos(angle) + y0
             'PointF配列を作成
             Dim destinationPoints() As PointF = {New PointF(x1, y1), New PointF(x2, y2), New PointF(x3, y3)}
 
