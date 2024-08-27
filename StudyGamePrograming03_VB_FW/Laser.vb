@@ -2,8 +2,8 @@
 	Inherits Actor
 
 	Private mCircle As CircleComponent
-	Private mDeathTime As Double
-	Private mLaserSpeed As Double
+	Private mDeathTime As Single
+	Private mLaserSpeed As Single
 
 	Sub New(ByRef game As Game)
 		MyBase.New(game)
@@ -30,7 +30,7 @@
 		MyBase.Dispose(disposing)
 	End Sub
 
-	Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
+	Public Overrides Sub UpdateActor(ByVal deltaTime As Single)
 		'DeathTimeが0になるか位置が画面外になったら消去する。
 		mDeathTime -= deltaTime
 		If (mDeathTime <= 0.0 Or

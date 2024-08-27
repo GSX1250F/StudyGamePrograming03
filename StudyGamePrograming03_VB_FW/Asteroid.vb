@@ -4,7 +4,7 @@ Public Class Asteroid
 	Inherits Actor
 
 	Private mCircle As CircleComponent
-	Private mAsteroidCooldown As Double
+	Private mAsteroidCooldown As Single
 	Private mChunkFile As String
 
 	Sub New(ByRef game As Game)
@@ -63,7 +63,7 @@ Public Class Asteroid
 		MyBase.Dispose(disposing)
 	End Sub
 
-	Public Overrides Sub UpdateActor(ByVal detaTime As Double)
+	Public Overrides Sub UpdateActor(ByVal detaTime As Single)
 		'画面外にでたら反対の位置に移動（ラッピング処理）
 		If (GetPosition().X < 0.0 - GetRadius() Or
 			GetPosition().X > GetGame().mWindowWidth + GetRadius()) _

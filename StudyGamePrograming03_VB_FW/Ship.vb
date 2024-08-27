@@ -4,12 +4,12 @@ Imports System.Security.Cryptography
 Public Class Ship
     Inherits Actor
 
-    Private mLaserCooldown As Double     'レーザーを次に撃てるまでの時間
+    Private mLaserCooldown As Single     'レーザーを次に撃てるまでの時間
     Private mCrash As Boolean        '衝突検知
-    Private mCrashingTime As Double     '衝突演出時間
-    Private mCrashCooldown As Double  '衝突演出後、リセットされるまでスプライトを消す時間
+    Private mCrashingTime As Single     '衝突演出時間
+    Private mCrashCooldown As Single  '衝突演出後、リセットされるまでスプライトを消す時間
     Private mCrashPos As Vector2     '衝突時の位置
-    Private mCrashRot As Double      '衝突時の向き
+    Private mCrashRot As Single      '衝突時の向き
     Private mCircle As CircleComponent
     Private mSSC As SomeSpriteComponent
     Private mIC As InputComponent
@@ -54,7 +54,7 @@ Public Class Ship
         Init()
     End Sub
 
-    Public Overrides Sub UpdateActor(ByVal deltaTime As Double)
+    Public Overrides Sub UpdateActor(ByVal deltaTime As Single)
         mLaserCooldown -= deltaTime
         mCrashCooldown -= deltaTime
         mCrashingTime -= deltaTime

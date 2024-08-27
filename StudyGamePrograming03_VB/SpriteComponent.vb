@@ -40,7 +40,7 @@
             Dim x1 As Single = (-w / 2) * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0
             Dim y1 As Single = w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
             Dim x2 As Single = w / 2 * Math.Cos(angle) + (-h / 2) * Math.Sin(angle) + x0
-            Dim y2 As Single = -w / 2 * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
+            Dim y2 As Single = (-w / 2) * Math.Sin(angle) + (-h / 2) * Math.Cos(angle) + y0
             Dim x3 As Single = (-w / 2) * Math.Cos(angle) + h / 2 * Math.Sin(angle) + x0
             Dim y3 As Single = w / 2 * Math.Sin(angle) + h / 2 * Math.Cos(angle) + y0
             'PointF配列を作成

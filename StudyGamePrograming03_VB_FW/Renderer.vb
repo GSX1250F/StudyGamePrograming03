@@ -94,10 +94,10 @@
 		End If
 		Return tex
 	End Function
-	Public Function GetScreenWidth() As Double
+	Public Function GetScreenWidth() As Single
 		Return mScreenWidth
 	End Function
-	Public Function GetScreenHeight() As Double
+	Public Function GetScreenHeight() As Single
 		Return mScreenHeight
 	End Function
 

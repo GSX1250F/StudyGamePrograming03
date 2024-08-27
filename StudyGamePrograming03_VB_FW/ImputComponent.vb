@@ -4,10 +4,10 @@ Public Class InputComponent
 	Inherits MoveComponent
 
 	' 前進・回転方向の力の最大値
-	Private mMaxForwardForce As Double
-	Private mMaxRotForce As Double
-	Private mMaxForwardVelocity As Double
-	Private mMaxRotSpeed As Double
+	Private mMaxForwardForce As Single
+	Private mMaxRotForce As Single
+	Private mMaxForwardVelocity As Single
+	Private mMaxRotSpeed As Single
 	Private mFwdKey As Integer
 	Private mBwdKey As Integer
 	Private mCwsKey As Integer
@@ -20,8 +20,8 @@ Public Class InputComponent
 		mMaxRotForce = 0.0
 	End Sub
 	Public Overrides Sub ProcessInput(ByVal keyState As Boolean())
-		Dim fwd As Double = 0.0
-		Dim rot As Double = 0.0
+		Dim fwd As Single = 0.0
+		Dim rot As Single = 0.0
 		If keyState(mFwdKey) = True Then
 			'fwd = mMaxForwardVelocity       '単純移動の場合
 			fwd = mMaxForwardForce      'ニュートン力学を使う場合
@@ -71,16 +71,16 @@ Public Class InputComponent
 	Public Sub SetCounterClockwiseKey(ByVal key As Integer)
 		mCCwsKey = key
 	End Sub
-	Public Sub SetMaxForwardVelocity(ByVal value As Double)
+	Public Sub SetMaxForwardVelocity(ByVal value As Single)
 		mMaxForwardVelocity = value
 	End Sub
-	Public Sub SetMaxRotSpeed(ByVal value As Double)
+	Public Sub SetMaxRotSpeed(ByVal value As Single)
 		mMaxRotSpeed = value
 	End Sub
-	Public Sub SetMaxForwardForce(ByVal value As Double)
+	Public Sub SetMaxForwardForce(ByVal value As Single)
 		mMaxForwardForce = value
 	End Sub
-	Public Sub SetMaxRotForce(ByVal value As Double)
+	Public Sub SetMaxRotForce(ByVal value As Single)
 		mMaxRotForce = value
 	End Sub
 
