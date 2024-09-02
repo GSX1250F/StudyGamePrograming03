@@ -63,7 +63,7 @@ Public Class Game
         'レンダラー作成
         mRenderer = New Renderer(Me)
         If (mRenderer.Initialize(mWindowWidth, mWindowHeight)) = False Then
-            mRenderer.Dispose()
+            mRenderer.Shutdown()
         End If
         'サウンドプレイヤ作成
         mSoundPlayer = New SoundPlayer(Me)
